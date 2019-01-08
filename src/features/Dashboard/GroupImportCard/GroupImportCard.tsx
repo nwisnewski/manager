@@ -92,14 +92,9 @@ export const GroupImportCard: React.StatelessComponent<
         className={classNames({
           [classes.section]: true,
           [classes.title]: true
-        })}
-      >
-        <Typography
-          className={classes.header}
-          variant="h1"
-          component="h3"
-          data-qa-group-cta-header
-        >
+        }
+      )} data-qa-group-import-cta>
+        <Typography className={classes.header} variant="h1" component="h3" data-qa-group-cta-header>
           Import Display Groups as Tags
         </Typography>
         <div>

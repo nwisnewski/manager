@@ -58,6 +58,8 @@ export default class Page {
     get groupByTagsToggle() { return $$('span').find(it => it.getText().includes('Group by Tag')).$('..'); }
     get tagHeaderSelector() { return 'data-qa-tag-header'; }
     get tagHeaders() { return $$(`[${this.tagHeaderSelector}]`); }
+    get globalTopMenu() { return $('[data-qa-top-menu]'); }
+    get navigationSideBar() { return $('[data-qa-navigation-side-bar]'); }
     get enterKey() { return '\uE007'; }
     get upArrowKey() { return '\ue013'; }
 
