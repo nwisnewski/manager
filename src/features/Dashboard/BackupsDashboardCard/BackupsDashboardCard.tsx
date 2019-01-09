@@ -107,7 +107,7 @@ export const BackupsDashboardCard: React.StatelessComponent<
               [classes.sectionLink]: true
             })}
           >
-            <Typography variant="h3" className={classes.itemTitle}>
+            <Typography variant="h3" className={classes.itemTitle} >
               Linode Backup Auto-Enrollment
             </Typography>
             <Typography variant="body1">
