@@ -28,31 +28,30 @@ describe('Selection Card Suite', () => {
 
     const assertPlainSvgsDisplay = () => {
         const plainSvgs = $$(`${selectionCard} svg g`);
-        plainSvgs.forEach(svg => expect(svg.isVisible()).toBe(true));
+        plainSvgs.forEach(svg => expect(svg.isDisplayed()).toBe(true));
     }
 
     const assertSvgIconsDisplay = () => {
         const svgElems = $$(`${selectionCard} svg`);
-        svgElems.forEach(svg => expect(svg.isVisible()).toBe(true));
+        svgElems.forEach(svg => expect(svg.isDisplayed()).toBe(true));
     }
 
     const assertFontIconsDisplay = () => {
         const selectionCardElems = $$(selectionCard);
         const fontIcons = $$(`${selectionCard} span`).filter(e => e.getAttribute('class').includes('fl-'));
-        
-        fontIcons.forEach(icon => expect(icon.isVisible()).toBe(true));
+
+        fontIcons.forEach(icon => expect(icon.isDisplayed()).toBe(true));
         expect(fontIcons.length).toEqual(selectionCardElems.length);
     }
 
     const assertNoIcons = (checked) => {
         const fontIcons = $$(`${selectionCard} span`).filter(e => e.getAttribute('class').includes('fl-'));
-        
+
         if (checked) {
             const svgs = $$(`${selectionCard} svg`);
             expect(svgs.length).toBe(3);
         } else {
-            const svgs = browser.isExisting(`${selectionCard} svg`);
-            expect(svgs).toBe(false);
+            expect($(`${selectionCard} svg`).isExisting()).toBe(false);
         }
         fontIcons.forEach(icon => expect(icon).toBe(false));
     }
@@ -63,7 +62,7 @@ describe('Selection Card Suite', () => {
 
             const selectionCardElems = $$(selectionCard);
 
-            selectionCardElems.forEach(card => expect(card.isVisible()).toBe(true));
+            selectionCardElems.forEach(card => expect(card.isDisplayed()).toBe(true));
             expect(selectionCardElems.length).toBeGreaterThanOrEqual(1);
         });
     });
@@ -71,7 +70,7 @@ describe('Selection Card Suite', () => {
     it('should display headings on all selection cards', () => {
         executeInAllStories(component, childStories, () => {
             const headingElems = $$(heading);
-            headingElems.forEach(e => expect(e.isVisible()).toBe(true));
+            headingElems.forEach(e => expect(e.isDisplayed()).toBe(true));
         });
     });
 
@@ -81,7 +80,7 @@ describe('Selection Card Suite', () => {
         });
 
         it('should display three selection card with one disabled', () => {
-            browser.click(selectionCard);
+            $(selectionCard).click();
 
             const selectionCardElements = $$(selectionCard);
             const disabledCards = selectionCardElements.filter(e => e.getAttribute('class').includes('disabled'));
@@ -97,12 +96,12 @@ describe('Selection Card Suite', () => {
                 const classes = card.getAttribute('class');
                 expect(classes.includes('checked')).toBe(true);
                 expect(card.$('[data-qa-checked]').getAttribute('data-qa-checked')).toBe('true');
-            }); 
+            });
         });
 
         it('should display subheadings for all selection cards', () => {
             const subheadingElems = $$(subheading);
-            subheadingElems.forEach(e => expect(e.isVisible()).toBe(true));
+            subheadingElems.forEach(e => expect(e.isDisplayed()).toBe(true));
         });
     });
 
@@ -157,7 +156,7 @@ describe('Selection Card Suite', () => {
 
         it('should display svg icons for all selection cards', () => {
             const selectionCardElems = $$(`${selectionCard} svg`);
-            selectionCardElems.forEach(e => expect(e.isVisible()).toBe(true));
+            selectionCardElems.forEach(e => expect(e.isDisplayed()).toBe(true));
         });
     });
 
@@ -195,7 +194,7 @@ describe('Selection Card Suite', () => {
         });
 
         it('should be checked', () => {
-           assertCardsChecked(); 
+           assertCardsChecked();
         });
 
         it('should not display any icon type', () => {

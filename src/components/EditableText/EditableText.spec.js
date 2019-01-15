@@ -17,34 +17,34 @@ describe('Editable Text Suite', () => {
 
     beforeAll(() => {
         navigateToStory(component, childStories[0]);
-        browser.waitForVisible(editableTextField);
+        $(editableTextField).waitForDisplayed();
     });
 
     it('should become an editable field on click', () => {
         originalLabel = $(editableTextField).getText();
 
-        $(editableTextField).moveToObject();
-        browser.waitForVisible(editableTextButton);
+        $(editableTextField).moveTo();
+        $(editableTextButton).waitForDisplayed();
 
         $(editableTextButton).click();
-        browser.waitForVisible(editField);
+        $(editField).waitForDisplayed();
     });
 
     it('should edit the textfield', () => {
         $(editField).$('input').setValue(newLabel);
-        browser.click(saveEdit);
+        $(saveEdit).click();
         expect($(editableTextField).getText()).toBe(newLabel);
     });
 
     it('should not update the textfield on cancel', () => {
-        $(editableTextField).moveToObject();
-        browser.waitForVisible(editableTextButton);
+        $(editableTextField).moveTo();
+        $(editableTextButton).waitForDisplayed();
 
         $(editableTextButton).click();
-        $(cancelEdit).waitForVisible();
+        $(cancelEdit).waitForDisplayed();
 
         $(editField).$('input').setValue(originalLabel);
-        browser.click(cancelEdit);
+        $(cancelEdit).click();
 
         // Should contain the new label from the prior test
         expect($(editableTextField).getText()).toBe(newLabel);

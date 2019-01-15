@@ -9,7 +9,7 @@ describe('Table Suite', () => {
     });
 
     it('should display table elements', () => {
-        browser.waitForVisible('[data-qa-table]');
+        $('[data-qa-table]').waitForDisplayed();
         expect($$('[data-qa-column-heading]').length).toBe(3);
         expect($$('[data-qa-table-row]').length).toBe(3);
         expect($$('[data-qa-table-cell]').length).toBe(9);

@@ -46,40 +46,42 @@ exports.login = (username, password, credFilePath) => {
 
     browser.url(constants.routes.linodes);
     try {
-        browser.waitForVisible('#username', constants.wait.long);
+        $('#username').waitForDisplayed(constants.wait.long, false, 'Username field did not display');
     } catch (err) {
-        console.log(browser.getSource());
+        console.log(browser.getPageSource());
 
     }
 
-    browser.waitForVisible('#password', constants.wait.long);
-    browser.trySetValue('#username', username);
-    browser.trySetValue('#password', password);
-    loginButton = browser.getUrl().includes('dev') ? '.btn#submit' : '.btn-primary';
+    $('#password').waitForDisplayed(constants.wait.long, false, 'Username field did not display');
+    $('#username').setValue(username);
+    $('#password').setValue(password);
+
+    loginButton = browser.getUrl().includes('dev') || browser.getUrl().includes('staging') ? '.btn#submit' : '.btn-primary';
     letsGoButton = browser.getUrl().includes('dev') ? '.btn#submit' : '[data-qa-welcome-button]';
-    browser.click(loginButton);
+    $(loginButton).click();
 
     try {
         browser.waitUntil(function() {
-            return browser.isExisting('[data-qa-add-new-menu-button]') || browser.getUrl().includes('oauth/authorize');
+            return $('[data-qa-add-new-menu-button]').isExisting() || browser.getUrl().includes('oauth/authorize');
         }, constants.wait.normal);
     } catch (err) {
         console.log('failed to login!');
-        if (browser.getText('.alert').includes('This field is required.')) {
-            browser.trySetValue('#password', password);
-            browser.click(loginButton);
+        if ($('.alert').getText().includes('This field is required.')) {
+            $('#password').setValue(password);
+            $(loginButton).click();
         }
     }
 
-    if(browser.isExisting('.Modal') && browser.getUrl().includes('login')){
-        browser.click('.btn.btn-primary');
+    if($('.Modal').isExisting() && browser.getUrl().includes('login')){
+        $('.btn.btn-primary').click();
     }
 
-    browser.waitForVisible('[data-qa-add-new-menu-button]', constants.wait.long);
+    $('[data-qa-add-new-menu-button]').waitForDisplayed(constants.wait.long, false, 'Create Button did not display');
 
-    if (browser.waitForVisible('[role="dialog"]')) {
-        browser.click(letsGoButton);
-        browser.waitForVisible('[role="dialog"]', constants.wait.long, true)
+    if ($('[role="dialog"]').isExisting()) {
+        console.log('Dismiss modal');
+        $(letsGoButton).click();
+        $('[role="dialog"]').waitForDisplayed(constants.wait.long, true, 'Did not dismiss welcome modal')
     }
 
     if (credFilePath) {

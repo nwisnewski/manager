@@ -17,32 +17,32 @@ describe('Confirmation Dialog Suite', () => {
     });
 
     it('should display confirm button text', () => {
-        browser.waitForVisible(confirmButtonTextElem);
+        $(confirmButtonTextElem).waitForDisplayed();
     });
 
     it('should display dialog on click', () => {
-        browser.click(confirmButtonTextElem);
+        $(confirmButtonTextElem).click();
         dialogTitle = $(dialogTitleElem);
         confirmButton = $(confirmButtonElem);
         dismissButton = $(dismissButtonElem);
 
         expect(dialogTitle.getText()).toBe('Are you sure you wanna?');
         expect($('[data-qa-dialog-content]').getText()).toBe('stuff stuff stuff');
-        expect(confirmButton.isVisible()).toBe(true);
-        expect(dismissButton.isVisible()).toBe(true);
+        expect(confirmButton.isDisplayed()).toBe(true);
+        expect(dismissButton.isDisplayed()).toBe(true);
         expect(confirmButton.getTagName()).toBe('button');
         expect(dismissButton.getTagName()).toBe('button');
     });
 
     it('should close dialog on yes', () => {
         confirmButton.click();
-        dialogTitle.waitForVisible(1500, true);
+        dialogTitle.waitForDisplayed(1500, true);
     });
 
     it('should close dialog on no', () => {
-        browser.click(confirmButtonTextElem);
-        browser.waitForVisible(dialogTitleElem);
+        $(confirmButtonTextElem).click();
+        $(dialogTitleElem).waitForDisplayed();
         dismissButton.click();
-        dialogTitle.waitForVisible(1500, true);
+        dialogTitle.waitForDisplayed(1500, true);
     });
 });

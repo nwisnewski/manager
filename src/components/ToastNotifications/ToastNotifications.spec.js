@@ -9,7 +9,7 @@ describe('Toast Notification Suite', () => {
 
     const notificationButton = (state) => {
         const button = $$('#root>[type="button"]').find(button => button.getText() === state);
-        button.waitForVisible(constants.wait.normal);
+        button.waitForDisplayed(constants.wait.normal);
         return button;
     }
 
@@ -20,20 +20,20 @@ describe('Toast Notification Suite', () => {
     it('Toast notification displays with expected variant', () => {
         variants.forEach((variant) => {
             notificationButton(variant).click();
-            $(toast).waitForVisible(constants.wait.normal);
+            $(toast).waitForDisplayed(constants.wait.normal);
             expect($(toast).getAttribute('class')).toContain(`SnackBar-${variant}`);
-            $(toast).waitForVisible(constants.wait.normal, true);
+            $(toast).waitForDisplayed(constants.wait.normal, true);
         });
         notificationButton('default').click();
-        $(toast).waitForVisible(constants.wait.normal);
+        $(toast).waitForDisplayed(constants.wait.normal);
         expect($(toast).getAttribute('class')).not.toContain('variant');
-        $(toast).waitForVisible(constants.wait.normal, true);
+        $(toast).waitForDisplayed(constants.wait.normal, true);
     });
 
     it('Toast notification dissapears after 4 seconds', () => {
         notificationButton(variants[0]).click();
         browser.pause(4500);
-        expect($(toast).isVisible()).toBe(false);
+        expect($(toast).isDisplayed()).toBe(false);
     });
 
     it('No more than 3 notifications display at once', () => {

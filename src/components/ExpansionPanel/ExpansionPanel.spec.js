@@ -19,21 +19,21 @@ describe('Expansion Panel Suite', () => {
 
     function assertNotice() {
         const noticeMsg = $(notice);
-        expect(noticeMsg.isVisible()).toBe(true);
+        expect(noticeMsg.isDisplayed()).toBe(true);
         expect(noticeMsg.getText()).toMatch(/([a-z])/ig);
     }
 
     function expandAssertGridItem(opposite=false) {
-        browser.click('[data-qa-panel-summary]');
-        browser.waitForVisible(gridItem, 5000, opposite)
+        $('[data-qa-panel-summary]').click();
+        $(gridItem).waitForDisplayed(5000, opposite)
     }
 
     function panelDisplays() {
-        browser.waitForVisible(panel, constants.wait.normal);
+        $(panel).waitForDisplayed(constants.wait.normal);
 
         const expansionPanel = $(panel);
         const expansionPanelText = $(panelSubheading);
-        expect(expansionPanel.isVisible()).toBe(true);
+        expect(expansionPanel.isDisplayed()).toBe(true);
         expect(expansionPanelText.getText()).toMatch(/([a-z])/ig);
     }
 
@@ -63,12 +63,12 @@ describe('Expansion Panel Suite', () => {
         });
 
         it('should display success notice message', () => {
-           assertNotice(); 
+           assertNotice();
         });
 
         it('should display save and cancel buttons', () => {
             const buttons = $$('button');
-            const visibleButtons = buttons.filter(b => b.isVisible() && !!b.getText());
+            const visibleButtons = buttons.filter(b => b.isDisplayed() && !!b.getText());
             expect(visibleButtons.length).toBe(2);
         });
 
@@ -93,7 +93,7 @@ describe('Expansion Panel Suite', () => {
 
         it('should display save and cancel buttons', () => {
             const buttons = $$('button');
-            const visibleButtons = buttons.filter(b => b.isVisible() && !!b.getText());
+            const visibleButtons = buttons.filter(b => b.isDisplayed() && !!b.getText());
             expect(visibleButtons.length).toBe(2);
         });
 
@@ -118,7 +118,7 @@ describe('Expansion Panel Suite', () => {
 
         it('should display save and cancel buttons', () => {
             const buttons = $$('button');
-            const visibleButtons = buttons.filter(b => b.isVisible() && !!b.getText());
+            const visibleButtons = buttons.filter(b => b.isDisplayed() && !!b.getText());
             expect(visibleButtons.length).toBe(2);
         });
 
@@ -136,16 +136,16 @@ describe('Expansion Panel Suite', () => {
         it('should expand on click and display loading text', () => {
             const loadingMsg = 'Loading...';
             expandAssertGridItem();
-            
+
             browser.waitUntil(function() {
-                return browser.getText(gridItem).includes(loadingMsg);
+                return $(gridItem).getText().includes(loadingMsg);
             }, constants.wait.normal);
         });
 
         it('should display message after loaded', () => {
             const loadedMsg = 'Your patience has been rewarded';
             browser.waitUntil(function() {
-                return browser.getText(gridItem).includes(loadedMsg);
+                return $(gridItem).getText().includes(loadedMsg);
             }, constants.wait.normal);
         });
     });

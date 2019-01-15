@@ -19,8 +19,8 @@ describe('Action Menu Suite', () => {
 
     it('should display action menu items', () => {
         executeInAllStories(component, menuStories, () => {
-            browser.click(actionMenu);
-            browser.waitForVisible(actionMenuItem);
+            $(actionMenu).click();
+            $(actionMenuItem).waitForDisplayed();
             expect($$(actionMenuItem).length).toBeGreaterThan(1);
             $$(actionMenuItem).forEach(i => expect(i.getTagName()).toBe('li'));
         });
@@ -28,10 +28,10 @@ describe('Action Menu Suite', () => {
 
     it('should hide the menu items on select of an item', () => {
         navigateToStory(component, menuStories[0]);
-        browser.click(actionMenu);
-        browser.waitForVisible(actionMenuItem);
-        browser.click(actionMenuItem);
-        browser.waitForVisible(actionMenuItem, 1000, true);
+        $(actionMenu).click();
+        $(actionMenuItem).waitForDisplayed();
+        $(actionMenuItem).click();
+        $(actionMenuItem).waitForDisplayed(10000,true)
     });
 
     it('should display tooltip menu item', () => {
@@ -41,17 +41,16 @@ describe('Action Menu Suite', () => {
         const tooltipIcon = '[data-qa-tooltip-icon]';
         const tooltip = '[data-qa-tooltip]';
 
-        browser.waitForVisible(actionMenu);
-        browser.click(actionMenu);
-        
-        $(disabledMenuItem).waitForVisible();
+        $(actionMenu).waitForDisplayed();
+        $(actionMenu).click();
 
-        // HACK** REPLACE WITH ACTIONS API
-        browser.moveToObject(tooltipIcon);
+        $(disabledMenuItem).waitForDisplayed();
 
         expect($(disabledMenuItem).getAttribute('class')).toContain('disabled');
-        expect($(tooltipIcon).isVisible()).toBe(true);
+        expect($(tooltipIcon).isDisplayed()).toBe(true);
         expect($(tooltipIcon).getTagName()).toBe('button');
+        $(tooltipIcon).moveTo();
+        browser.pause(250);
         expect($(tooltip).getText()).toBe('An explanation as to why this item is disabled');
     });
 
