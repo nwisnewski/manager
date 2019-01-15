@@ -8,11 +8,11 @@ class NodeBalancerSettings extends Page {
     get connectionThrottle() { return $('[data-qa-connection-throttle] input'); }
 
     baseElemsDisplay() {
-        expect(this.label.isVisible()).toBe(true);
-        expect(this.connectionThrottle.isVisible()).toBe(true);
+        expect(this.label.isDisplayed()).toBe(true);
+        expect(this.connectionThrottle.isDisplayed()).toBe(true);
         expect(this.connectionThrottle.getValue()).toBe('0');
         expect(this.save.getTagName()).toBe('button');
-        expect(this.save.isVisible()).toBe(true);
+        expect(this.save.isDisplayed()).toBe(true);
     }
 
     changeLabel(label) {

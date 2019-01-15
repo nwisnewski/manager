@@ -7,11 +7,12 @@ import {
     apiCreateLinode,
     apiDeleteAllLinodes,
     apiDeletePrivateImages,
+    timestamp,
 } from '../../utils/common';
 
 describe('Images - Create Suite', () => {
     beforeAll(() => {
-        apiCreateLinode();
+        apiCreateLinode(`AutoLinode${timestamp()}`);
         browser.url(constants.routes.images);
     });
 
@@ -21,8 +22,8 @@ describe('Images - Create Suite', () => {
     });
 
     it('should display create image drawer', () => {
-        ConfigureImage.placeholderMsg.waitForVisible(constants.wait.normal);
-        ConfigureImage.placeholderButton.waitForVisible(constants.wait.normal);
+        ConfigureImage.placeholderMsg.waitForDisplayed(constants.wait.normal);
+        ConfigureImage.placeholderButton.waitForDisplayed(constants.wait.normal);
         ConfigureImage.placeholderButton.click();
         ConfigureImage.baseElementsDisplay();
     });

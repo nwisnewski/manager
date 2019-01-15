@@ -47,7 +47,7 @@ describe('NodeBalancer - Negative Tests Suite', () => {
             passiveChecksToggle: true,
         });
 
-        browser.waitForVisible('[data-qa-backend-ip-label] p');
+        $('[data-qa-backend-ip-label] p').waitForDisplayed();
         const errorMsg = $('[data-qa-backend-ip-label] p').getText();
         expect(errorMsg).toBe(serviceError);
     });
@@ -72,7 +72,7 @@ describe('NodeBalancer - Negative Tests Suite', () => {
             passiveChecksToggle: true,
         });
 
-        browser.waitForVisible('[data-qa-backend-ip-address] p');
+        $('[data-qa-backend-ip-address] p').waitForDisplayed();
         const errorMsg = $('[data-qa-backend-ip-address] p').getText();
         expect(errorMsg).toBe(serviceError);
     });

@@ -2,7 +2,8 @@ const { constants } = require('../../../constants');
 
 import {
     apiCreateLinode,
-    apiDeleteAllLinodes
+    apiDeleteAllLinodes,
+    timestamp,
 } from '../../../utils/common';
 
 import Networking from '../../../pageobjects/linode-detail/linode-detail-networking.page';
@@ -16,7 +17,7 @@ describe('Linode Detail - Networking - Allocate IP Suite', () => {
 
     beforeAll(() => {
         browser.url(constants.routes.linodes);
-        apiCreateLinode();
+        apiCreateLinode(`AutoLinode${timestamp()}`);
         ListLinodes.linodesDisplay();
         ListLinodes.navigateToDetail();
         LinodeDetail.landingElemsDisplay();
@@ -44,7 +45,7 @@ describe('Linode Detail - Networking - Allocate IP Suite', () => {
         it('should allocate a private ip', () => {
             Networking.allocate.click();
             Networking.drawerTitle.waitForExist(constants.wait.normal, true);
-            
+
             browser.waitUntil(function() {
                 const ips = Networking.ips.filter(ip => !!ip.getAttribute('data-qa-ip').match(privateIPRegex));
                 return ips.length > 0;
@@ -54,12 +55,12 @@ describe('Linode Detail - Networking - Allocate IP Suite', () => {
         it('should display the private ip details', () => {
             const privateIps = Networking.ips.filter(ip => !!ip.getAttribute('data-qa-ip').match(privateIPRegex));
             Networking.viewConfiguration(privateIps[0].getAttribute('data-qa-ip'));
-            expect(Networking.configIp.isVisible()).toBe(true);
+            expect(Networking.configIp.isDisplayed()).toBe(true);
             expect(Networking.configIp.getText()).toMatch(privateIPRegex);
             expect(Networking.configSubnet.getText()).toMatch(subnetRegex);
             expect(Networking.configType.getText()).toBe('ipv4');
             expect(Networking.configPublic.getText()).toBe('No');
-            expect(Networking.cancel.isVisible()).toBe(true);
+            expect(Networking.cancel.isDisplayed()).toBe(true);
 
             Networking.cancel.click();
             Networking.drawerTitle.waitForExist(constants.wait.normal, true);

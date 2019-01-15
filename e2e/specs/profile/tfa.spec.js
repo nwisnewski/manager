@@ -12,7 +12,7 @@ xdescribe('Profile - Two Factor Authentication Suite', () => {
 
     beforeAll(() => {
         browser.url(constants.routes.profile.auth);
-        Profile.profileHeader.waitForVisible(constants.wait.normal);
+        Profile.profileHeader.waitForDisplayed(constants.wait.normal);
     });
 
     it('should display two-factor panel', () => {
@@ -22,14 +22,14 @@ xdescribe('Profile - Two Factor Authentication Suite', () => {
     it('should display QR code and instructions on toggle', () => {
         Auth.toggleTfa.click();
 
-        Auth.qrCode.waitForVisible(constants.wait.normal);
+        Auth.qrCode.waitForDisplayed(constants.wait.normal);
 
-        expect(Auth.token.isVisible()).toBe(true);
-        expect(Auth.tokenField.isVisible()).toBe(true);
+        expect(Auth.token.isDisplayed()).toBe(true);
+        expect(Auth.tokenField.isDisplayed()).toBe(true);
         expect(Auth.code.getValue().split('').length).toEqual(16);
-        expect(Auth.confirmToken.isVisible()).toBe(true);
-        expect(Auth.codeTooltip.isVisible()).toBe(true);
-        expect(Auth.cancelToken.isVisible()).toBe(true);
+        expect(Auth.confirmToken.isDisplayed()).toBe(true);
+        expect(Auth.codeTooltip.isDisplayed()).toBe(true);
+        expect(Auth.cancelToken.isDisplayed()).toBe(true);
     });
 
     it('should fail to add a token less than 6 characters', () => {
@@ -40,7 +40,7 @@ xdescribe('Profile - Two Factor Authentication Suite', () => {
         Auth.confirmToken.click();
 
         // Wait for form error to display
-        Auth.token.$('p').waitForText(constants.wait.normal);
+        Auth.token.$('p').waitForDisplayed(constants.wait.normal);
     });
 
     it('should display a service error on submission of an invalid token', () => {
@@ -68,18 +68,18 @@ xdescribe('Profile - Two Factor Authentication Suite', () => {
 
     it('should hide the qr code', () => {
         Auth.toggleTfa.click();
-        Auth.qrCode.waitForVisible(constants.wait.normal);
+        Auth.qrCode.waitForDisplayed(constants.wait.normal);
         Auth.hideShowCode.click();
 
-        expect(Auth.qrCode.isVisible()).toBe(false);
-        expect(Auth.tokenField.isVisible()).toBe(false);
-        expect(Auth.confirmToken.isVisible()).toBe(false);
-        expect(Auth.codeTooltip.isVisible()).toBe(false);
-        expect(Auth.cancelToken.isVisible()).toBe(false);
+        expect(Auth.qrCode.isDisplayed()).toBe(false);
+        expect(Auth.tokenField.isDisplayed()).toBe(false);
+        expect(Auth.confirmToken.isDisplayed()).toBe(false);
+        expect(Auth.codeTooltip.isDisplayed()).toBe(false);
+        expect(Auth.cancelToken.isDisplayed()).toBe(false);
     });
 
     it('should disable tfa and hide the panel', () => {
         Auth.toggleTfa.click();
-        Auth.hideShowCode.waitForVisible(constants.wait.normal, true);
+        Auth.hideShowCode.waitForDisplayed(constants.wait.normal, true);
     });
 });

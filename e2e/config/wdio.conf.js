@@ -54,7 +54,7 @@ const parallelRunners = getRunnerCount();
 
 exports.config = {
     runner: 'local',
-    
+
     host: process.env.DOCKER ? 'selenium' : 'localhost',
     port: 4444,
 
@@ -93,9 +93,8 @@ exports.config = {
     },
 
     jasmineNodeOpts: {
-        //
-        // Jasmine default timeout
-        defaultTimeoutInterval: 60000,
+        // A test will timeout after 8 min
+        defaultTimeoutInterval: 60000 * 5,
         //
         // The Jasmine framework allows interception of each assertion in order to log the state of the application
         // or website depending on the result. For example, it is pretty handy to take a screenshot every time
@@ -131,8 +130,6 @@ exports.config = {
     before: function (capabilities, specs) {
         require('@babel/register');
         browserCommands();
-
-        console.log(browser.options);
 
         if (browser.options.requestedCapabilities.jsonwpCaps.browserName.includes('chrome')) {
             browser.setTimeouts('page load', process.env.DOCKER ? 30000 : 20000);

@@ -47,15 +47,15 @@ class ListStackScripts extends Page {
     }
 
     baseElementsDisplay() {
-        this.header.waitForVisible(constants.wait.normal);
-        expect(this.sidebarTitle.isVisible()).toBe(true);
-        expect(this.stackScriptTable.isVisible()).toBe(true);
+        this.header.waitForDisplayed(constants.wait.normal);
+        expect(this.sidebarTitle.isDisplayed()).toBe(true);
+        expect(this.stackScriptTable.isDisplayed()).toBe(true);
         expect(this.header.getText()).toBe('StackScripts');
-        expect(this.create.isVisible()).toBe(true);
+        expect(this.create.isDisplayed()).toBe(true);
         expect(this.create.getTagName()).toBe('button');
-        expect(this.myStackScriptTab.isVisible()).toBe(true);
-        expect(this.linodeStackScriptTab.isVisible()).toBe(true);
-        expect(this.communityStackScriptTab.isVisible()).toBe(true);
+        expect(this.myStackScriptTab.isDisplayed()).toBe(true);
+        expect(this.linodeStackScriptTab.isDisplayed()).toBe(true);
+        expect(this.communityStackScriptTab.isDisplayed()).toBe(true);
     }
 
     stackScriptTableDisplay() {

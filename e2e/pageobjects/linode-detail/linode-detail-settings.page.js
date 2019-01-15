@@ -45,12 +45,12 @@ class Settings extends Page {
 
 
     addDiskDrawerDisplays(){
-        this.drawerBase.waitForVisible(constants.wait.normal);
-        this.createEmptyDisk.waitForVisible(constants.wait.normal);
-        this.createFromImage.waitForVisible(constants.wait.normal);
-        this.diskLabelInput.waitForVisible(constants.wait.normal);
-        this.diskSizeInput.waitForVisible(constants.wait.normal);
-        this.addDiskButton.waitForVisible(constants.wait.normal);
+        this.drawerBase.waitForDisplayed(constants.wait.normal);
+        this.createEmptyDisk.waitForDisplayed(constants.wait.normal);
+        this.createFromImage.waitForDisplayed(constants.wait.normal);
+        this.diskLabelInput.waitForDisplayed(constants.wait.normal);
+        this.diskSizeInput.waitForDisplayed(constants.wait.normal);
+        this.addDiskButton.waitForDisplayed(constants.wait.normal);
     }
 
     addDisk(diskLabel){
@@ -59,9 +59,9 @@ class Settings extends Page {
             this.addDiskButton.click();
             browser.pause(2000);
             i++;
-        } while ($('[data-qa-error]').isVisible() && i < 10);
-        this.drawerBase.waitForVisible(constants.wait.normal,true);
-        this.diskRow(diskLabel).waitForVisible(constants.wait.normal);
+        } while ($('[data-qa-error]').isDisplayed() && i < 10);
+        this.drawerBase.waitForDisplayed(constants.wait.normal,true);
+        this.diskRow(diskLabel).waitForDisplayed(constants.wait.normal);
     }
 
     diskRow(diskLabel){
@@ -77,17 +77,17 @@ class Settings extends Page {
     addDiskFromImage(diskLabel, imageId, diskSize){
         this.createFromImage.click();
         const imagePassword = $(`${this.drawerBase.selector} ${this.password.selector}`);
-        imagePassword.waitForVisible(constants.wait.normal);
+        imagePassword.waitForDisplayed(constants.wait.normal);
         const imageSelect = $('[data-qa-enhanced-select="Select an Image"] input');
-        imageSelect.waitForVisible(constants.wait.normal);
+        imageSelect.waitForDisplayed(constants.wait.normal);
         this.diskLabelInput.setValue(diskLabel);
         imageSelect.click();
         const displayImage = getDistrobutionLabel([imageId])[0];
         imageSelect.setValue(displayImage);
         const imageSelection = `[data-qa-option="linode/${imageId}"]`;
-        $(imageSelection).waitForVisible(constants.wait.normal);
+        $(imageSelection).waitForDisplayed(constants.wait.normal);
         $(imageSelection).click();
-        $(imageSelection).waitForVisible(constants.wait.normal,true);
+        $(imageSelection).waitForDisplayed(constants.wait.normal,true);
         imagePassword.setValue(generatePassword());
         this.diskSizeInput.$('input').setValue(diskSize);
         browser.pause(1000);
@@ -101,42 +101,42 @@ class Settings extends Page {
     deleteConfig(configLabel) {
         const confirmMsg = `Are you sure you want to delete "${configLabel}"`;
 
-        browser.click(`[data-qa-config="${configLabel}"] [data-qa-action-menu]`);
-        browser.waitForVisible('[data-qa-action-menu-item]');
+        $(`[data-qa-config="${configLabel}"] [data-qa-action-menu]`).click();
+        $('[data-qa-action-menu-item]').waitForDisplayed();
 
         // Click action menu item, regardless of anything blocking it
         browser.jsClick('[data-qa-action-menu-item="Delete"]');
-        browser.waitForVisible('[data-qa-dialog-title]');
-        browser.waitForVisible('[data-qa-dialog-content]');
+        $('[data-qa-dialog-title]').waitForDisplayed();
+        $('[data-qa-dialog-content]').waitForDisplayed();
 
-        expect(browser.getText('[data-qa-dialog-content]')).toBe(confirmMsg);
+        expect($('[data-qa-dialog-content]').getText()).toBe(confirmMsg);
 
-        this.confirm.waitForVisible();
-        this.cancel.waitForVisible();
+        this.confirm.waitForDisplayed();
+        this.cancel.waitForDisplayed();
         this.confirm.click();
-        browser.waitForVisible(`[data-qa-config="${configLabel}"]`, constants.wait.short, true);
+        $(`[data-qa-config="${configLabel}"]`).waitForDisplayed(constants.wait.short, true);
     }
 
     remove() {
-        const linodeLabel = browser.getText('[data-qa-label]');
+        const linodeLabel = $('[data-qa-label]').getText();
         const confirmTitle = 'Confirm Deletion';
         const confirmContent = 'Deleting a Linode will result in permanent data loss. Are you sure?';
         this.delete.click();
-        this.deleteDialogTitle.waitForText();
-        this.deleteDialogContent.waitForText();
-        this.confirm.waitForVisible();
-        this.cancel.waitForVisible();
+        this.deleteDialogTitle.waitForDisplayed();
+        this.deleteDialogContent.waitForDisplayed();
+        this.confirm.waitForDisplayed();
+        this.cancel.waitForDisplayed();
 
         expect(this.deleteDialogTitle.getText()).toBe(confirmTitle);
         expect(this.deleteDialogContent.getText()).toBe(confirmContent);
 
         this.confirm.click();
-        browser.waitForVisible('[data-qa-circle-progress]', constants.wait.normal, true);
+        $('[data-qa-circle-progress]').waitForDisplayed(constants.wait.normal, true);
     }
 
     updateLabel(label) {
         const successMsg = 'Linode label changed successfully.';
-        this.label.waitForVisible();
+        this.label.waitForDisplayed();
         this.label.setValue(label);
         this.labelSave.click();
         this.waitForNotice(successMsg);
@@ -144,11 +144,11 @@ class Settings extends Page {
 
     getDiskLabels() {
         this.selectDisk.click();
-        this.disk.waitForVisible();
+        this.disk.waitForDisplayed();
         const disks = this.disks.map(d => d.getText());
         // Refactor this to use the actions api when chrome supports
         browser.keys('\uE00C');
-        this.disk.waitForVisible(constants.wait.short, true);
+        this.disk.waitForDisplayed(constants.wait.short, true);
         return disks;
     }
 
@@ -157,9 +157,9 @@ class Settings extends Page {
 
         if (diskLabel !== 'none') {
             this.selectDisk.click();
-            this.disk.waitForVisible();
+            this.disk.waitForDisplayed();
             browser.jsClick(`[data-qa-disk="${diskLabel}"]`);
-            this.disk.waitForVisible(constants.wait.short, true);
+            this.disk.waitForDisplayed(constants.wait.short, true);
         }
 
         this.password.setValue(newPassword);
@@ -177,7 +177,7 @@ class Settings extends Page {
 
     toggleAlert(alert) {
         const successMsg = 'Linode alert thresholds changed successfully.';
-        browser.click(`[data-qa-alert="${alert}"]`);
+        $(`[data-qa-alert="${alert}"]`).click();
         this.alertSave.click();
         this.waitForNotice(successMsg);
     }

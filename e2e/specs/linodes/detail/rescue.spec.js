@@ -36,7 +36,7 @@ describe('Rescue Linode Suite', () => {
 
     const dropDownOptionDisplayed = (selection) => {
         const select = Rescue.selectOption.selector.replace(']','');
-        expect($(`${select}="${selection}"]`).isVisible()).toBe(true);
+        expect($(`${select}="${selection}"]`).isDisplayed()).toBe(true);
     }
 
     const addAdditionalRescueDisk = (disk,selection) => {
@@ -62,7 +62,7 @@ describe('Rescue Linode Suite', () => {
         const linode = apiCreateLinode(linodeLabel);
         createVolumes(generateVolumeArray(linode.id));
         browser.url(`${constants.routes.linodes}/${linode.id}`);
-        LinodeDetail.launchConsole.waitForVisible(constants.wait.normal);
+        LinodeDetail.launchConsole.waitForDisplayed(constants.wait.normal);
         LinodeDetail.changeTab('Rescue');
         browser.pause(500);
     });
@@ -93,21 +93,21 @@ describe('Rescue Linode Suite', () => {
             browser.pause(500);
             Resize.landingElemsDisplay();
             Resize.planCards.find(plan => plan.$(`[${cardHeader}]`).getAttribute(cardHeader) === 'Linode 4GB').click();
-            Resize.toast.waitForVisible(constants.wait.normal);
-            Resize.toast.waitForVisible(constants.wait.long,true);
+            Resize.toast.waitForDisplayed(constants.wait.normal);
+            Resize.toast.waitForDisplayed(constants.wait.long,true);
             Resize.submit.click();
             Resize.toastDisplays('Linode resize started.');
-            Resize.linearProgress.waitForVisible(constants.wait.normal);
-            Resize.linearProgress.waitForVisible(constants.wait.minute*10,true);
+            Resize.linearProgress.waitForDisplayed(constants.wait.normal);
+            Resize.linearProgress.waitForDisplayed(constants.wait.minute*10,true);
         });
 
         it('Add an empty disk', () => {
             Resize.changeTab('Settings');
             browser.pause(500);
             Settings.expandPanel('Advanced Configurations');
-            Settings.addIcon('Add a Configuration').waitForVisible(constants.wait.normal);
-            Settings.addIcon('Add a Disk').waitForVisible(constants.wait.normal);
-            intialDisks.forEach(disk => Settings.diskRow(disk).waitForVisible(constants.wait.normal));
+            Settings.addIcon('Add a Configuration').waitForDisplayed(constants.wait.normal);
+            Settings.addIcon('Add a Disk').waitForDisplayed(constants.wait.normal);
+            intialDisks.forEach(disk => Settings.diskRow(disk).waitForDisplayed(constants.wait.normal));
             browser.pause(500);
             Settings.addIcon('Add a Disk').click();
             Settings.addDiskDrawerDisplays();
@@ -142,6 +142,6 @@ describe('Rescue Linode Suite', () => {
         addAdditionalRescueDisk('sdg', volumeLabels[2]);
         rescueAndWaitForLinodeNotBusy();
         Rescue.toastDisplays('Linode rescue started.');
-        Rescue.linearProgress.waitForVisible(constants.wait.normal);
+        Rescue.linearProgress.waitForDisplayed(constants.wait.normal);
     });
 });

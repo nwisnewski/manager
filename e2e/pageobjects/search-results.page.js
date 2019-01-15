@@ -26,12 +26,12 @@ class SearchResults extends Page {
     }
 
     waitForSearchResult(entityType,entityName){
-        this.headerElement(entityType).waitForVisible(constants.wait.normal);
-        this.resultElement(entityName).waitForVisible(constants.wait.normal);
+        this.headerElement(entityType).waitForDisplayed(constants.wait.normal);
+        this.resultElement(entityName).waitForDisplayed(constants.wait.normal);
     }
 
     getTagsAppliedToResult(entityName){
-        $(this.resultTagsSelector(entityName)).waitForVisible(constants.wait.normal);
+        $(this.resultTagsSelector(entityName)).waitForDisplayed(constants.wait.normal);
         return $$(this.resultTagsSelector(entityName)).map(tag => tag.getText());
     }
 }

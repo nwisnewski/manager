@@ -17,11 +17,11 @@ describe('Header - Search - Volumes Suite', () => {
 
     const assertVolumeDisplaysInSearchSuggestion = (query) => {
         SearchBar.executeSearch(query);
-        SearchBar.suggestion.waitForVisible(constants.wait.normal);
+        SearchBar.suggestion.waitForDisplayed(constants.wait.normal);
         const volumeSuggestion = SearchBar.suggestions.find(suggestion => suggestion.getText().includes(testVolume.label));
         expect(volumeSuggestion).toBeTruthy();
         $('body').click();
-        SearchBar.suggestion.waitForVisible(constants.wait.norma, true);
+        SearchBar.suggestion.waitForDisplayed(constants.wait.norma, true);
     }
 
     beforeAll(() => {
@@ -49,7 +49,7 @@ describe('Header - Search - Volumes Suite', () => {
 
     it('searching for volume by tag and pressing enter navigates to the search results page', () => {
         browser.url(constants.routes.volumes);
-        VolumeDetail.volumeCellElem.waitForVisible(constants.wait.normal);
+        VolumeDetail.volumeCellElem.waitForDisplayed(constants.wait.normal);
         SearchBar.searchAndNavigateToResults(testVolume.tags[0]);
         SearchResults.waitForSearchResult('volumes',testVolume.label);
         expect(browser.getUrl()).toContain(`/search?query=${testVolume.tags[0]}`);

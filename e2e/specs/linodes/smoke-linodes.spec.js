@@ -20,7 +20,7 @@ xdescribe('List Linodes Suite', () => {
     const assertActionMenuItems = (linode) => {
         const expectedOptions = ['Reboot', 'Power Off', 'Launch Console', 'View Graphs', 'Resize', 'Enable Backups', 'Settings'];
         ListLinodes.actionMenuOptionExists($(ListLinodes.getLinodeSelector(linode)), expectedOptions);
-        browser.click('body');
+        $('body').click();
         ListLinodes.actionMenuItem.waitForExist(constants.wait.normal, true);
     }
 
@@ -34,7 +34,7 @@ xdescribe('List Linodes Suite', () => {
 
     it('should display Linodes header', () => {
         const subheader = ListLinodes.subheader;
-        expect(subheader.isVisible()).toBe(true);
+        expect(subheader.isDisplayed()).toBe(true);
         expect(subheader.getText()).toBe('Linodes');
     });
 
@@ -56,7 +56,7 @@ xdescribe('List Linodes Suite', () => {
             const activeView = $('[data-qa-active-view]').getAttribute('data-qa-active-view');
 
             if (activeView !== 'grid') {
-                browser.click('[data-qa-view="grid"]');
+                $('[data-qa-view="grid"]').click();
             }
         });
 
@@ -69,11 +69,11 @@ xdescribe('List Linodes Suite', () => {
         });
 
         it('should display launch console button', () => {
-            expect(ListLinodes.launchConsole.isVisible()).toBe(true);
+            expect(ListLinodes.launchConsole.isDisplayed()).toBe(true);
         });
 
         it('should display reboot button', () => {
-            expect(ListLinodes.rebootButton.isVisible()).toBe(true);
+            expect(ListLinodes.rebootButton.isDisplayed()).toBe(true);
         });
     });
 
@@ -103,7 +103,7 @@ xdescribe('List Linodes Suite', () => {
 
         it('should copy ip on click', () => {
             copyButtons[0].click();
-            browser.waitForVisible('[data-qa-copied]');
+            $('[data-qa-copied]').waitForDisplayed();
         });
 
         it('should display the status', () => {
@@ -117,7 +117,7 @@ xdescribe('List Linodes Suite', () => {
         });
 
         it('tags should be clickable in list view and navigate to search result page for the tag', () => {
-            expect(ListLinodes.tag.isVisible()).toBe(true);
+            expect(ListLinodes.tag.isDisplayed()).toBe(true);
             ListLinodes.tag.click();
             SearchResults.waitForSearchResult('linodes',linode.linodeLabel);
             expect(browser.getUrl()).toContain(`?query=${linode.tags[0]}`);

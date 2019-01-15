@@ -12,11 +12,11 @@ class SupportSearchLanding extends Page {
     get searchResults() { return $$(this.searchResult); }
 
     searchLandingDisplays(){
-        this.searchInput.waitForVisible(constants.wait.normal);
-        this.documentationResults.waitForVisible(constants.wait.normal);
-        this.communityResults.waitForVisible(constants.wait.normal);
-        this.viewMoreDocumentation.waitForVisible(constants.wait.normal);
-        this.viewMoreCommunity.waitForVisible(constants.wait.normal);
+        this.searchInput.waitForDisplayed(constants.wait.normal);
+        this.documentationResults.waitForDisplayed(constants.wait.normal);
+        this.communityResults.waitForDisplayed(constants.wait.normal);
+        this.viewMoreDocumentation.waitForDisplayed(constants.wait.normal);
+        this.viewMoreCommunity.waitForDisplayed(constants.wait.normal);
     }
 
     search(query){
@@ -36,7 +36,7 @@ class SupportSearchLanding extends Page {
     }
 
     resultSet(resultType){
-        this.resultsSection(resultType).waitForVisible(constants.wait.normal);
+        this.resultsSection(resultType).waitForDisplayed(constants.wait.normal);
         return this.resultsSection(resultType).$('..').$$(this.searchResult);
     }
 

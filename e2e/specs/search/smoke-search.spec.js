@@ -1,6 +1,10 @@
 import SearchBar from '../../pageobjects/search.page';
 import ListLinodes from '../../pageobjects/list-linodes';
-import { apiCreateLinode, apiDeleteAllLinodes } from '../../utils/common';
+import {
+    apiCreateLinode,
+    apiDeleteAllLinodes,
+    timestamp,
+} from '../../utils/common';
 
 const { constants } = require('../../constants');
 
@@ -9,7 +13,7 @@ describe('Header - Search Suite', () => {
 
     beforeAll(() => {
         browser.url(constants.routes.linodes);
-        apiCreateLinode();
+        apiCreateLinode(`AutoLinode${timestamp()}`);
         ListLinodes.linodesDisplay();
         testLinode = ListLinodes.linode[0].$(ListLinodes.linodeLabel.selector).getText();
     });
@@ -41,7 +45,7 @@ describe('Header - Search Suite', () => {
 
     it('should not display suggestions when no matching results found', () => {
         SearchBar.executeSearch('blahlblahblah');
-        browser.waitForVisible('[data-qa-suggestion]', constants.wait.short, true);
+        $('[data-qa-suggestion]').waitForDisplayed(constants.wait.short, true);
     });
 
     it('should display search suggestions on a legitmate search', () => {
@@ -74,7 +78,7 @@ describe('Header - Search Suite', () => {
         const currentUrl = browser.getUrl();
 
         SearchBar.executeSearch(testLinode);
-        browser.waitForVisible(SearchBar.suggestion.selector, constants.wait.normal);
+        SearchBar.suggestion[0].waitForDisplayed(constants.wait.normal);
         browser.pause(2000);
         SearchBar.suggestions[0].click();
 

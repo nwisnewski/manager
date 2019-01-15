@@ -13,7 +13,7 @@ describe('Create Linode - Configure Linode Suite', () => {
     });
 
     it('should update cost summary on plan selection', () => {
-        browser.waitForVisible('[data-qa-tp="Linode Plan"] [data-qa-selection-card]');
+        $('[data-qa-tp="Linode Plan"] [data-qa-selection-card]').waitForDisplayed();
         ConfigureLinode.plans.forEach(p => {
             const originalPrice = CheckoutSummary.costSummary.getText();
             p.click();
@@ -42,7 +42,7 @@ describe('Create Linode - Configure Linode Suite', () => {
                 return r.getAttribute('aria-selected').includes('true');
             }, 10000);
         });
-        browser.waitForVisible('[data-qa-tp="Region"] [data-qa-selection-card]');
+        $('[data-qa-tp="Region"] [data-qa-selection-card]').waitForDisplayed();
     });
 
     it('should select a specific image', () => {

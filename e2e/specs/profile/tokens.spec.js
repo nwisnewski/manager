@@ -46,7 +46,7 @@ describe('View - Personal Access Tokens', () => {
         it('should successfully create personal access token on submit', () => {
             tokenCreateDrawer.submit.click();
 
-            browser.waitForVisible(dialogTitle);
+            $(dialogTitle).waitForDisplayed();
             const title = $(dialogTitle).getText();
             const content = $(dialogContent);
             const secret = content.$('[data-qa-notice]').getText();
@@ -57,23 +57,23 @@ describe('View - Personal Access Tokens', () => {
         it('should display new token in table', () => {
             tokenCreateDrawer.closeDialog.click();
             const expectedExpiration = 'in 6 months';
-            expect(browser.waitForVisible(newToken)).toBe(true);
-            expect(browser.getText(`${newToken} [data-qa-token-expiry]`)).toBe(expectedExpiration);
+            expect($(newToken).waitForDisplayed()).toBe(true);
+            expect($(`${newToken} [data-qa-token-expiry]`).getText()).toBe(expectedExpiration);
             expect($(`${newToken} [data-qa-token-type]`).getText()).toBe('Personal Access Token');
 
         });
 
         it('should display tokens', () => {
             const labels = profile.tokenLabel;
-            labels.forEach(l => expect(l.isVisible()).toBe(true));
+            labels.forEach(l => expect(l.isDisplayed()).toBe(true));
         });
 
         it('should display token scopes drawer', () => {
-            browser.click(`${newToken} [data-qa-action-menu]`);
-            browser.click('[data-qa-action-menu-item="View Token Scopes"]');
+            $(`${newToken} [data-qa-action-menu]`).click();
+            $('[data-qa-action-menu-item="View Token Scopes"]').click();
 
-            browser.waitForVisible('[data-qa-row="Account"]');
-            browser.waitForVisible('[data-qa-close-drawer]');
+            $('[data-qa-row="Account"]').waitForDisplayed();
+            $('[data-qa-close-drawer]').waitForDisplayed();
 
             const accountPermission = $('[data-qa-row="Account"] [data-qa-perm-rw-radio]');
             const domainPermission = $('[data-qa-row="Domains"] [data-qa-perm-none-radio]');
@@ -84,37 +84,37 @@ describe('View - Personal Access Tokens', () => {
             expect(domainPermission.getAttribute('data-qa-perm-none-radio')).toBe('true');
             expect(eventsPermission.getAttribute('data-qa-perm-rw-radio')).toBe('true');
             expect(imagesPermission.getAttribute('data-qa-perm-rw-radio')).toBe('true');
-            
-            browser.click('[data-qa-close-drawer]');
-            
-            browser.waitForVisible('[data-qa-close-drawer]', constants.wait.normal, true);
-            browser.waitForExist('[data-qa-drawer]', constants.wait.normal, true);
+
+            $('[data-qa-close-drawer]').click();
+
+            $('[data-qa-close-drawer]').waitForDisplayed(constants.wait.normal, true);
+            $('[data-qa-drawer]').waitForExist(constants.wait.normal, true);
         });
 
         describe('Edit - Personal Access Tokens', () => {
             it('should display edit drawer', () => {
                 profile.selectActionMenuItem($(newToken), 'Rename Token')
-                
-                expect(tokenCreateDrawer.label.waitForVisible()).toBe(true);
+
+                expect(tokenCreateDrawer.label.waitForDisplayed()).toBe(true);
                 expect(tokenCreateDrawer.title.getText()).toBe('Edit Personal Access Token');
-                expect(tokenCreateDrawer.submit.isVisible()).toBe(true);
-                expect(tokenCreateDrawer.cancel.isVisible()).toBe(true);
+                expect(tokenCreateDrawer.submit.isDisplayed()).toBe(true);
+                expect(tokenCreateDrawer.cancel.isDisplayed()).toBe(true);
             });
 
             it('should update label on edit', () => {
                 browser.trySetValue('[data-qa-add-label] input', updatedMsg);
                 tokenCreateDrawer.submit.click();
 
-                browser.waitForVisible(updatedSelector);
-                const updatedLabel = browser.getText(updatedSelector);
+                $(updatedSelector).waitForDisplayed();
+                const updatedLabel = $(updatedSelector).getText();
                 expect(updatedLabel).toContain(updatedMsg);
             });
 
             it('should close on close icon click', () => {
                 profile.create('token');
-                tokenCreateDrawer.cancel.waitForVisible();
+                tokenCreateDrawer.cancel.waitForDisplayed();
                 tokenCreateDrawer.cancel.click();
-                browser.waitForVisible('[data-qa-drawer-title]', constants.wait.normal, true);
+                $('[data-qa-drawer-title]').waitForDisplayed(constants.wait.normal, true);
             });
         });
 
@@ -122,22 +122,22 @@ describe('View - Personal Access Tokens', () => {
             const revokeMenu = '[data-qa-action-menu-item="Revoke"]';
 
             it('should display revoke action menu item', () => {
-                browser.waitForVisible(`${updatedSelector} [data-qa-action-menu]`, constants.wait.normal);
-                browser.click(`${updatedSelector} [data-qa-action-menu]`);
-                expect($(revokeMenu).isVisible()).toBe(true);
+                $(`${updatedSelector} [data-qa-action-menu]`).waitForDisplayed(constants.wait.normal);
+                $(`${updatedSelector} [data-qa-action-menu]`).click();
+                expect($(revokeMenu).isDisplayed()).toBe(true);
             });
 
             it('should display revoke dialog', () => {
-                browser.click(revokeMenu);
-                browser.waitForVisible(dialogTitle, constants.wait.normal);
+                $(revokeMenu).click();
+                $(dialogTitle).waitForDisplayed(constants.wait.normal);
 
                 expect($(dialogTitle).getText()).toBe(`Revoking ${updatedMsg}`);
             });
 
             it('should revoke on remove', () => {
-                browser.click(dialogConfirm);
+                $(dialogConfirm).click();
                 profile.tokenBaseElems();
-                browser.waitForVisible(updatedSelector, constants.wait.long, true);
+                $(updatedSelector).waitForDisplayed(constants.wait.long, true);
             });
         });
     });

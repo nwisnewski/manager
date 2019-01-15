@@ -2,7 +2,8 @@ const { constants } = require('../../../constants');
 
 import {
     apiCreateLinode,
-    apiDeleteAllLinodes
+    apiDeleteAllLinodes,
+    timestamp,
 } from '../../../utils/common';
 import Backups from '../../../pageobjects/linode-detail/linode-detail-backups.page';
 import ListLinodes from '../../../pageobjects/list-linodes';
@@ -14,10 +15,10 @@ describe('Linode Detail - Backups Suite', () => {
     beforeAll(() => {
         // create a linode
         browser.url(constants.routes.linodes);
-        browser.waitForVisible('[data-qa-add-new-menu-button]');
-        apiCreateLinode();
+        $('[data-qa-add-new-menu-button]').waitForDisplayed();
+        apiCreateLinode(`AutoLinode${timestamp()});
         ListLinodes.navigateToDetail();
-        LinodeDetail.launchConsole.waitForVisible(constants.wait.normal);
+        LinodeDetail.launchConsole.waitForDisplayed(constants.wait.normal);
         LinodeDetail.changeTab('Backups');
     });
 
@@ -34,7 +35,7 @@ describe('Linode Detail - Backups Suite', () => {
 
         Backups.enableButton.click();
         Backups.toastDisplays(toastMsg);
-        Backups.description.waitForVisible();
+        Backups.description.waitForDisplayed();
     });
 
     it('should display backups elements', () => {
@@ -46,7 +47,7 @@ describe('Linode Detail - Backups Suite', () => {
 
         const toastMsg = 'A snapshot label is required.';
         Backups.toastDisplays(toastMsg);
-        browser.waitForExist('[data-qa-toast]', constants.wait.normal, true);
+        $('[data-qa-toast]').waitForExist(constants.wait.normal, true);
     });
 
     it('should cancel backups', () => {

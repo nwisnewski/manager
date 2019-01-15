@@ -41,7 +41,7 @@ describe('StackScript - Edit Existing', () => {
         browser.url(constants.routes.stackscripts);
         ListStackScripts.baseElementsDisplay();
         ListStackScripts.create.click();
-        ConfigureStackScripts.createHeader.waitForVisible(constants.wait.normal);
+        ConfigureStackScripts.createHeader.waitForDisplayed(constants.wait.normal);
         ConfigureStackScripts.configure(stackConfig);
         ConfigureStackScripts.create(stackConfig);
     });
@@ -51,13 +51,13 @@ describe('StackScript - Edit Existing', () => {
     });
 
     it('should display edit action menu option', () => {
-        ListStackScripts.stackScriptRow.waitForVisible(constants.wait.normal);
+        ListStackScripts.stackScriptRow.waitForDisplayed(constants.wait.normal);
         ListStackScripts.stackScriptRows[0].$('[data-qa-action-menu]').click();
-        browser.waitForVisible('[data-qa-action-menu-item="Edit"]', constants.wait.normal);
+        $('[data-qa-action-menu-item="Edit"]').waitForDisplayed(constants.wait.normal);
     });
 
     it('should display edit stackscript page', () => {
-        browser.click('[data-qa-action-menu-item="Edit"]');
+        $('[data-qa-action-menu-item="Edit"]').click();
         ConfigureStackScripts.editElementsDisplay();
 
         assertOriginalDisplays();

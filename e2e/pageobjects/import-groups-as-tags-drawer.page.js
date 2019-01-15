@@ -9,10 +9,10 @@ class ImportGroupsAsTagsDrawer extends Page {
     get importMessage() { return $('[data-qa-group-body]')}
 
     drawerDisplays(){
-        this.drawerBase.waitForVisible(constants.wait.normal);
-        this.submitButton.waitForVisible(constants.wait.normal);
-        this.linodeGroupList.waitForVisible(constants.wait.normal);
-        this.domainGroupList.waitForVisible(constants.wait.normal);
+        this.drawerBase.waitForDisplayed(constants.wait.normal);
+        this.submitButton.waitForDisplayed(constants.wait.normal);
+        this.linodeGroupList.waitForDisplayed(constants.wait.normal);
+        this.domainGroupList.waitForDisplayed(constants.wait.normal);
         expect(this.drawerTitle.getText()).toBe('Import Display Groups as Tags');
     }
 }

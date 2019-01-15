@@ -68,11 +68,11 @@ class Networking extends Page {
     }
 
     allocateElemsDisplay() {
-        this.drawerTitle.waitForVisible(constants.wait.normal);
-        expect(this.serviceNotice.isVisible()).toBe(true);
-        expect(this.allocate.isVisible()).toBe(true);
-        expect(this.submit.isVisible()).toBe(true);
-        expect(this.cancel.isVisible()).toBe(true);
+        this.drawerTitle.waitForDisplayed(constants.wait.normal);
+        expect(this.serviceNotice.isDisplayed()).toBe(true);
+        expect(this.allocate.isDisplayed()).toBe(true);
+        expect(this.submit.isDisplayed()).toBe(true);
+        expect(this.cancel.isDisplayed()).toBe(true);
     }
 
     getIpsByType(ipType) {
@@ -85,7 +85,7 @@ class Networking extends Page {
 
     viewConfiguration(ip) {
         this.selectActionMenuItem(ip, 'View');
-        this.drawerTitle.waitForVisible(constants.wait.normal);
+        this.drawerTitle.waitForDisplayed(constants.wait.normal);
     }
 
     ipDetailsDisplay(ipType) {
@@ -95,7 +95,7 @@ class Networking extends Page {
         const ipv6Regex =
             /(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))/;
 
-        this.drawerTitle.waitForVisible();
+        this.drawerTitle.waitForDisplayed();
 
         expect(this.drawerTitle.getText()).toBe('Details for IP');
         expect(this.configIpHeading.getText()).toContain('Address');
@@ -104,9 +104,9 @@ class Networking extends Page {
         expect(this.configTypeHeading.getText()).toContain('Type');
         expect(this.configType.getText()).toBe(ipType);
         expect(this.configPublicHeading.getText()).toContain('Public');
-        expect(this.configPublic.isVisible()).toBe(true);
+        expect(this.configPublic.isDisplayed()).toBe(true);
         expect(this.configRegionHeading.getText()).toContain('Region');
-        expect(this.configRegion.isVisible()).toBe(true);
+        expect(this.configRegion.isDisplayed()).toBe(true);
 
         if (ipType === 'ipv4') {
             expect(this.configIp.getText()).toMatch(ipv4Regex);
@@ -121,25 +121,25 @@ class Networking extends Page {
     addIp(ipType) {
         if (ipType === 'ipv4') {
             this.addIcon('Add Public IPv4').click();
-            this.drawerTitle.waitForVisible();
+            this.drawerTitle.waitForDisplayed();
         }
 
         if (ipType === 'ipv6') {
             this.addIcon('Add IPv6').click();
-            this.drawerTitle.waitForVisible();
+            this.drawerTitle.waitForDisplayed();
         }
     }
 
     addIpElemsDisplay(ipType) {
         if (ipType === 'ipv4') {
             expect(this.drawerTitle.getText()).toBe('Allocate Public IPv4 Address');
-            expect(this.serviceNotice.isVisible()).toBe(true);
-            expect(this.allocate.isVisible()).toBe(true);
+            expect(this.serviceNotice.isDisplayed()).toBe(true);
+            expect(this.allocate.isDisplayed()).toBe(true);
         }
         if (ipType === 'ipv6') {
             expect(this.drawerTitle.getText()).toBe('Allocate IPv6 Ranges')
         }
-        expect(this.cancel.isVisible()).toBe(true);
+        expect(this.cancel.isDisplayed()).toBe(true);
         expect(this.serviceNotice.getText()).toMatch(/\w/ig)
 
     }
@@ -147,23 +147,23 @@ class Networking extends Page {
     selectActionMenuItem(ip, item) {
         const menuItem = `[data-qa-action-menu-item="${item}"]`;
 
-        browser.click(`[data-qa-ip="${ip}"] [data-qa-action-menu]`);
-        browser.waitForVisible(menuItem);
-        browser.click(menuItem)
-        browser.waitForVisible(menuItem, constants.wait.normal, true);
+        $(`[data-qa-ip="${ip}"] [data-qa-action-menu]`).click();
+        $(menuItem).waitForDisplayed();
+        $(menuItem).click()
+        $(menuItem).waitForDisplayed(constants.wait.normal, true);
     }
 
     editRdns(ip) {
         this.selectActionMenuItem(ip, 'Edit RDNS');
-        this.drawerTitle.waitForVisible();
+        this.drawerTitle.waitForDisplayed();
     }
 
     editRdnsElemsDisplay() {
         expect(this.drawerTitle.getText()).toBe('Edit Reverse DNS');
-        expect(this.domainName.isVisible()).toBe(true)
+        expect(this.domainName.isDisplayed()).toBe(true)
         expect(this.domainName.$('input').getAttribute('placeholder')).toBe('Enter a domain name');
-        expect(this.submit.isVisible()).toBe(true);
-        expect(this.cancel.isVisible()).toBe(true);
+        expect(this.submit.isDisplayed()).toBe(true);
+        expect(this.cancel.isDisplayed()).toBe(true);
     }
 
     delete(ip) {

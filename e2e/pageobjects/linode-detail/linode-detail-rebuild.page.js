@@ -17,14 +17,14 @@ class Rebuild extends Page {
     assertElemsDisplay() {
         const expectedTitle = 'Rebuild';
 
-        this.imagesSelect.waitForVisible(constants.wait.normal);
+        this.imagesSelect.waitForDisplayed(constants.wait.normal);
 
-        expect(this.helpButton.isVisible()).toBe(true);
+        expect(this.helpButton.isDisplayed()).toBe(true);
         expect(this.title.getText()).toBe(expectedTitle);
-        expect(this.description.isVisible()).toBe(true);
-        expect(this.imagesSelect.isVisible()).toBe(true);
-        expect(this.submit.isVisible()).toBe(true);
-        expect(this.password.isVisible()).toBe(true);
+        expect(this.description.isDisplayed()).toBe(true);
+        expect(this.imagesSelect.isDisplayed()).toBe(true);
+        expect(this.submit.isDisplayed()).toBe(true);
+        expect(this.password.isDisplayed()).toBe(true);
         return this;
     }
 
@@ -45,7 +45,7 @@ class Rebuild extends Page {
         imageOption.click();
         // Expect image select to update with imageName
         const selectedOptionAttribute = this.imageSelectSelector.split('=');
-        expect($(`${selectedOptionAttribute[0]}="${imageName}"]`).isVisible()).toBe(true);
+        expect($(`${selectedOptionAttribute[0]}="${imageName}"]`).isDisplayed()).toBe(true);
 
         return this;
     }

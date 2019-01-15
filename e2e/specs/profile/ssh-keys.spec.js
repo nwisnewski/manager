@@ -35,7 +35,7 @@ describe('Profile - SSH Keys Suite', () => {
         it('should display the available ssh keys on image selection', () => {
             ConfigureLinode.baseDisplay();
             ConfigureLinode.images[0].click();
-            ConfigureLinode.sshHeader.waitForVisible(constants.wait.normal);
+            ConfigureLinode.sshHeader.waitForDisplayed(constants.wait.normal);
             expect(ConfigureLinode.sshKeys.length).toBe(1);
         });
 
@@ -61,7 +61,7 @@ describe('Profile - SSH Keys Suite', () => {
     it('should remove the ssh key', () => {
         browser.url(constants.routes.profile.sshKeys);
         SshKeys.baseElemsDisplay();
-        SshKeys.publicKeyRow.waitForVisible(constants.wait.normal);
+        SshKeys.publicKeyRow.waitForDisplayed(constants.wait.normal);
         SshKeys.removeKey(testKey.label);
     });
 

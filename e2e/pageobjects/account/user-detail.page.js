@@ -13,19 +13,19 @@ class UserDetail extends Page {
     get usernameWarning() { return $(`${this.usernameField.selector} p`); }
 
     baseElementsDisplay(owner) {
-        this.userDetailHeader.waitForVisible(constants.wait.normal);
-        this.subHeader.waitForVisible(constants.wait.normal);
+        this.userDetailHeader.waitForDisplayed(constants.wait.normal);
+        this.subHeader.waitForDisplayed(constants.wait.normal);
 
         if (owner) {
             expect(this.helpButton.isExisting()).toBe(true);
         }
 
-        expect(this.deleteSubHeader.isVisible()).toBe(true);
+        expect(this.deleteSubHeader.isDisplayed()).toBe(true);
         expect(this.deleteButton.isExisting()).toBe(true);
-        expect(this.usernameField.isVisible()).toBe(true);
-        expect(this.emailField.isVisible()).toBe(true);
-        expect(this.saveButton.isVisible()).toBe(true);
-        expect(this.cancelButton.isVisible()).toBe(true);
+        expect(this.usernameField.isDisplayed()).toBe(true);
+        expect(this.emailField.isDisplayed()).toBe(true);
+        expect(this.saveButton.isDisplayed()).toBe(true);
+        expect(this.cancelButton.isDisplayed()).toBe(true);
     }
 
 

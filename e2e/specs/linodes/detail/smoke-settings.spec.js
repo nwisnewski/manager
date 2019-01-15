@@ -19,7 +19,7 @@ describe('Linode Detail - Settings Suite', () =>{
         ListLinodes.navigateToDetail();
         LinodeDetail.landingElemsDisplay();
         LinodeDetail.changeTab('Settings');
-        Settings.header.waitForVisible(constants.wait.normal);
+        Settings.header.waitForDisplayed(constants.wait.normal);
     });
 
     afterAll(() => {
@@ -33,8 +33,8 @@ describe('Linode Detail - Settings Suite', () =>{
         });
 
         it('should display label editable text field', () => {
-            Settings.label.waitForVisible();
-            Settings.labelSave.waitForVisible();
+            Settings.label.waitForDisplayed();
+            Settings.labelSave.waitForDisplayed();
         });
 
         it('should edit on save', () => {
@@ -53,9 +53,9 @@ describe('Linode Detail - Settings Suite', () =>{
         });
 
         it('should display a disk in the select, password field and save button', () => {
-            Settings.selectDisk.waitForVisible(constants.wait.normal);
-            Settings.password.waitForVisible(constants.wait.normal);
-            Settings.passwordSave.waitForVisible(constants.wait.normal);
+            Settings.selectDisk.waitForDisplayed(constants.wait.normal);
+            Settings.password.waitForDisplayed(constants.wait.normal);
+            Settings.passwordSave.waitForDisplayed(constants.wait.normal);
         });
 
         it('should successfully change root password', () => {
@@ -98,8 +98,8 @@ describe('Linode Detail - Settings Suite', () =>{
         });
 
         it('should display watchdog enabled by default', () => {
-            expect(Settings.watchdogPanel.isVisible()).toBe(true);
-            expect(Settings.watchdogDesc.isVisible()).toBe(true);
+            expect(Settings.watchdogPanel.isDisplayed()).toBe(true);
+            expect(Settings.watchdogDesc.isDisplayed()).toBe(true);
             const watchdogEnabled = Settings.watchdogToggle.getAttribute('data-qa-watchdog-toggle');
             expect(watchdogEnabled).toBe('true');
         });
@@ -137,7 +137,7 @@ describe('Linode Detail - Settings Suite', () =>{
 
         it('should remove the linode', () => {
             Settings.remove();
-            $(ListLinodes.getLinodeSelector(linode)).waitForVisible(constants.wait.normal,true);
+            $(ListLinodes.getLinodeSelector(linode)).waitForDisplayed(constants.wait.normal,true);
         });
     });
 });

@@ -1,6 +1,10 @@
 const { constants } = require('../../constants');
 
-import { apiCreateLinode, apiDeleteAllLinodes } from '../../utils/common';
+import {
+    apiCreateLinode,
+    apiDeleteAllLinodes,
+    timestamp,
+} from '../../utils/common';
 import Users from '../../pageobjects/account/users.page';
 import Permissions from '../../pageobjects/account/permissions.page';
 
@@ -11,15 +15,12 @@ describe('Account - Restricted User - Permissions Suite', () => {
         restricted: true,
     }
 
-    let linode;
+    const linodeLabel = `AutoLinode${timestamp()}`;
 
-    beforeAll(() => {
-        linode = apiCreateLinode();
-        browser.url(constants.routes.account.users);
-        Users.baseElementsDisplay();
-        Users.add(userConfig);
+  /*  beforeAll(() => {
+
     });
-
+*/
     afterAll(() => {
         browser.url(constants.routes.account.users);
         Users.baseElementsDisplay();
@@ -28,11 +29,16 @@ describe('Account - Restricted User - Permissions Suite', () => {
     });
 
     it('should display permissions page', () => {
+        apiCreateLinode(linodeLabel);
+        console.log('here');
+        browser.url(constants.routes.account.users);
+        Users.baseElementsDisplay();
+        Users.add(userConfig);
         expect(Users.userPermissionsTab.getAttribute('aria-selected')).toBe('true');
         Permissions.baseElementsDisplay(true);
     });
 
-    it('should update the add linodes global permission', () => {
+  /*  it('should update the add linodes global permission', () => {
         Permissions.toggleGlobalPermission('add_linodes', 'allow');
     });
 
@@ -41,6 +47,7 @@ describe('Account - Restricted User - Permissions Suite', () => {
     });
 
     it('should update an entity-based specific grant', () => {
-        Permissions.setSpecificPermission('Linodes', linode.label, 'Read Only');
+        Permissions.setSpecificPermission('Linodes', linodeLabel, 'Read Only');
     });
+    */
 });

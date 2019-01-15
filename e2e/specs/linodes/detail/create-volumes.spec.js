@@ -33,33 +33,33 @@ describe('Linode Detail - Volumes Suite', () => {
 
     const checkAttachedVolumeInSummary = () => {
         LinodeDetail.changeTab('Summary');
-        LinodeSummary.volumesAttached.waitForVisible(constants.wait.normal);
+        LinodeSummary.volumesAttached.waitForDisplayed(constants.wait.normal);
         const volumesCount = LinodeSummary.volumesAttached.getAttribute('data-qa-volumes');
         expect(volumesCount).toBe('1');
         LinodeDetail.changeTab('Volumes');
         browser.pause(500);
-        VolumeDetail.volumeCellElem.waitForVisible(constants.wait.normal);
+        VolumeDetail.volumeCellElem.waitForDisplayed(constants.wait.normal);
     }
 
     const checkVolumeDetail = (testVolume,testLinode) => {
         browser.url(constants.routes.volumes);
         browser.pause(750);
-        VolumeDetail.volumeCellElem.waitForVisible(constants.wait.normal);
+        VolumeDetail.volumeCellElem.waitForDisplayed(constants.wait.normal);
         let trimSelector = VolumeDetail.volumeAttachment.selector.replace(']','')
         const linodeAttachedToCell = `${trimSelector}="${testLinode}"]`;
-        $(linodeAttachedToCell).waitForVisible(constants.wait.normal);
+        $(linodeAttachedToCell).waitForDisplayed(constants.wait.normal);
         $(`${linodeAttachedToCell} a`).click();
         LinodeDetail.landingElemsDisplay();
         LinodeDetail.changeTab('Volumes');
         trimSelector = VolumeDetail.volumeCellLabel.selector.replace(']','')
         const volumeCell = `${trimSelector}="${testVolume}"]`;
-        $(volumeCell).waitForVisible(constants.wait.normal);
+        $(volumeCell).waitForDisplayed(constants.wait.normal);
     }
 
     const detachVolume = () => {
         VolumeDetail.selectActionMenuItemV2(VolumeDetail.volumeCellElem.selector, 'Detach');
         VolumeDetail.confirmDetachORDelete();
-        VolumeDetail.createButton.waitForVisible(constants.wait.normal);
+        VolumeDetail.createButton.waitForDisplayed(constants.wait.normal);
         expect(VolumeDetail.placeholderText.getText()).toBe('Create a Volume');
     }
 
@@ -74,7 +74,7 @@ describe('Linode Detail - Volumes Suite', () => {
         ListLinodes.navigateToDetail(testLinode);
         LinodeDetail.landingElemsDisplay();
         LinodeDetail.changeTab('Volumes');
-        VolumeDetail.placeholderText.waitForVisible(constants.wait.normal);
+        VolumeDetail.placeholderText.waitForDisplayed(constants.wait.normal);
     });
 
     afterAll(() => {
@@ -84,7 +84,7 @@ describe('Linode Detail - Volumes Suite', () => {
 
     it('should display placeholder text and add a volume button', () => {
         expect(VolumeDetail.placeholderText.getText()).toBe('Create a Volume');
-        expect(VolumeDetail.createButton.isVisible()).toBe(true);
+        expect(VolumeDetail.createButton.isDisplayed()).toBe(true);
     });
 
     describe('Create and attach volume - validation', () => {
@@ -124,7 +124,7 @@ describe('Linode Detail - Volumes Suite', () => {
         it('should fail to create without a label', () => {
             VolumeDetail.submit.click();
             const labelError = $(`${VolumeDetail.label.selector} p`);
-            labelError.waitForVisible(constants.wait.normal);
+            labelError.waitForDisplayed(constants.wait.normal);
             expect(labelError.getText()).toContain('Label is required.');
         });
 
@@ -134,7 +134,7 @@ describe('Linode Detail - Volumes Suite', () => {
             browser.setValue(`${VolumeDetail.size.selector} input`, 5);
             VolumeDetail.submit.click();
             const volumeError = $(`${VolumeDetail.size.selector}>p`);
-            volumeError.waitForVisible(constants.wait.normal);
+            volumeError.waitForDisplayed(constants.wait.normal);
             expect(volumeError.getText()).toEqual(sizeError);
         });
 
@@ -143,7 +143,7 @@ describe('Linode Detail - Volumes Suite', () => {
             browser.setValue(`${VolumeDetail.size.selector} input`, 10241);
             VolumeDetail.submit.click();
             const volumeError = $(`${VolumeDetail.size.selector}>p`);
-            volumeError.waitForVisible(constants.wait.normal);
+            volumeError.waitForDisplayed(constants.wait.normal);
             expect(volumeError.getText()).toEqual(sizeError);
         });
     });
@@ -170,12 +170,12 @@ describe('Linode Detail - Volumes Suite', () => {
         it('only volumes in the current linode\'s data center should display', () => {
             checkEnvironment();
             VolumeDetail.selectLinodeOrVolume.$('..').$('..').click();
-            VolumeDetail.selectOption.waitForVisible(constants.wait.normal);
+            VolumeDetail.selectOption.waitForDisplayed(constants.wait.normal);
             const volumes = VolumeDetail.selectOptions.map(option => option.getText());
             expect(volumes.includes(volumeEast.label)).toBe(true);
             expect(volumes.includes(volumeCentral.label)).toBe(false);
             $('body').click();
-            VolumeDetail.selectOption.waitForVisible(constants.wait.normal,true);
+            VolumeDetail.selectOption.waitForDisplayed(constants.wait.normal,true);
         });
     });
 
@@ -224,7 +224,7 @@ describe('Linode Detail - Volumes Suite', () => {
         });
 
         it('volume attached successfully', () => {
-            VolumeDetail.volumeCellElem.waitForVisible(constants.wait.normal);
+            VolumeDetail.volumeCellElem.waitForDisplayed(constants.wait.normal);
             expect(VolumeDetail.volumeCellLabel.getText()).toContain(volumeEast.label);
             expect(VolumeDetail.volumeCellSize.getText()).toContain('20');
         });

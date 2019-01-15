@@ -11,13 +11,13 @@ export class Display extends Page {
     get timeZoneSelect() { return $(`[data-qa-enhanced-select] ${this.multiSelect.selector}`); }
 
     baseElementsDisplay(){
-        this.userMenu.waitForVisible(constants.wait.normal);
-        this.userEmail.waitForVisible(constants.wait.normal);
+        this.userMenu.waitForDisplayed(constants.wait.normal);
+        this.userEmail.waitForDisplayed(constants.wait.normal);
 
-        expect(this.submitButton.isVisible()).toBe(true);
-        expect(this.cancelButton.isVisible()).toBe(true);
-        expect(this.saveTimeZone.isVisible()).toBe(true);
-        expect(this.timeZoneSelect.isVisible()).toBe(true);
+        expect(this.submitButton.isDisplayed()).toBe(true);
+        expect(this.cancelButton.isDisplayed()).toBe(true);
+        expect(this.saveTimeZone.isDisplayed()).toBe(true);
+        expect(this.timeZoneSelect.isDisplayed()).toBe(true);
     }
 }
 

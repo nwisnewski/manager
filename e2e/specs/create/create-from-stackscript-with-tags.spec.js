@@ -30,7 +30,7 @@ describe('Create Linode From StackScript - Tags Suite', () => {
     });
 
     it('should display tags select', () => {
-        expect(ConfigureLinode.multiSelect.isVisible()).toBe(true);
+        expect(ConfigureLinode.multiSelect.isDisplayed()).toBe(true);
     });
 
     it('should create a new tag to the linode', () => {
@@ -38,10 +38,10 @@ describe('Create Linode From StackScript - Tags Suite', () => {
 
        // Terrible Selector, but it seems to work for now:
        ConfigureLinode.tagsMultiSelect.$('..').$('input').setValue(newTag);
-       ConfigureLinode.selectOption.waitForVisible(constants.wait.normal);
+       ConfigureLinode.selectOption.waitForDisplayed(constants.wait.normal);
        ConfigureLinode.selectOption.click();
-       ConfigureLinode.selectOption.waitForVisible(constants.wait.normal, true);
-       ConfigureLinode.multiOption.waitForVisible(constants.wait.normal);
+       ConfigureLinode.selectOption.waitForDisplayed(constants.wait.normal, true);
+       ConfigureLinode.multiOption.waitForDisplayed(constants.wait.normal);
 
        expect(ConfigureLinode.multiOption.getText()).toBe(newTag);
     });
@@ -66,8 +66,8 @@ describe('Create Linode From StackScript - Tags Suite', () => {
         const password = crypto.randomBytes(20).toString('hex');
         const label = `L${timestamp()}`;
         ConfigureLinode.linodeStackScriptTab.click();
-        ConfigureLinode.progressBar.waitForVisible(constants.wait.normal, true);
-        ConfigureLinode.stackScriptRowByTitle(stackscript).waitForVisible(constants.wait.normal);
+        ConfigureLinode.progressBar.waitForDisplayed(constants.wait.normal, true);
+        ConfigureLinode.stackScriptRowByTitle(stackscript).waitForDisplayed(constants.wait.normal);
         ConfigureLinode.stackScriptRowByTitle(stackscript).click();
         ConfigureLinode.images[0].click();
         ConfigureLinode.regions[0].click();

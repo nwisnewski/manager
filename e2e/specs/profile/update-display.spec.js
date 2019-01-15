@@ -33,7 +33,7 @@ describe('Profile - Update Display Settings', () => {
     it('Invalid emails can not be saved', () => {
         Display.userEmail.setValue('fakeemail');
         Display.submitButton.click();
-        Display.invalidEmailWarning.waitForVisible(constants.wait.normal);
+        Display.invalidEmailWarning.waitForDisplayed(constants.wait.normal);
         expect(Display.invalidEmailWarning.getText()).toEqual('email must be a valid email');
         Display.cancelButton.click();
     });
@@ -49,9 +49,9 @@ describe('Profile - Update Display Settings', () => {
     it('Change user timezone', () => {
         const gmtOffset = '(GMT -05:00) Eastern Time';
         const timeZoneResponse = 'America/New_York';
-        expect(Display.timeZoneSelect.isVisible()).toBe(true);
+        expect(Display.timeZoneSelect.isDisplayed()).toBe(true);
         Display.timeZoneSelect.$('..').$('input').setValue(gmtOffset);
-        Display.selectOptions[0].waitForVisible(constants.wait.normal);
+        Display.selectOptions[0].waitForDisplayed(constants.wait.normal);
         Display.selectOptions[0].click(0);
         Display.saveTimeZone.click();
         Display.waitForNotice('Account timezone updated.');

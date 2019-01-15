@@ -29,7 +29,7 @@ describe('Linode Detail - Resize Suite', () => {
         // const toastMsg = 'Linode is already running this service plan.';
 
         Resize.planCards[0].click();
-        browser.waitForVisible('[role="tooltip"]', constants.wait.normal);
+        $('[role="tooltip"]').waitForDisplayed(constants.wait.normal);
         expect(Resize.submit.isEnabled()).toBe(false);
     });
 

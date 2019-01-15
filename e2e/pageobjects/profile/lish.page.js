@@ -13,18 +13,18 @@ export class Lish extends Page {
     get disableLishOption() { return $('[data-value="disabled"]'); }
 
     baseElemsDisplay() {
-        this.authModeSelect.waitForVisible(constants.wait.normal);
+        this.authModeSelect.waitForDisplayed(constants.wait.normal);
 
-        expect(this.sshKey.isVisible()).toBe(true);
-        expect(this.removeButton.isVisible()).toBe(true);
-        expect(this.saveButton.isVisible()).toBe(true);
-        expect(this.authModeSelect.isVisible()).toBe(true);
+        expect(this.sshKey.isDisplayed()).toBe(true);
+        expect(this.removeButton.isDisplayed()).toBe(true);
+        expect(this.saveButton.isDisplayed()).toBe(true);
+        expect(this.authModeSelect.isDisplayed()).toBe(true);
     }
 
 
     disable(statusMsg) {
         this.authModeSelect.click();
-        this.disableLishOption.waitForVisible(constants.wait.normal);
+        this.disableLishOption.waitForDisplayed(constants.wait.normal);
         this.disableLishOption.click();
         this.disableLishOption.waitForExist(constants.wait.normal, true);
         this.saveButton.click();
@@ -33,7 +33,7 @@ export class Lish extends Page {
 
     allowKeyAuthOnly(publicKey,statusMsg) {
         this.authModeSelect.click();
-        this.keysOnlyOption.waitForVisible(constants.wait.normal);
+        this.keysOnlyOption.waitForDisplayed(constants.wait.normal);
         this.keysOnlyOption.click();
         this.keysOnlyOption.waitForExist(constants.wait.normal, true);
         this.sshKey.setValue(publicKey);
@@ -43,7 +43,7 @@ export class Lish extends Page {
 
     allowPassAndKey(publicKey,statusMsg) {
         this.authModeSelect.click();
-        this.passwordKeysOption.waitForVisible(constants.wait.normal);
+        this.passwordKeysOption.waitForDisplayed(constants.wait.normal);
         this.passwordKeysOption.click();
         this.passwordKeysOption.waitForExist(constants.wait.normal, true);
         this.sshKey.setValue(publicKey);

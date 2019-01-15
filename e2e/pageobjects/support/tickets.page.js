@@ -31,35 +31,35 @@ export class SupportTickets extends Page {
     get cancel() { return $(this.cancelButton.selector); }
 
     baseElemsDisplay() {
-        this.supportHeader.waitForVisible(constants.wait.normal);
-        this.openTicketsTab.waitForVisible(constants.wait.normal);
+        this.supportHeader.waitForDisplayed(constants.wait.normal);
+        this.openTicketsTab.waitForDisplayed(constants.wait.normal);
 
-        expect(this.closedTicketsTab.isVisible()).toBe(true);
-        expect(this.openTicketButton.isVisible()).toBe(true);
-        expect(this.supportCreateDateHeader.isVisible()).toBe(true);
-        expect(this.supportSubjectHeader.isVisible()).toBe(true);
-        expect(this.supportIdHeader.isVisible()).toBe(true);
-        expect(this.supportEntityHeader.isVisible()).toBe(true);
-        expect(this.supportUpdateHeader.isVisible()).toBe(true);
+        expect(this.closedTicketsTab.isDisplayed()).toBe(true);
+        expect(this.openTicketButton.isDisplayed()).toBe(true);
+        expect(this.supportCreateDateHeader.isDisplayed()).toBe(true);
+        expect(this.supportSubjectHeader.isDisplayed()).toBe(true);
+        expect(this.supportIdHeader.isDisplayed()).toBe(true);
+        expect(this.supportEntityHeader.isDisplayed()).toBe(true);
+        expect(this.supportUpdateHeader.isDisplayed()).toBe(true);
     }
 
     openCreateTicketDrawer() {
         this.openTicketButton.click();
-        this.drawerTitle.waitForVisible(constants.wait.normal);
-        this.ticketHelpText.waitForVisible(constants.wait.normal);
+        this.drawerTitle.waitForDisplayed(constants.wait.normal);
+        this.ticketHelpText.waitForDisplayed(constants.wait.normal);
 
-        expect(this.ticketEntityType.isVisible()).toBe(true);
-        expect(this.ticketSummary.isVisible()).toBe(true);
-        expect(this.ticketDescription.isVisible()).toBe(true);
-        expect(this.submit.isVisible()).toBe(true);
-        expect(this.cancel.isVisible()).toBe(true);
+        expect(this.ticketEntityType.isDisplayed()).toBe(true);
+        expect(this.ticketSummary.isDisplayed()).toBe(true);
+        expect(this.ticketDescription.isDisplayed()).toBe(true);
+        expect(this.submit.isDisplayed()).toBe(true);
+        expect(this.cancel.isDisplayed()).toBe(true);
     }
 
     openTicket(ticketObj) {
         this.ticketEntityType.click();
-        browser.waitForVisible('[data-value]', constants.wait.normal);
-        browser.click(`[data-value="${ticketObj.entity}"]`);
-        browser.waitForVisible('[data-value]', constants.wait.normal, true);
+        $('[data-value]').waitForDisplayed(constants.wait.normal);
+        $(`[data-value="${ticketObj.entity}"]`).click();
+        $('[data-value]').waitForDisplayed(constants.wait.normal, true);
 
         this.ticketSummary.setValue(ticketObj.summary);
         this.ticketDescription.setValue(ticketObj.description);

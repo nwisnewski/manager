@@ -4,6 +4,7 @@ import {
     apiCreateLinode,
     apiDeleteAllLinodes,
     apiDeleteAllVolumes,
+    timestamp,
 } from '../../utils/common';
 import ListLinodes from '../../pageobjects/list-linodes';
 import VolumeDetail from '../../pageobjects/linode-detail/linode-detail-volume.page';
@@ -29,7 +30,7 @@ describe('Create - Volume Suite', () => {
 
     it('should setup the screnario', () => {
         browser.url(constants.routes.linodes);
-        apiCreateLinode();
+        apiCreateLinode(`AutoLinode${timestamp()}`);
         ListLinodes.linodesDisplay();
         linodeLabel = ListLinodes.linode[0].$(ListLinodes.linodeLabel.selector).getText();
     });
@@ -48,7 +49,7 @@ describe('Create - Volume Suite', () => {
 
         volumeId = VolumeDetail.getVolumeId(testVolume.label);
 
-        VolumeDetail.volumeCellElem.waitForVisible(constants.wait.normal);
+        VolumeDetail.volumeCellElem.waitForDisplayed(constants.wait.normal);
     });
 
     xit('should detach from linode', () => {

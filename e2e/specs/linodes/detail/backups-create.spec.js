@@ -22,13 +22,13 @@ describe('Linode - Details - Backup - Snapshot Suite', () => {
       Backups.selectActionMenuItem(backupRow,'Restore to Existing Linode');
       Backups.restoreToExistingDrawerDisplays();
       $(`${Backups.restoreToLinodeSelect.selector} div div`).click();
-      Backups.restoreToLinodesOptions[0].waitForVisible(constants.wait.normal);
+      Backups.restoreToLinodesOptions[0].waitForDisplayed(constants.wait.normal);
       return Backups.restoreToLinodesOptions.map( linode => linode.getText());
     }
 
     const closeLinodesSelect = () => {
         $('body').click();
-        Backups.restoreToLinodesOptions[0].waitForVisible(constants.wait.normal,true);
+        Backups.restoreToLinodesOptions[0].waitForDisplayed(constants.wait.normal,true);
     }
 
     beforeAll(() => {
@@ -46,7 +46,7 @@ describe('Linode - Details - Backup - Snapshot Suite', () => {
         }
         apiCreateMultipleLinodes([linode1,linode2]);
         ListLinodes.navigateToDetail(linodeLabel);
-        LinodeDetail.launchConsole.waitForVisible(constants.wait.normal);
+        LinodeDetail.launchConsole.waitForDisplayed(constants.wait.normal);
     });
 
     afterAll(() => {
@@ -82,7 +82,7 @@ describe('Linode - Details - Backup - Snapshot Suite', () => {
 
       it('Restore to linode options persist after opening and closing drawer', () => {
           Backups.restoreCancel.click();
-          Backups.drawerBase.waitForVisible(constants.wait.normal, true);
+          Backups.drawerBase.waitForDisplayed(constants.wait.normal, true);
           const linodesAfterClosing = openRestoreDrawerGetLinodeOptions();
           expect(linodesAfterClosing).toEqual(linodes);
           closeLinodesSelect();
@@ -96,7 +96,7 @@ describe('Linode - Details - Backup - Snapshot Suite', () => {
       it('An existing linode selection is required', () => {
           Backups.restoreSubmit.click();
           const errorMessage = $(`${Backups.drawerBase.selector} p`);
-          errorMessage.waitForVisible(constants.wait.normal);
+          errorMessage.waitForDisplayed(constants.wait.normal);
           expect(errorMessage.getText()).toEqual('You must select a Linode');
       });
     });

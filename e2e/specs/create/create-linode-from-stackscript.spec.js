@@ -44,7 +44,7 @@ describe('Create Linode - Create from StackScript Suite', () => {
         const linodeScript = 'StackScript Bash Library';
         const noticeMsg = 'Region is required.';
 
-        ConfigureLinode.stackScriptRowByTitle(linodeScript).waitForVisible(constants.wait.normal);
+        ConfigureLinode.stackScriptRowByTitle(linodeScript).waitForDisplayed(constants.wait.normal);
         ConfigureLinode.stackScriptRowByTitle(linodeScript).click();
         browser.pause(500);
         ConfigureLinode.deploy.click();
@@ -61,14 +61,14 @@ describe('Create Linode - Create from StackScript Suite', () => {
 
     it('should display user-defined fields on selection of a stackscript containing UD fields', () => {
         const lampStackScript = 'LAMP Stack';
-        ConfigureLinode.stackScriptRowByTitle(lampStackScript).waitForVisible(constants.wait.normal);
+        ConfigureLinode.stackScriptRowByTitle(lampStackScript).waitForDisplayed(constants.wait.normal);
         ConfigureLinode.stackScriptRowByTitle(lampStackScript).click();
-        ConfigureLinode.userDefinedFieldsHeader.waitForVisible(constants.wait.normal);
+        ConfigureLinode.userDefinedFieldsHeader.waitForDisplayed(constants.wait.normal);
     });
 
     it('should create from stackscript', () => {
         const linodeScript = 'StackScript Bash Library';
-        ConfigureLinode.stackScriptRowByTitle(linodeScript).waitForVisible(constants.wait.normal);
+        ConfigureLinode.stackScriptRowByTitle(linodeScript).waitForDisplayed(constants.wait.normal);
         ConfigureLinode.stackScriptRowByTitle(linodeScript).click();
         ConfigureLinode.plans[0].click();
 

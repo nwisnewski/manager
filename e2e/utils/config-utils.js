@@ -160,7 +160,7 @@ exports.cleanupAccounts = (credFilePath) => {
 //         });
 
 //         browser.url('/null');
-//         browser.waitForText('#root > span:nth-child(1)');
+//         browser.waitForDisplayed('#root > span:nth-child(1)');
 //         browser.waitUntil(function() {
 //             browser.execute(function(storageObj) {
 //                 storageObj.forEach(item => {
@@ -173,7 +173,7 @@ exports.cleanupAccounts = (credFilePath) => {
 //             }, storageObj);
 //         }, 10000);
 //         browser.url(constants.routes.dashboard);
-//         browser.waitForVisible('[data-qa-beta-notice]');
+//         browser.waitForDisplayed('[data-qa-beta-notice]');
 //         browser.click('[data-qa-beta-notice] button');
 //     } catch (err) {
 //         console.log(`${err} \n ensure that your local manager environment is running!`);

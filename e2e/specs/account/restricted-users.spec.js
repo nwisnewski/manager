@@ -20,7 +20,7 @@ describe('Account - Restricted User Suite', () => {
     });
 
     it('should navigate to user permissions page on creation', () => {
-        expect(Users.userPermissionsTab.isVisible()).toBe(true);
+        expect(Users.userPermissionsTab.isDisplayed()).toBe(true);
         expect(Users.userPermissionsTab.getAttribute('aria-selected')).toBe('true');
         expect(browser.getUrl()).toContain(`${constants.routes.account.users}/${userConfig.username}/permissions`);
     });
@@ -45,7 +45,7 @@ describe('Account - Restricted User Suite', () => {
     it('should view restricted user profile', () => {
         Users.viewProfile(userConfig.username);
 
-        Users.userDetailHeader.waitForVisible(constants.wait.normal);
+        Users.userDetailHeader.waitForDisplayed(constants.wait.normal);
         expect(Users.userProfileTab.getAttribute('aria-selected')).toBe('true');
 
         // Navigate back to users listing
@@ -56,7 +56,7 @@ describe('Account - Restricted User Suite', () => {
     it('should view restricted user permissions', () => {
         Users.viewPermissions(userConfig.username);
 
-        Users.userDetailHeader.waitForVisible(constants.wait.normal);
+        Users.userDetailHeader.waitForDisplayed(constants.wait.normal);
         expect(Users.userPermissionsTab.getAttribute('aria-selected')).toBe('true');
 
         // Navigate back to users listing

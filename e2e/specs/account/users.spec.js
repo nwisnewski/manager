@@ -28,14 +28,14 @@ describe('Account - Users Suite', () => {
     it('should disable Delete action menu item for root user', () => {
         const rootUserActionMenu = Users.getTableDetails(0,Users.userActionMenu.selector);
         rootUserActionMenu.click();
-        Users.actionMenuItem.waitForVisible(constants.wait.normal);
+        Users.actionMenuItem.waitForDisplayed(constants.wait.normal);
 
         const deleteToolTip = $('[data-qa-action-menu-item="Delete"] [data-qa-tooltip]');
 
-        expect(deleteToolTip.isVisible()).toBe(false);
+        expect(deleteToolTip.isDisplayed()).toBe(false);
         expect(deleteToolTip.isExisting()).toBe(true);
 
-        browser.click('body');
+        $('body').click();
         Users.actionMenuItem.waitForExist(constants.wait.normal, true);
     });
 
@@ -44,10 +44,10 @@ describe('Account - Users Suite', () => {
 
         Permissions.baseElementsDisplay(false);
         expect(Permissions.restrictAccessToggle.$('input').getAttribute('disabled')).toBe('true');
-        expect(Permissions.restrictAccessTooltip.isVisible()).toBe(true);
+        expect(Permissions.restrictAccessTooltip.isDisplayed()).toBe(true);
 
-        Permissions.restrictAccessTooltip.moveToObject();
-        Permissions.popoverMsg.waitForVisible(constants.wait.normal);
+        Permissions.restrictAccessTooltip.moveTo();
+        Permissions.popoverMsg.waitForDisplayed(constants.wait.normal);
         expect(Permissions.popoverMsg.getText()).toEqual('You cannot restrict the current active user.');
 
         //Navigate back to the users page for subsequent tests
@@ -63,14 +63,14 @@ describe('Account - Users Suite', () => {
 
         it('should display user action menu items', () => {
             Users.getTableDetails(undefined, Users.actionMenu.selector, userConfig.username).click();
-            Users.actionMenuItem.waitForVisible(constants.wait.normal);
+            Users.actionMenuItem.waitForDisplayed(constants.wait.normal);
 
-            expect($('[data-qa-action-menu-item="User Profile"]').isVisible()).toBe(true);
-            expect($('[data-qa-action-menu-item="User Permissions"]').isVisible()).toBe(true);
-            expect($('[data-qa-action-menu-item="Delete"]').isVisible()).toBe(true);
+            expect($('[data-qa-action-menu-item="User Profile"]').isDisplayed()).toBe(true);
+            expect($('[data-qa-action-menu-item="User Permissions"]').isDisplayed()).toBe(true);
+            expect($('[data-qa-action-menu-item="Delete"]').isDisplayed()).toBe(true);
             expect($('[data-qa-action-menu-item="Delete"]').isEnabled()).toBe(true);
 
-            browser.click('body');
+            $('body').click();
 
             Users.actionMenuItem.waitForExist(constants.wait.normal, true);
         });
