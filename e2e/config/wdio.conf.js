@@ -94,7 +94,7 @@ exports.config = {
 
     jasmineNodeOpts: {
         // A test will timeout after 8 min
-        defaultTimeoutInterval: 60000 * 5,
+        defaultTimeoutInterval: 60000 * 8,
         //
         // The Jasmine framework allows interception of each assertion in order to log the state of the application
         // or website depending on the result. For example, it is pretty handy to take a screenshot every time

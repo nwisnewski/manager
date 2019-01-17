@@ -45,7 +45,7 @@ describe('Linode Detail - Volumes Suite', () => {
         browser.url(constants.routes.volumes);
         browser.pause(750);
         VolumeDetail.volumeCellElem.waitForDisplayed(constants.wait.normal);
-        let trimSelector = VolumeDetail.volumeAttachment.selector.replace(']','')
+        let trimSelector = VolumeDetail.volumeAttachment.selector.replace(']','');
         const linodeAttachedToCell = `${trimSelector}="${testLinode}"]`;
         $(linodeAttachedToCell).waitForDisplayed(constants.wait.normal);
         $(`${linodeAttachedToCell} a`).click();

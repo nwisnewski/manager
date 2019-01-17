@@ -55,6 +55,7 @@ class NodeBalancers extends Page {
     get removeNode() { return $('[data-qa-remove-node]'); }
     get addNode() { return this.addIcon('Add a Node'); }
     get addConfiguration() { return $('[data-qa-add-config]'); }
+    get selectIpAddress() { return '[data-qa-select-ip]'; }
 
     baseElemsDisplay(initial) {
         if (initial) {
@@ -172,7 +173,6 @@ class NodeBalancers extends Page {
     }
 
     create() {
-        console.log('Creating!');
         if (this.placeholderButton.isDisplayed()) {
             this.placeholderButton.click();
             this.baseElemsDisplay();
@@ -181,7 +181,7 @@ class NodeBalancers extends Page {
         }
     }
 
-    configure(linodeLabel, linodeIp, nodeBalancerConfig={
+    configure(linodeLabel, ipAddress=false, nodeBalancerConfig={
         // NodeBalancer Config Object
         label: `NB-${new Date().getTime()}`,
         regionIndex: 0,
@@ -204,7 +204,13 @@ class NodeBalancers extends Page {
         this.selectMenuOption(this.algorithmSelect, nodeBalancerConfig.algorithm);
         this.selectMenuOption(this.sessionStickiness, nodeBalancerConfig.sessionStickiness);
         this.backendIpLabel.setValue(linodeLabel);
-        this.backendIpAddress.setValue(linodeIp);
+        if(ipAddress){
+            this.backendIpAddress.setValue(ipAddress);
+        }else{
+            this.backendIpAddress.click();
+            $$(`${this.selectIpAddress} div`)[0].waitForDisplayed(constants.wait.normal);
+            $$(`${this.selectIpAddress} div`)[0].click();
+        }
         this.backendIpPort.setValue(80);
         browser.jsClick('[data-qa-deploy-linode]');
     }

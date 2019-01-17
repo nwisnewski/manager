@@ -1,8 +1,7 @@
 const { constants } = require('../../constants');
-const {
-    generatePassword,
-    getDistrobutionLabel,
- } = require('../../utils/common')
+const { readToken } = require('../../utils/config-utils');
+const { generatePassword } = require('../../utils/common');
+
 
 import Page from '../page';
 
@@ -82,8 +81,10 @@ class Settings extends Page {
         imageSelect.waitForDisplayed(constants.wait.normal);
         this.diskLabelInput.setValue(diskLabel);
         imageSelect.click();
-        const displayImage = getDistrobutionLabel([imageId])[0];
-        imageSelect.setValue(displayImage);
+        const token = readToken(browser.options.testUser);
+        browser.getLinodeImage(token,imageId.trim()).then((image) => {
+            imageSelect.setValue(image.label);
+        });
         const imageSelection = `[data-qa-option="linode/${imageId}"]`;
         $(imageSelection).waitForDisplayed(constants.wait.normal);
         $(imageSelection).click();

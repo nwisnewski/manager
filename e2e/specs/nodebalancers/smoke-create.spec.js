@@ -3,25 +3,23 @@ const { constants } = require('../../constants');
 import NodeBalancers from '../../pageobjects/nodebalancers.page';
 import NodeBalancerDetail from '../../pageobjects/nodebalancer-detail/details.page';
 import {
-    apiCreateLinode,
+    apiCreateMultipleLinodes,
     removeNodeBalancers,
-    apiDeleteAllLinodes,
+    timestamp,
 } from '../../utils/common';
 
 describe('Nodebalancer - Create Suite', () => {
-    let linode,
-        privateIp,
-        token;
+    const linode = {
+        linodeLabel: `${timestamp()}`,
+        private_ip: true
+    }
 
     beforeAll(() => {
-        token = browser.readToken(browser.options.testUser);
-        linode = apiCreateLinode();
-        linode['privateIp'] = browser.allocatePrivateIp(token, linode.id).address;
+        apiCreateMultipleLinodes([linode]);
         browser.url(constants.routes.nodeBalancers);
     });
 
     afterAll(() => {
-        apiDeleteAllLinodes();
         removeNodeBalancers();
     });
 
@@ -55,11 +53,12 @@ describe('Nodebalancer - Create Suite', () => {
     });
 
     it('should create a nodebalancer with a valid backend ip', () => {
-        NodeBalancers.backendIpLabel.addValue(linode.label);
-        NodeBalancers.backendIpAddress.addValue(linode.privateIp);
+        NodeBalancers.backendIpLabel.setValue(linode.linodeLabel.toLowerCase());
+        NodeBalancers.backendIpAddress.click();
+        $$(`${NodeBalancers.selectIpAddress} div`)[0].waitForDisplayed(constants.wait.normal);
+        $$(`${NodeBalancers.selectIpAddress} div`)[0].click();
         NodeBalancers.backendIpPort.setValue('80');
         browser.jsClick('[data-qa-deploy-linode]');
-
         NodeBalancerDetail.baseElemsDisplay();
         const detailPageUrl = browser.getUrl();
         expect(detailPageUrl).toContain('/summary');

@@ -58,15 +58,11 @@ export const createLinodeIfNone = () => {
 export const apiCreateLinode = (linodeLabel=false, privateIp=false, tags=[], type, region, group) => {
     const token = readToken(browser.options.testUser);
     const newLinodePass = crypto.randomBytes(20).toString('hex');
-    const linode = browser.createLinode(token, newLinodePass, linodeLabel, tags, type, region, group);
+    const linode = browser.createLinode(token, newLinodePass, linodeLabel, tags, type, region, group, privateIp);
 
     browser.url(constants.routes.linodes);
     $('[data-qa-add-new-menu-button]').waitForDisplayed(constants.wait.normal);
     waitForLinodeStatus(linodeLabel ? linodeLabel : linode.label, 'running');
-
-    if (privateIp) {
-        linode['privateIp'] = browser.allocatePrivateIp(token, linode.id).address;
-    }
 
     return linode;
 }
@@ -76,21 +72,15 @@ export const apiCreateLinode = (linodeLabel=false, privateIp=false, tags=[], typ
 
     arrayOfLinodeCreateObj.forEach((linodeObj) => {
         const newLinodePass = crypto.randomBytes(20).toString('hex');
-        const linode = browser.createLinode(token, newLinodePass, linodeObj.linodeLabel, linodeObj.tags, linodeObj.type, linodeObj.region,linodeObj.group);
-        linodes.push(linode);
+        const linode = browser.createLinode(token, newLinodePass, linodeObj.linodeLabel, linodeObj.tags, linodeObj.type, linodeObj.region, linodeObj.group, linodeObj.private_ip)
     });
 
     browser.url(constants.routes.linodes);
     $('[data-qa-add-new-menu-button]').waitForDisplayed(constants.wait.normal);
 
     arrayOfLinodeCreateObj.forEach((linodeObj,i) => {
-        waitForLinodeStatus(linodeObj.linodeLabel ? linodeObj.linodeLabel : linodes[i].label, 'running');
-        if (linodeObj.privateIp) {
-            linodes[i]['privateIp'] = browser.allocatePrivateIp(token, linodes[i].id).address;
-        }
+        waitForLinodeStatus(linodeObj.linodeLabel, 'running');
     });
-
-    return linodes;
 }
 
 export const waitForLinodeStatus = (linodeLabel, status, timeout=constants.wait.minute) => {
@@ -112,43 +102,44 @@ export const apiDeleteAllVolumes = () => {
 
 export const apiDeleteAllDomains = () => {
     const token = readToken(browser.options.testUser);
-    const domains = browser.getDomains(token);
-    domains.data.forEach(domain => browser.removeDomain(token, domain.id));
+    browser.getDomains(token).then((domains) => {
+        domains.data.forEach(domain => browser.removeDomain(token, domain.id));
+    });
 }
 
 export const apiDeleteMyStackScripts = () => {
     const token = readToken(browser.options.testUser);
-    const stackScripts = browser.getMyStackScripts(token);
-    stackScripts.data.forEach(script => browser.removeStackScript(token, script.id));
+    browser.getMyStackScripts(token).then((stackScripts) => {
+        stackScripts.data.forEach(script => browser.removeStackScript(token, script.id));
+    });
 }
 
 export const createNodeBalancer = () => {
-    const token = readToken(browser.options.testUser);
-    const linodeLabel = `AutoLinode${new Date().getTime()}`
-    apiCreateLinode(linodeLabel).then((linode) => {
-        browser.allocatePrivateIp(token, linode.id).then((privateIp) => {
-            console.log(privateIp.address);
-            browser.url(constants.routes.nodeBalancers);
-            browser.waitUntil(() => {
-                return $('[data-qa-placeholder-title]').getText() === 'Add a NodeBalancer'
-            }, constants.wait.normal);
-            NodeBalancers.create();
-            NodeBalancers.configure(linodeLabel,privateIp.address);
-        });
-    });
-    NodeBalancerDetail.baseElemsDisplay();
+    const linode = {
+        linodeLabel: `AutoLinode${timestamp()}`,
+        private_ip: true
+    }
+    apiCreateMultipleLinodes([linode]);
+    browser.url(constants.routes.nodeBalancers);
+    NodeBalancers.baseElemsDisplay(true);
+    NodeBalancers.create();
+    NodeBalancers.configure(linode.linodeLabel.toLowerCase());
+    NodeBalancers.baseElemsDisplay();
 }
 
 export const removeNodeBalancers = () => {
     const token = readToken(browser.options.testUser);
-    apiDeleteAllLinodes();
-    const availableNodeBalancers = browser.getNodeBalancers(token);
-    availableNodeBalancers.data.forEach(nb => browser.removeNodeBalancer(token, nb.id));
+    browser.removeAllLinodes(token).then((result) => {
+        browser.getNodeBalancers(token).then((result) => {
+            result.data.forEach(nb => browser.removeNodeBalancer(token, nb.id));
+        });
+    });
 }
 
 export const apiDeletePrivateImages = token => {
-    const privateImages = getPrivateImages(token).data;
-    privateImages.forEach(i => removeImage(token, i.id));
+    getPrivateImages(token).then((privateImages) => {
+        privateImages.data.forEach(i => removeImage(token, i.id));
+    });
 }
 
 export const apiRemoveSshKeys = () => {
@@ -201,19 +192,23 @@ export const createVolumes = (volumeObjArray) => {
     $('[data-qa-add-new-menu-button]').waitForDisplayed(constants.wait.normal);
 
     volumeObjArray.forEach((volumeObj) => {
-        $(`[data-qa-volume-cell-label="${volumeObj.label}"]`).waitForDisplayed(constants.wait.long)
+        $(`[data-qa-volume-cell-label="${volumeObj.label}"]`).waitForDisplayed(constants.wait.long);
     });
 }
 
 export const switchTab = () => {
     browser.waitUntil(() => {
-        return browser.getTabIds().length === 2;
+        return browser.getWindowHandles().length === 2;
     }, constants.wait.normal);
     browser.pause(2000);
-    const tabs = browser.getTabIds();
+    const tabs = browser.getWindowHandles();
     const manager = tabs[0];
-    const newTab = tabs[1]
-    browser.switchTab(newTab);
+    const newTab = tabs[1];
+    browser.switchToWindow(newTab);
+}
+
+export const managerTab = () => {
+    browser.switchToWindow(browser.getWindowHandles()[0]);
 }
 
 export const getDistrobutionLabel = (distrobutionTags) => {
@@ -239,4 +234,9 @@ export const apiCreateDomains = (domainObjArray) => {
     });
     browser.url(constants.routes.domains);
     domainObjArray.forEach((domain) => $(`[data-qa-domain-cell="${domain.domain}"]`).waitForDisplayed(constants.wait.long));
+}
+
+export const parseLinodeIdFromUrl = () => {
+    const firstParse = browser.getUrl().split('/linodes/');
+    return firstParse[1].split('/')[0]
 }

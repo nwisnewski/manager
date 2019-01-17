@@ -1,9 +1,10 @@
 const { constants } = require('../../constants');
+const { readToken } = require('../../utils/config-utils');
 import {
     apiDeleteMyStackScripts,
-    getDistrobutionLabel,
     timestamp,
     switchTab,
+    managerTab,
 } from '../../utils/common';
 import ConfigureStackScripts from '../../pageobjects/configure-stackscript.page';
 import ListStackScripts from '../../pageobjects/list-stackscripts.page';
@@ -32,15 +33,17 @@ describe('StackScript - detail page and drawer suite', () => {
       return stackScriptDetails;
   }
 
-  const verifyStackScriptDetailPageOrDrawer = (title,author,deployments,disrobutions,description,code) => {
+  const verifyStackScriptDetailPageOrDrawer = (title,author,deployments,distrobutions,description,code) => {
       expect(StackScriptDetail.stackScriptTitle(title).isDisplayed()).toBe(true);
       expect(StackScriptDetail.stackScriptAuthor(author).isDisplayed()).toBe(true);
       expect(StackScriptDetail.stackScriptDeployments.getText()).toContain(deployments);
-      const selectedDistrobutionLabels = getDistrobutionLabel(disrobutions);
       const displayedDistrobutionLabels = StackScriptDetail.getStackScriptCompatibleDisrobutions();
-      selectedDistrobutionLabels.forEach((distro) => {
-          expect(displayedDistrobutionLabels.includes(distro)).toBe(true);
-      });
+      const token = readToken(browser.options.testUser);
+      distrobutions.forEach((distro) => {
+          browser.getLinodeImage(token,distro.trim()).then((image) => {
+              expect(displayedDistrobutionLabels.includes(image.label)).toBe(true);
+          });
+      })
       if(description){
           expect(StackScriptDetail.stackScriptDescription.getText()).toContain(description);
       }
@@ -114,7 +117,7 @@ describe('StackScript - detail page and drawer suite', () => {
         switchTab();
         expect(browser.getTitle()).toContain('StackScripts -');
         expect(browser.getUrl()).toContain(`linode.com/stackscripts/profile/${browser.options.testUser}`);
-        browser.close();
+        managerTab();
         StackScriptDetail.stackScriptDetailPageDisplays();
     });
 

@@ -6,6 +6,7 @@ import {
     retrieveGlobalSettings,
     apiDeleteAllLinodes,
     switchTab,
+    managerTab,
 } from '../../utils/common';
 import Dashboard from '../../pageobjects/dashboard.page';
 import GlobalSettings from '../../pageobjects/account/global-settings.page';
@@ -22,7 +23,7 @@ describe('Backup Auto Enrollment Suite', () => {
     const checkBackupPricingPageLink = () => {
         switchTab();
         expect(browser.getTitle()).toEqual('Protect Your Data with Backups - Linode');
-        browser.close();
+        managerTab();
     }
 
     beforeAll(() => {
@@ -90,7 +91,9 @@ describe('Backup Auto Enrollment Suite', () => {
         browser.waitUntil(() => {
             return GlobalSettings.enrollInNewLinodesAutoBackupsToggle.getAttribute('data-qa-toggle') === 'true';
         }, constants.wait.normal);
-        expect(retrieveGlobalSettings().backups_enabled).toBe(true);
+        retrieveGlobalSettings().then((settings) => {
+              expect(settings.backups_enabled).toBe(true);
+        });
     });
 
     it('Backups should be enabled when creating a new linode and checkbox', () => {

@@ -115,7 +115,7 @@ exports.removeAllLinodes = token => {
     });
 }
 
-exports.createLinode = (token, password, linodeLabel, tags, type, region, group) => {
+exports.createLinode = (token, password, linodeLabel, tags, type, region, group, privateIp) => {
     return new Promise((resolve, reject) => {
         const linodesEndpoint = '/linode/instances';
 
@@ -138,6 +138,10 @@ exports.createLinode = (token, password, linodeLabel, tags, type, region, group)
 
         if(group) {
             linodeConfig['group'] = group;
+        }
+
+        if (privateIp) {
+            linodeConfig['private_ip'] = true;
         }
 
         return getAxiosInstance(token).post(linodesEndpoint, linodeConfig)

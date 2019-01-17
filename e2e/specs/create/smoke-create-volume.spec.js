@@ -208,5 +208,5 @@ describe('Create, Edit, Resize, Attach, Detach, Clone, Delete - Volume Suite', (
         browser.waitUntil(() => {
             return VolumeDetail.volumeCell.length === 1;
         }, constants.wait.minute);
-    });
+    }); 
 });

@@ -1,17 +1,31 @@
 const { constants } = require('../../../constants');
 
-import { apiCreateLinode, apiDeleteAllLinodes } from '../../../utils/common';
+import {
+		apiCreateMultipleLinodes,
+		apiDeleteAllLinodes,
+		timestamp,
+		parseLinodeIdFromUrl,
+} from '../../../utils/common';
 import LinodeDetail from '../../../pageobjects/linode-detail/linode-detail.page';
 import Networking from '../../../pageobjects/linode-detail/linode-detail-networking.page';
 
 describe('Linode Detail - Ip Transfer Suite', () => {
-	let linodeA, linodeB, singlePublicIpError;
+	let singlePublicIpError;
+	const linodeA = {
+		linodeLabel: `AutoLinodeA${timestamp()}`,
+		private_ip: true
+	}
+
+	const linodeB = {
+		linodeLabel: `AutoLinodeB${timestamp()}`,
+		private_ip: true
+	}
 
 	beforeAll(() => {
-		linodeA = apiCreateLinode(false, true);
-		linodeB = apiCreateLinode(false, true);
-		$(`[data-qa-linode="${linodeA.label}"] a`).click();
+		apiCreateMultipleLinodes([linodeA,linodeB]);
+		$(`[data-qa-linode="${linodeA.linodeLabel}"] a`).click();
 		LinodeDetail.landingElemsDisplay();
+		linodeA['id'] = parseLinodeIdFromUrl();
 		LinodeDetail.changeTab('Networking');
 	});
 

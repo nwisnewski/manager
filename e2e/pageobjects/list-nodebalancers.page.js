@@ -28,7 +28,6 @@ class ListNodeBalancers extends Page {
             expect(nb.$(this.ports.selector).getText()).toMatch(/\d/);
             expect(nb.$(this.ips.selector).getText()).toMatch(/\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}\b/gm);
             expect(nb.$(this.region.selector).isDisplayed()).toBe(true);
-            expect(nb.$(this.addNodeBalancer.selector).isDisplayed()).toBe(true);
         });
     }
 

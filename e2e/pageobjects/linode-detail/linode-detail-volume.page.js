@@ -378,6 +378,11 @@ export class VolumeDetail extends Page {
         expect(this.mountCommand.getAttribute('value')).toEqual(`mount "/dev/disk/by-id/scsi-0Linode_Volume_${volumeLabel}" "/mnt/${volumeLabel}"`);
         expect(this.mountOnBootCommand.getAttribute('value')).toEqual(`/dev/disk/by-id/scsi-0Linode_Volume_${volumeLabel} /mnt/${volumeLabel} ext4 defaults,noatime 0 2`);
     }
+
+    waitForVolumeExists(volumeLabel){
+        const selector = this.volumeCellLabel.selector.replace(']','');
+        $(`${selector}="${volumeLabel}"]`).waitForDisplayed(constants.wait.long);
+    }
 }
 
 export default new VolumeDetail();

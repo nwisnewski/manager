@@ -1,12 +1,16 @@
 const { constants } = require('../../constants');
 
-import { apiCreateLinode, apiDeleteAllLinodes } from '../../utils/common';
+import {
+    apiCreateLinode,
+    apiDeleteAllLinodes,
+    timestamp,
+} from '../../utils/common';
 import ConfigureLinode from '../../pageobjects/configure-linode';
 import Create from '../../pageobjects/create';
 
 describe('Create Linode - Clone from Existing Suite', () => {
     beforeAll(() => {
-        apiCreateLinode(undefined,undefined,undefined,'g6-standard-1');
+        apiCreateLinode(`AutoLinode${timestamp()}`,undefined,undefined,'g6-standard-1');
         ConfigureLinode.selectGlobalCreateItem('Linode');
     });
 

@@ -55,10 +55,10 @@ exports.login = (username, password, credFilePath) => {
     $('#password').waitForDisplayed(constants.wait.long, false, 'Username field did not display');
     $('#username').setValue(username);
     $('#password').setValue(password);
+    $('.btn#submit').click();
 
-    loginButton = browser.getUrl().includes('dev') || browser.getUrl().includes('staging') ? '.btn#submit' : '.btn-primary';
     letsGoButton = browser.getUrl().includes('dev') ? '.btn#submit' : '[data-qa-welcome-button]';
-    $(loginButton).click();
+
 
     try {
         browser.waitUntil(function() {
@@ -72,14 +72,13 @@ exports.login = (username, password, credFilePath) => {
         }
     }
 
-    if($('.Modal').isExisting() && browser.getUrl().includes('login')){
-        $('.btn.btn-primary').click();
+    if($('.oauthauthorize-page').isExisting() && browser.getUrl().includes('login')){
+        $('.form-actions>.btn').click();
     }
 
     $('[data-qa-add-new-menu-button]').waitForDisplayed(constants.wait.long, false, 'Create Button did not display');
 
     if ($('[role="dialog"]').isExisting()) {
-        console.log('Dismiss modal');
         $(letsGoButton).click();
         $('[role="dialog"]').waitForDisplayed(constants.wait.long, true, 'Did not dismiss welcome modal')
     }
