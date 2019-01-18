@@ -21,11 +21,11 @@ describe('Search - Tags Suite', () => {
         tags.forEach(t => {
             SearchBar.executeSearch(t);
             SearchBar.assertSuggestions();
-            
-            const suggestionTitle = SearchBar.suggestionTitle.getText();
-            const tagTitle = SearchBar.tag.getText();
 
-            expect(tagTitle).toContain(t);
+            const suggestionTitle = SearchBar.suggestionTitle.getText();
+            const tagTitle = SearchBar.tags.map(tag => tag.getText());
+
+            expect(tagTitle.includes(t)).toBe(true);
             expect(suggestionTitle).toBe(linodeLabel);
         });
     });

@@ -53,9 +53,7 @@ const getRunnerCount = () => {
 const parallelRunners = getRunnerCount();
 
 exports.config = {
-    runner: 'local',
-
-    host: process.env.DOCKER ? 'selenium' : 'localhost',
+    hostname: process.env.DOCKER ? 'selenium' : 'localhost',
     port: 4444,
 
     specs: specs,
@@ -81,7 +79,7 @@ exports.config = {
 
     connectionRetryCount: 3,
 
-    services: ['selenium-standalone'],
+    services: [],
 
     framework: 'jasmine',
 
