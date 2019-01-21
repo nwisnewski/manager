@@ -174,7 +174,7 @@ describe('Domains - Detail - Add Records Suite', () => {
     describe('A/AAAA Record Update', () => {
 
         it('A/AAAA Records are empty by default', () => {
-            browser.scroll(0,500);
+            DomainDetail.addRecordButtonElementByLabel('A/AAAA Record').scrollIntoView();
             expect($(DomainDetail.rowSelector('A/AAAA Record')).isDisplayed()).toBe(false)
         });
 
@@ -380,7 +380,7 @@ describe('Domains - Detail - Add Records Suite', () => {
     });
 
     it('Breadcrumb link navigates back to domain landing page', () => {
-        browser.scroll(0,-500);
+        DomainDetail.breadCrumbLinkText.scrollIntoView();
         DomainDetail.breadCrumbLinkText.click();
         ListDomains.baseElemsDisplay(false);
         expect(ListDomains.label.getText()).toContain(domainName);

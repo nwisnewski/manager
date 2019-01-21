@@ -40,7 +40,8 @@ const specsToRun = () => {
 
 const specs = specsToRun();
 
-const selectedReporters = argv.log ? ['spec', 'junit'] : ['dot'];
+const selectedReporters = argv.log ? ['spec', ['junit', { outputDir: './e2e/test-results',}], ['allure',
+    {outputDir: './e2e/html-results', disableWebdriverStepsReporting: false, disableWebdriverScreenshotsReporting: false,}]] : ['dot'];
 
 const getRunnerCount = () => {
     const userCount = keysIn(process.env).filter(users => users.includes('MANAGER_USER')).length;
@@ -85,9 +86,7 @@ exports.config = {
 
     reporters: selectedReporters,
     reporterOptions: {
-        junit: {
-            outputDir: './e2e/test-results'
-        }
+
     },
 
     jasmineNodeOpts: {
@@ -176,8 +175,11 @@ exports.config = {
      * Function to be executed after a test (in Mocha/Jasmine) or a step (in Cucumber) starts.
      * @param {Object} test test details
      */
-    // afterTest: function (test) {
-    // },
+    afterTest: function (test) {
+        if (test.error !== undefined) {
+            browser.takeScreenshot();
+        }
+    },
     /**
      * Hook that gets executed after the suite has ended
      * @param {Object} suite suite details
@@ -221,7 +223,6 @@ exports.config = {
      */
     onComplete: function(exitCode, config, capabilities, results) {
         return resetAccounts(JSON.parse(readFileSync('./e2e/creds.js')), './e2e/creds.js')
-            .then(res => resolve(res))
-            .catch(error => console.error('Error:', error));
+            .then(res => resolve(res));
     }
 }

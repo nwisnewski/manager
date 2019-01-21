@@ -131,7 +131,7 @@ describe('Linode Detail - Volumes Suite', () => {
         it('should fail to create under 10 gb volume', () => {
             const errorMsg = 'Size must be between 10 and 10240.';
             VolumeDetail.label.$('input').setValue('test');
-            browser.setValue(`${VolumeDetail.size.selector} input`, 5);
+            $(`${VolumeDetail.size.selector} input`).setValue(5);
             VolumeDetail.submit.click();
             const volumeError = $(`${VolumeDetail.size.selector}>p`);
             volumeError.waitForDisplayed(constants.wait.normal);
@@ -140,7 +140,7 @@ describe('Linode Detail - Volumes Suite', () => {
 
         it('should fail to create under 10240 gb volume', () => {
             VolumeDetail.label.$('input').setValue('test');
-            browser.setValue(`${VolumeDetail.size.selector} input`, 10241);
+            $(`${VolumeDetail.size.selector} input`).setValue(10241);
             VolumeDetail.submit.click();
             const volumeError = $(`${VolumeDetail.size.selector}>p`);
             volumeError.waitForDisplayed(constants.wait.normal);

@@ -134,7 +134,9 @@
     "e2e:modified": "./scripts/e2e-modified.sh",
     "e2e:browserstack": "npx wdio ./e2e/config/browserstack.conf.js",
     "mb": "npx mb",
-    "release": "./scripts/release_changelog.sh"
+    "release": "./scripts/release_changelog.sh",
+    "e2e:html-report": "npx allure generate e2e/html-results -o e2e/html-report --clean && npx allure open ",
+    "e2e:wait-for-manger-local": "./scripts/wait-for-it.sh manager-local:3000 -t 500 -s"
   },
   "husky": {
     "hooks": {
@@ -200,6 +202,7 @@
     "@types/xml2js": "^0.4.3",
     "@types/yup": "^0.24.9",
     "@types/zxcvbn": "^4.4.0",
+    "@wdio/allure-reporter": "^5.3.4",
     "@wdio/cli": "^5.3.0",
     "@wdio/dot-reporter": "^5.2.3",
     "@wdio/jasmine-framework": "^5.2.8",
@@ -208,6 +211,7 @@
     "@wdio/selenium-standalone-service": "^5.2.2",
     "@wdio/spec-reporter": "^5.2.3",
     "@wdio/sync": "^5.2.8",
+    "allure-commandline": "^2.8.1",
     "axe-core": "^3.1.1",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
