@@ -10,7 +10,7 @@ import LinodeDetail from '../../../pageobjects/linode-detail/linode-detail.page'
 import Networking from '../../../pageobjects/linode-detail/linode-detail-networking.page';
 
 describe('Linode Detail - Ip Transfer Suite', () => {
-	let singlePublicIpError;
+	let singlePublicIpError,linodes;
 	const linodeA = {
 		linodeLabel: `AutoLinodeA${timestamp()}`,
 		private_ip: true
@@ -22,15 +22,14 @@ describe('Linode Detail - Ip Transfer Suite', () => {
 	}
 
 	beforeAll(() => {
-		apiCreateMultipleLinodes([linodeA,linodeB]);
-		$(`[data-qa-linode="${linodeA.linodeLabel}"] a`).click();
+		linodes = apiCreateMultipleLinodes([linodeA,linodeB]);
+		browser.url(`${constants.routes.linodes}/${linodes[0].id}/summary`)
 		LinodeDetail.landingElemsDisplay();
-		linodeA['id'] = parseLinodeIdFromUrl();
 		LinodeDetail.changeTab('Networking');
 	});
 
 	afterAll(() => {
-		apiDeleteAllLinodes();
+	//	apiDeleteAllLinodes();
 	});
 
 	it('should display ip transfer configuration', () => {
@@ -53,7 +52,7 @@ describe('Linode Detail - Ip Transfer Suite', () => {
 	});
 
 	it('should display an error on move to linode', () => {
-		singlePublicIpError = `${linodeA.id} must have at least one public IP after assignment`;
+		singlePublicIpError = `${linodes[0].id} must have at least one public IP after assignment`;
 		Networking.moveIpButton.click();
 		Networking.moveIpButton.waitForDisplayed(constants.wait.normal, true);
 		Networking.ipTransferSave.click();
@@ -79,7 +78,7 @@ describe('Linode Detail - Ip Transfer Suite', () => {
 	});
 
 	it('should fail to swap public to private ips', () => {
-		const errorMsg = `${linodeA.id} must have no more than one private IP after assignment.`;
+		const errorMsg = `${linodes[0].id} must have no more than one private IP after assignment.`;
 		const privateIps =
 			Networking.swapWithIps
 				.filter(ip => !!ip.getText().match(/^10\.|^172\.1[6-9]\.|^172\.2[0-9]\.|^172\.3[0-1]\.|^192\.168\.|^fd/))

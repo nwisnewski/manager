@@ -8,7 +8,16 @@ const {
     getPublicKeys,
     removePublicKey,
     updateUserProfile,
-    getUserProfile
+    getUserProfile,
+    createLinode,
+    getAPiData,
+    deleteApiData,
+    createVolume,
+    getGlobalSettings,
+    putGlobalSetting,
+    getLinodeImage,
+    createDomain,
+    getMyStackScripts,
 } = require('../setup/setup');
 
 import ConfigureLinode from '../pageobjects/configure-linode';
@@ -58,7 +67,7 @@ export const createLinodeIfNone = () => {
 export const apiCreateLinode = (linodeLabel=false, privateIp=false, tags=[], type, region, group) => {
     const token = readToken(browser.options.testUser);
     const newLinodePass = crypto.randomBytes(20).toString('hex');
-    const linode = browser.createLinode(token, newLinodePass, linodeLabel, tags, type, region, group, privateIp);
+    const linode = createLinode(token, newLinodePass, linodeLabel, tags, type, region, group, privateIp);
 
     browser.url(constants.routes.linodes);
     $('[data-qa-add-new-menu-button]').waitForDisplayed(constants.wait.normal);
@@ -72,7 +81,8 @@ export const apiCreateLinode = (linodeLabel=false, privateIp=false, tags=[], typ
 
     arrayOfLinodeCreateObj.forEach((linodeObj) => {
         const newLinodePass = crypto.randomBytes(20).toString('hex');
-        const linode = browser.createLinode(token, newLinodePass, linodeObj.linodeLabel, linodeObj.tags, linodeObj.type, linodeObj.region, linodeObj.group, linodeObj.private_ip)
+        const linode = createLinode(token, newLinodePass, linodeObj.linodeLabel, linodeObj.tags, linodeObj.type, linodeObj.region, linodeObj.group, linodeObj.private_ip)
+        linodes.push(linode);
     });
 
     browser.url(constants.routes.linodes);
@@ -81,6 +91,8 @@ export const apiCreateLinode = (linodeLabel=false, privateIp=false, tags=[], typ
     arrayOfLinodeCreateObj.forEach((linodeObj,i) => {
         waitForLinodeStatus(linodeObj.linodeLabel, 'running');
     });
+
+    return linodes;
 }
 
 export const waitForLinodeStatus = (linodeLabel, status, timeout=constants.wait.minute) => {
@@ -89,29 +101,24 @@ export const waitForLinodeStatus = (linodeLabel, status, timeout=constants.wait.
 }
 
 export const apiDeleteAllLinodes = () => {
-    const token = readToken(browser.options.testUser);
-    const removeAll = browser.removeAllLinodes(token);
-    return removeAll;
+    deleteAll('/linode/instances');
 }
 
 
 export const apiDeleteAllVolumes = () => {
-    const token = readToken(browser.options.testUser);
-    browser.removeAllVolumes(token);
+    deleteAll('/volumes');
 }
 
 export const apiDeleteAllDomains = () => {
-    const token = readToken(browser.options.testUser);
-    browser.getDomains(token).then((domains) => {
-        domains.data.forEach(domain => browser.removeDomain(token, domain.id));
-    });
+    deleteAll('/domains');
 }
 
 export const apiDeleteMyStackScripts = () => {
     const token = readToken(browser.options.testUser);
-    browser.getMyStackScripts(token).then((stackScripts) => {
-        stackScripts.data.forEach(script => browser.removeStackScript(token, script.id));
-    });
+    const createdStackScripts = getMyStackScripts(token).data;
+    createdStackScripts.forEach((stackScript) => {
+        deleteApiData(token,'/linode/stackscripts',stackScript.id);
+    })
 }
 
 export const createNodeBalancer = () => {
@@ -127,13 +134,8 @@ export const createNodeBalancer = () => {
     NodeBalancers.baseElemsDisplay();
 }
 
-export const removeNodeBalancers = () => {
-    const token = readToken(browser.options.testUser);
-    browser.removeAllLinodes(token).then((result) => {
-        browser.getNodeBalancers(token).then((result) => {
-            result.data.forEach(nb => browser.removeNodeBalancer(token, nb.id));
-        });
-    });
+export const apiDeleteAllNodeBalancers = () => {
+    deleteAll('/nodebalancers');
 }
 
 export const apiDeletePrivateImages = token => {
@@ -145,31 +147,30 @@ export const apiDeletePrivateImages = token => {
 export const apiRemoveSshKeys = () => {
     const token = readToken(browser.options.testUser);
     const userKeys = getPublicKeys(token).data;
-
     userKeys.forEach(key => removePublicKey(token, key.id));
 }
 
 export const getProfile = () => {
     const token = readToken(browser.options.testUser);
-    const profile = browser.getUserProfile(token);
+    const profile = getUserProfile(token);
     return profile;
 }
 
 export const updateProfile = (profileDate) => {
     const token = readToken(browser.options.testUser);
-    const profile = browser.updateUserProfile(token,profileDate);
+    const profile = updateUserProfile(token,profileDate);
     return profile;
 }
 
 export const updateGlobalSettings = (settingsData) => {
     const token = readToken(browser.options.testUser);
-    const settings = browser.updateGlobalSettings(token,settingsData);
+    const settings = putGlobalSetting(token,settingsData);
     return settings;
 }
 
 export const retrieveGlobalSettings = () => {
     const token = readToken(browser.options.testUser);
-    const settings = browser.getGlobalSettings(token);
+    const settings = getGlobalSettings(token);
     return settings;
 }
 
@@ -185,7 +186,8 @@ export const createVolumes = (volumeObjArray) => {
     const token = readToken(browser.options.testUser);
 
     volumeObjArray.forEach((volumeObj) => {
-        const volume = browser.createVolume(token,volumeObj.label,volumeObj.region,volumeObj.size,volumeObj.tags,volumeObj.linode_id);
+        const volume = createVolume(token,volumeObj.label,volumeObj.region,volumeObj.size,volumeObj.tags,volumeObj.linode_id);
+        volume.push(volume);
     });
 
     browser.url(constants.routes.volumes);
@@ -194,6 +196,7 @@ export const createVolumes = (volumeObjArray) => {
     volumeObjArray.forEach((volumeObj) => {
         $(`[data-qa-volume-cell-label="${volumeObj.label}"]`).waitForDisplayed(constants.wait.long);
     });
+    return volumes;
 }
 
 export const switchTab = () => {
@@ -215,7 +218,7 @@ export const getDistrobutionLabel = (distrobutionTags) => {
     const token = readToken(browser.options.testUser);
     let distrobutionLabel = [];
     distrobutionTags.forEach((distro) => {
-        const distroDetails = browser.getLinodeImage(token,distro.trim());
+        const distroDetails = getLinodeImage(token,distro.trim());
         distrobutionLabel.push(distroDetails.label);
     });
     return distrobutionLabel;
@@ -229,14 +232,23 @@ export const apiCreateDomains = (domainObjArray) => {
     const token = readToken(browser.options.testUser);
     let domains = []
     domainObjArray.forEach((domain) => {
-        const newDomain = browser.createDomain(token, domain.type,domain.domain,domain.tags,domain.group);
+        const newDomain = createDomain(token, domain.type,domain.domain,domain.tags,domain.group);
         domains.push(newDomain);
     });
     browser.url(constants.routes.domains);
     domainObjArray.forEach((domain) => $(`[data-qa-domain-cell="${domain.domain}"]`).waitForDisplayed(constants.wait.long));
+    return domains;
 }
 
 export const parseLinodeIdFromUrl = () => {
     const firstParse = browser.getUrl().split('/linodes/');
     return firstParse[1].split('/')[0]
+}
+
+const deleteAll = (endpoint) => {
+  const token = readToken(browser.options.testUser);
+  const entities = getAPiData(token, endpoint).data;
+  entities.forEach((entity) => {
+      deleteApiData(token,endpoint,entity.id);
+  });
 }

@@ -17,28 +17,23 @@ describe('Account - Restricted User - Permissions Suite', () => {
 
     const linodeLabel = `AutoLinode${timestamp()}`;
 
-  /*  beforeAll(() => {
-
-    });
-*/
-    afterAll(() => {
+    beforeAll(() => {
+        apiCreateLinode(linodeLabel);
         browser.url(constants.routes.account.users);
-        Users.baseElementsDisplay();
-        Users.delete(userConfig);
-        apiDeleteAllLinodes();
+    });
+
+    afterAll(() => {
+        //apiDeleteAllLinodes();
     });
 
     it('should display permissions page', () => {
-        apiCreateLinode(linodeLabel);
-        console.log('here');
-        browser.url(constants.routes.account.users);
         Users.baseElementsDisplay();
         Users.add(userConfig);
         expect(Users.userPermissionsTab.getAttribute('aria-selected')).toBe('true');
         Permissions.baseElementsDisplay(true);
     });
 
-  /*  it('should update the add linodes global permission', () => {
+    it('should update the add linodes global permission', () => {
         Permissions.toggleGlobalPermission('add_linodes', 'allow');
     });
 
@@ -49,5 +44,4 @@ describe('Account - Restricted User - Permissions Suite', () => {
     it('should update an entity-based specific grant', () => {
         Permissions.setSpecificPermission('Linodes', linodeLabel, 'Read Only');
     });
-    */
 });

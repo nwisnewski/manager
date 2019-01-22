@@ -3,7 +3,8 @@ import NodeBalancers from '../../pageobjects/nodebalancers.page';
 import NodeBalancerConfigurations from '../../pageobjects/nodebalancer-detail/configurations.page';
 import {
     createNodeBalancer,
-    removeNodeBalancers,
+    apiDeleteAllNodeBalancers,
+    apiDeleteAllLinodes,
 } from '../../utils/common';
 
 describe('NodeBalancer - Configurations Suite', () => {
@@ -11,7 +12,8 @@ describe('NodeBalancer - Configurations Suite', () => {
         nodeIp;
 
     afterAll(() => {
-        removeNodeBalancers();
+        apiDeleteAllNodeBalancers();
+        apiDeleteAllLinodes();
     });
 
     it('should configure the nodebalancer', () => {

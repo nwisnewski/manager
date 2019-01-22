@@ -1,4 +1,5 @@
 const { constants } = require('../../constants');
+const { readToken } = require('../../utils/config-utils')
 const { getImages } = require('../../setup/setup');
 
 import ConfigureImage from '../../pageobjects/configure-image.page';
@@ -18,7 +19,7 @@ describe('Images - Create Suite', () => {
 
     afterAll(() => {
         apiDeleteAllLinodes();
-        apiDeletePrivateImages(browser.readToken(browser.options.testUser));
+        apiDeletePrivateImages(readToken(browser.options.testUser));
     });
 
     it('should display create image drawer', () => {

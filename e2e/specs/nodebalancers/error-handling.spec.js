@@ -4,7 +4,7 @@ const { merge } = require('ramda');
 import NodeBalancers from '../../pageobjects/nodebalancers.page';
 import {
     apiCreateMultipleLinodes,
-    removeNodeBalancers,
+    apiDeleteAllBalancers,
     apiDeleteAllLinodes,
     timestamp,
 } from '../../utils/common';
@@ -24,7 +24,7 @@ describe('NodeBalancer - Negative Tests Suite', () => {
 
     afterAll(() => {
         apiDeleteAllLinodes();
-        removeNodeBalancers();
+        apiDeleteAllNodeBalancers();
     });
 
     it('should display a service error msg on create with an invalid node name', () => {

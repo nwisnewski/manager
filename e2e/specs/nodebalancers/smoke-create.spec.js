@@ -4,7 +4,7 @@ import NodeBalancers from '../../pageobjects/nodebalancers.page';
 import NodeBalancerDetail from '../../pageobjects/nodebalancer-detail/details.page';
 import {
     apiCreateMultipleLinodes,
-    removeNodeBalancers,
+    apiDeleteAllNodeBalancers,
     timestamp,
 } from '../../utils/common';
 
@@ -20,7 +20,7 @@ describe('Nodebalancer - Create Suite', () => {
     });
 
     afterAll(() => {
-        removeNodeBalancers();
+        apiDeleteAllNodeBalancers();
     });
 
     it('should display placeholder message with create button', () => {

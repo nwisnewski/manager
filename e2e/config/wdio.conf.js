@@ -8,7 +8,7 @@ const {
     checkoutCreds,
     checkInCreds,
     removeCreds,
-    cleanupAccounts,
+    deleteAllData,
 } = require('../utils/config-utils');
 
 const { resetAccounts } = require('../setup/cleanup');
@@ -40,8 +40,8 @@ const specsToRun = () => {
 
 const specs = specsToRun();
 
-const selectedReporters = argv.log ? ['spec', ['junit', { outputDir: './e2e/test-results',}], ['allure',
-    {outputDir: './e2e/html-results', disableWebdriverStepsReporting: false, disableWebdriverScreenshotsReporting: false,}]] : ['dot'];
+const selectedReporters = argv.log ? ['spec', ['junit', { outputDir: './e2e/test-results',}],
+    ['allure', {outputDir: './e2e/html-results', disableWebdriverStepsReporting: false, disableWebdriverScreenshotsReporting: false,}]] : ['dot'];
 
 const getRunnerCount = () => {
     const userCount = keysIn(process.env).filter(users => users.includes('MANAGER_USER')).length;
@@ -85,9 +85,6 @@ exports.config = {
     framework: 'jasmine',
 
     reporters: selectedReporters,
-    reporterOptions: {
-
-    },
 
     jasmineNodeOpts: {
         // A test will timeout after 8 min
@@ -212,8 +209,8 @@ exports.config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {Array.<String>} specs List of spec file paths that ran
      */
-    // afterSession: function (config, capabilities, specs) {
-    // },
+    //afterSession: function (config, capabilities, specs) {
+    //},
     /**
      * Gets executed after all workers got shut down and the process is about to exit.
      * @param {Object} exitCode 0 - success, 1 - fail
@@ -222,7 +219,8 @@ exports.config = {
      * @param {<Object>} results object containing test results
      */
     onComplete: function(exitCode, config, capabilities, results) {
-        return resetAccounts(JSON.parse(readFileSync('./e2e/creds.js')), './e2e/creds.js')
-            .then(res => resolve(res));
+        JSON.parse(readFileSync('./e2e/creds.js')).forEach((cred) => {
+            deleteAllData(cred.token,cred.username);
+        });
     }
 }

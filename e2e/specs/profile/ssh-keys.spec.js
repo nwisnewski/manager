@@ -67,6 +67,6 @@ describe('Profile - SSH Keys Suite', () => {
 
     afterAll(() => {
         apiDeleteAllLinodes();
-        apiRemoveSshKeys()
+        apiRemoveSshKeys();
     });
 });

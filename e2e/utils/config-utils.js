@@ -1,7 +1,13 @@
 const moment = require('moment');
+const https = require('https');
+const axios = require('axios');
 const { existsSync, statSync, writeFileSync, readFileSync } = require('fs');
 const { constants } = require('../constants');
-const { deleteAll } = require('../setup/setup');
+const {
+    getAPiData,
+    deleteApiData,
+    getMyStackScripts,
+} = require('../setup/setup');
 
 /*
 * Get localStorage after landing on homepage
@@ -142,39 +148,57 @@ exports.cleanupAccounts = (credFilePath) => {
     });
 }
 
-/*
-* Navigate to a null route on the manager,
-* Add the token properties to local storage
-* Navigate back to the homepage to be logged in
-* @returns {Null} returns nothing
-*/
-// exports.loadToken = () => {
-//     const tokenPath = '../../localStorage.json';
-//     try {
-//         const localStorageObj = require(tokenPath);
-//         const keys = Object.keys(localStorageObj);
+exports.deleteAllData = (token,user) => {
+    const axiosInstance = axios.create({
+        httpsAgent: new https.Agent({
+            rejectUnauthorized: false
+        }),
+        baseURL: process.env.REACT_APP_API_ROOT,
+        timeout: 10000,
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'User-Agent': 'WebdriverIO',
+        },
+    });
 
-//         const storageObj = keys.map(key => {
-//             return { [key]: localStorageObj[key] }
-//         });
+    const endpoints = [
+        '/linode/instances',
+        '/volumes',
+        '/domains',
+        '/nodebalancers',
+        '/account/users',
+        '/images',
+    ];
 
-//         browser.url('/null');
-//         browser.waitForDisplayed('#root > span:nth-child(1)');
-//         browser.waitUntil(function() {
-//             browser.execute(function(storageObj) {
-//                 storageObj.forEach(item => {
-//                     localStorage.setItem(Object.keys(item)[0], Object.values(item)[0]);
-//                 });
-//             }, storageObj);
-//             browser.url('/null');
-//             return browser.execute(function(storageObj) {
-//                 return localStorage.getItem('authentication/oauth-token').includes(storageObj['authentication/oauth-token']) === true;
-//             }, storageObj);
-//         }, 10000);
-//         browser.url(constants.routes.dashboard);
-//         browser.waitForDisplayed('[data-qa-beta-notice]');
-//         browser.click('[data-qa-beta-notice] button');
-//     } catch (err) {
-//         console.log(`${err} \n ensure that your local manager environment is running!`);
-//     }
-// }
+    endpoints.forEach((entityEndpoint) => {
+        axiosInstance.get(entityEndpoint).then((response) => {
+            console.log(response);
+            const data = entityEndpoint.includes('images')
+                ? response.data.data.filter( image => image.is_public) : response.data.data;
+            console.log(data);
+            if(data.length > 0){
+                const deleteId = entityEndpoint.includes('users') ? entityInstance.username : entityInstance.id;
+                response.data.data.forEach((entityInstance) => {
+                    axiosInstance.delete(`${entityEndpoint}/${deleteId}`).then(res => console.log(res));
+                });
+            }
+        });
+    });
+    const stackScriptEndPoint = '/linode/stackscripts';
+    axiosInstance.get(stackScriptEndPoint, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'X-Filter': `{"username":"${user}","+order_by":"deployments_total","+order":"desc"}`,
+        'User-Agent': 'WebdriverIO',
+      }
+    }).then((response) => {
+        console.log(response);
+        if(response.data.data.length > 0){
+            response.data.data.forEach((myStackScript) => {
+                axiosInstance.delete(`${stackScriptEndPoint}/${myStackScript.id}`).then(res => console.log(res));
+            })
+        }
+    });
+
+    return;
+}

@@ -1,25 +1,4 @@
 const {
-    deleteAll,
-    removeAllLinodes,
-    createLinode,
-    removeAllVolumes,
-    allocatePrivateIp,
-    getNodebalancers,
-    removeNodebalancer,
-    getDomains,
-    removeDomain,
-    getMyStackScripts,
-    removeStackScript,
-    getUserProfile,
-    updateUserProfile,
-    putGlobalSetting,
-    getGlobalSettings,
-    createVolume,
-    getLinodeImage,
-    createDomain,
-} = require('../setup/setup');
-
-const {
     loadProxyImposter,
     getImposters,
     deleteImposters,
@@ -69,62 +48,6 @@ exports.browserCommands = () => {
         return deleteImposters()
             .then(res => res)
             .catch(error => console.error(error));
-    });
-
-    browser.addCommand('readToken', function(username) {
-        const token = readToken(username);
-        return token;
-    });
-
-    browser.addCommand('createLinode', function async(token, password, linodeLabel=false, tags=[], type, region, group, privateIp) {
-        return createLinode(token, password, linodeLabel, tags, type, region, group, privateIp)
-            .then(res => res)
-            .catch(err => err);
-    });
-
-    browser.addCommand('removeAllLinodes', function async(token) {
-        return removeAllLinodes(token)
-            .then(res => res.length > 0);
-    });
-
-    browser.addCommand('removeAllVolumes', function async(token) {
-        return removeAllVolumes(token)
-            .then(res => res);
-    });
-
-    browser.addCommand('getDomains', function async(token) {
-        return getDomains(token)
-            .then(res => res);
-    });
-
-    browser.addCommand('removeDomain', function async(token, domainId) {
-        return removeDomain(token, domainId)
-            .then(res => res);
-    });
-
-    browser.addCommand('allocatePrivateIp', function async(token, linodeId) {
-        return allocatePrivateIp(token, linodeId)
-            .then(res => res);
-    });
-
-    browser.addCommand('getNodeBalancers', function async(token) {
-        return getNodebalancers(token)
-            .then(res => res);
-    });
-
-    browser.addCommand('removeNodeBalancer', function async(token, nodeBalancerId) {
-        return removeNodebalancer(token, nodeBalancerId)
-            .then(res => res);
-    });
-
-    browser.addCommand('getMyStackScripts', function async(token) {
-        return getMyStackScripts(token)
-            .then(res => res);
-    });
-
-    browser.addCommand('removeStackScript', function async(token, id) {
-        return removeStackScript(token, id)
-            .then(res => res);
     });
 
     /*
@@ -188,44 +111,5 @@ exports.browserCommands = () => {
             $(selector).setValue(value);
             return $(selector).getValue() === value;
         }, timeout);
-    });
-
-    browser.addCommand('deleteAll', function async(token) {
-        return deleteAll(token).then(() => {});
-    });
-
-    browser.addCommand('getUserProfile', function async(token) {
-        return getUserProfile(token)
-            .then(res => res);
-    });
-
-    browser.addCommand('updateUserProfile', function async(token,profileData) {
-        return updateUserProfile(token,profileData)
-            .then(res => res);
-    });
-
-    browser.addCommand('updateGlobalSettings', function async(token, settingsData) {
-        return putGlobalSetting(token,settingsData)
-            .then(res => res);
-    });
-
-    browser.addCommand('getGlobalSettings', function async(token) {
-        return getGlobalSettings(token)
-            .then(res => res);
-    });
-
-    browser.addCommand('createVolume', function async(token,label,region,size,tags,linode_id) {
-        return createVolume(token,label,region,size,tags,linode_id)
-            .then(res => res);
-    });
-
-    browser.addCommand('getLinodeImage', function async(token,imageId) {
-        return getLinodeImage(token,imageId)
-            .then(res => res);
-    });
-
-    browser.addCommand('createDomain', function async(token,type,domain,tags,group) {
-        return createDomain(token,type,domain,tags,group)
-            .then(res => res);
     });
 }

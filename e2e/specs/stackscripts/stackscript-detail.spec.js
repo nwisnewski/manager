@@ -5,6 +5,7 @@ import {
     timestamp,
     switchTab,
     managerTab,
+    getDistrobutionLabel,
 } from '../../utils/common';
 import ConfigureStackScripts from '../../pageobjects/configure-stackscript.page';
 import ListStackScripts from '../../pageobjects/list-stackscripts.page';
@@ -39,11 +40,10 @@ describe('StackScript - detail page and drawer suite', () => {
       expect(StackScriptDetail.stackScriptDeployments.getText()).toContain(deployments);
       const displayedDistrobutionLabels = StackScriptDetail.getStackScriptCompatibleDisrobutions();
       const token = readToken(browser.options.testUser);
-      distrobutions.forEach((distro) => {
-          browser.getLinodeImage(token,distro.trim()).then((image) => {
-              expect(displayedDistrobutionLabels.includes(image.label)).toBe(true);
-          });
-      })
+      const selectedDistrobutionLabels = getDistrobutionLabel(disrobutions);
+      selectedDistrobutionLabels.forEach((distro) => {
+          expect(displayedDistrobutionLabels.includes(distro)).toBe(true);
+      });
       if(description){
           expect(StackScriptDetail.stackScriptDescription.getText()).toContain(description);
       }
