@@ -15,10 +15,10 @@ class Resize extends Page {
         const checkedCards = $$('[data-qa-checked] > svg');
 
         expect(this.title.getText()).toBe('Resize');
-        expect(this.description.isVisible()).toBe(true);
+        expect(this.description.isDisplayed()).toBe(true);
         expect(this.currentHeader.getText()).toBe(subHeader);
-        expect(this.currentSelection.isVisible()).toBe(true);
-        expect(this.submit.isVisible()).toBe(true);
+        expect(this.currentSelection.isDisplayed()).toBe(true);
+        expect(this.submit.isDisplayed()).toBe(true);
         expect(this.planCards.length).toBeGreaterThan(0);
         expect(checkedCards.length).toBe(0);
         expect(selectedPlanTab[0].getAttribute('data-qa-tab')).toBe('Standard');

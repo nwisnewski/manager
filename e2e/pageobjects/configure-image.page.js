@@ -15,12 +15,12 @@ class ConfigureImage extends Page {
     get diskMenuItems() { return $$('[data-qa-disk-menu-item]'); }
 
     baseElementsDisplay() {
-        this.linodeSelect.waitForVisible(constants.wait.normal);
-        expect(this.diskSelect.isVisible()).toBe(true);
-        expect(this.label.isVisible()).toBe(true);
-        expect(this.description.isVisible()).toBe(true);
-        expect(this.createButton.isVisible()).toBe(true);
-        expect(this.cancelButton.isVisible()).toBe(true);
+        this.linodeSelect.waitForDisplayed(constants.wait.normal);
+        expect(this.diskSelect.isDisplayed()).toBe(true);
+        expect(this.label.isDisplayed()).toBe(true);
+        expect(this.description.isDisplayed()).toBe(true);
+        expect(this.createButton.isDisplayed()).toBe(true);
+        expect(this.cancelButton.isDisplayed()).toBe(true);
     }
 
     configure(config) {
@@ -33,7 +33,7 @@ class ConfigureImage extends Page {
     create() {
         this.createButton.click();
         this.waitForNotice('Image scheduled for creation.');
-        this.drawerTitle.waitForVisible(constants.wait.normal, true);
+        this.drawerTitle.waitForDisplayed(constants.wait.normal, true);
     }
 }
 

@@ -1,6 +1,10 @@
 const { constants } = require('../../constants');
 
-import { apiCreateLinode, apiDeleteAllLinodes } from '../../utils/common';
+import {
+    apiCreateLinode,
+    apiDeleteAllLinodes,
+    timestamp,
+} from '../../utils/common';
 import Users from '../../pageobjects/account/users.page';
 import Permissions from '../../pageobjects/account/permissions.page';
 
@@ -11,23 +15,20 @@ describe('Account - Restricted User - Permissions Suite', () => {
         restricted: true,
     }
 
-    let linode;
+    const linodeLabel = `AutoLinode${timestamp()}`;
 
     beforeAll(() => {
-        linode = apiCreateLinode();
+        apiCreateLinode(linodeLabel);
         browser.url(constants.routes.account.users);
-        Users.baseElementsDisplay();
-        Users.add(userConfig);
     });
 
     afterAll(() => {
-        browser.url(constants.routes.account.users);
-        Users.baseElementsDisplay();
-        Users.delete(userConfig);
-        apiDeleteAllLinodes();
+        //apiDeleteAllLinodes();
     });
 
     it('should display permissions page', () => {
+        Users.baseElementsDisplay();
+        Users.add(userConfig);
         expect(Users.userPermissionsTab.getAttribute('aria-selected')).toBe('true');
         Permissions.baseElementsDisplay(true);
     });
@@ -41,6 +42,6 @@ describe('Account - Restricted User - Permissions Suite', () => {
     });
 
     it('should update an entity-based specific grant', () => {
-        Permissions.setSpecificPermission('Linodes', linode.label, 'Read Only');
+        Permissions.setSpecificPermission('Linodes', linodeLabel, 'Read Only');
     });
 });

@@ -3,7 +3,8 @@ const { constants } = require('../../constants');
 import ListNodeBalancers from '../../pageobjects/list-nodebalancers.page';
 import {
     createNodeBalancer,
-    removeNodeBalancers,
+    apiDeleteAllLinodes,
+    apiDeleteAllNodeBalancers,
 } from '../../utils/common';
 
 describe('NodeBalancer - List Suite', () => {
@@ -13,7 +14,8 @@ describe('NodeBalancer - List Suite', () => {
     });
 
     afterAll(() => {
-        removeNodeBalancers();
+        apiDeleteAllNodeBalancers();
+        apiDeleteAllLinodes();
     });
 
     it('should display nodebalancer in list', () => {

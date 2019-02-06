@@ -8,7 +8,7 @@ const {
     checkoutCreds,
     checkInCreds,
     removeCreds,
-    cleanupAccounts,
+    deleteAllData,
 } = require('../utils/config-utils');
 
 const { resetAccounts } = require('../setup/cleanup');
@@ -40,7 +40,8 @@ const specsToRun = () => {
 
 const specs = specsToRun();
 
-const selectedReporters = argv.log ? ['spec', 'junit'] : ['dot'];
+const selectedReporters = argv.log ? ['spec', ['junit', { outputDir: './e2e/test-results',}],
+    ['allure', {outputDir: './e2e/html-results', disableWebdriverStepsReporting: false, disableWebdriverScreenshotsReporting: false,}]] : ['dot'];
 
 const getRunnerCount = () => {
     const userCount = keysIn(process.env).filter(users => users.includes('MANAGER_USER')).length;
@@ -53,137 +54,41 @@ const getRunnerCount = () => {
 const parallelRunners = getRunnerCount();
 
 exports.config = {
-    // Selenium Host/Port
-    host: process.env.DOCKER ? 'selenium' : 'localhost',
+    hostname: process.env.DOCKER ? 'selenium' : 'localhost',
     port: 4444,
-    //
-    // ==================
-    // Specify Test Files
-    // ==================
-    // Define which test specs should run. The pattern is relative to the directory
-    // from which `wdio` was called. Notice that, if you are calling `wdio` from an
-    // NPM script (see https://docs.npmjs.com/cli/run-script) then the current working
-    // directory is where your package.json resides, so `wdio` will be called from there.
-    //
+
     specs: specs,
-    // Patterns to exclude.
     exclude: [
         './e2e/specs/accessibility/*.spec.js'
-        // 'path/to/excluded/files'
     ],
-    //
-    // ============
-    // Capabilities
-    // ============
-    // Define your capabilities here. WebdriverIO can run multiple capabilities at the same
-    // time. Depending on the number of capabilities, WebdriverIO launches several test
-    // sessions. Within your capabilities you can overwrite the spec and exclude options in
-    // order to group specific specs to a specific capability.
-    //
-    // First, you can define how many instances should be started at the same time. Let's
-    // say you have 3 different capabilities (Chrome, Firefox, and Safari) and you have
-    // set maxInstances to 1; wdio will spawn 3 processes. Therefore, if you have 10 spec
-    // files and you set maxInstances to 10, all spec files will get tested at the same time
-    // and 30 processes will get spawned. The property handles how many capabilities
-    // from the same test should run tests.
-    //
-    maxInstances: parallelRunners,
-    //
-    // If you have trouble getting all important capabilities together, check out the
-    // Sauce Labs platform configurator - a great tool to configure your capabilities:
-    // https://docs.saucelabs.com/reference/platforms-configurator
-    //
-    capabilities: [selectedBrowser],
-    //
-    // ===================
-    // Test Configurations
-    // ===================
-    // Define all options that are relevant for the WebdriverIO instance here
-    //
-    // By default WebdriverIO commands are executed in a synchronous way using
-    // the wdio-sync package. If you still want to run your tests in an async way
-    // e.g. using promises you can set the sync option to false.
-    sync: true,
-    //
-    // Level of logging verbosity: silent | verbose | command | data | result | error
-    logLevel: argv.logLevel ? argv.logLevel : 'silent',
-    //
-    // Enables colors for log output.
-    coloredLogs: true,
-    //
-    // Warns when a deprecated command is used
-    deprecationWarnings: false,
-    //
-    // If you only want to run your tests until a specific amount of tests have failed use
-    // bail (default is 0 - don't bail, run all tests).
-    bail: 0,
-    //
-    // Saves a screenshot to a given path if a command fails.
-    // screenshotPath: './e2e/errorShots/',
-    //
-    // Set a base URL in order to shorten url command calls. If your `url` parameter starts
-    // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
-    // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
-    // gets prepended directly.
-    baseUrl: process.env.REACT_APP_APP_ROOT,
-    //
-    // Default timeout for all waitFor* commands.
-    waitforTimeout: process.env.DOCKER || process.env.BROWSERSTACK_USERNAME ? 30000 : 10000,
-    //
-    // Default timeout in milliseconds for request
-    // if Selenium Grid doesn't send response
-    connectionRetryTimeout: 90000,
-    //
-    // Default request retries count
-    connectionRetryCount: 3,
-    //
-    // Initialize the browser instance with a WebdriverIO plugin. The object should have the
-    // plugin name as key and the desired plugin options as properties. Make sure you have
-    // the plugin installed before running any tests. The following plugins are currently
-    // available:
-    // WebdriverCSS: https://github.com/webdriverio/webdrivercss
-    // WebdriverRTC: https://github.com/webdriverio/webdriverrtc
-    // Browserevent: https://github.com/webdriverio/browserevent
-    // plugins: {
-    //     webdrivercss: {
-    //         screenshotRoot: 'my-shots',
-    //         failedComparisonsRoot: 'diffs',
-    //         misMatchTolerance: 0.05,
-    //         screenWidth: [320,480,640,1024]
-    //     },
-    //     webdriverrtc: {},
-    //     browserevent: {}
-    // },
-    //
-    // Test runner services
-    // Services take over a specific job you don't want to take care of. They enhance
-    // your test setup with almost no effort. Unlike plugins, they don't add new
-    // commands. Instead, they hook themselves up into the test process.
-    // services: [],//
-    // Framework you want to run your specs with.
-    // The following are supported: Mocha, Jasmine, and Cucumber
-    // see also: http://webdriver.io/guide/testrunner/frameworks.html
-    //
-    // Make sure you have the wdio adapter package for the specific framework installed
-    // before running any tests.
-    framework: 'jasmine',
-    //
-    // Test reporter for stdout.
-    // The only one supported by default is 'dot'
-    // see also: http://webdriver.io/guide/reporters/dot.html
-    reporters: selectedReporters,
-    reporterOptions: {
-        junit: {
-            outputDir: './e2e/test-results'
-        }
-    },
 
-    //
-    // Options to be passed to Jasmine.
+    maxInstances: parallelRunners,
+
+    capabilities: [selectedBrowser],
+
+    logLevel: argv.logLevel ? argv.logLevel : 'silent',
+
+    deprecationWarnings: true,
+
+    bail: 0,
+
+    baseUrl: process.env.REACT_APP_APP_ROOT,
+
+    waitforTimeout: process.env.DOCKER || process.env.BROWSERSTACK_USERNAME ? 30000 : 10000,
+
+    connectionRetryTimeout: 90000,
+
+    connectionRetryCount: 3,
+
+    services: [],
+
+    framework: 'jasmine',
+
+    reporters: selectedReporters,
+
     jasmineNodeOpts: {
-        //
-        // Jasmine default timeout
-        defaultTimeoutInterval: 60000 * 60,
+        // A test will timeout after 8 min
+        defaultTimeoutInterval: 60000 * 8,
         //
         // The Jasmine framework allows interception of each assertion in order to log the state of the application
         // or website depending on the result. For example, it is pretty handy to take a screenshot every time
@@ -193,32 +98,12 @@ exports.config = {
         }
     },
 
-    mountebankConfig: {
-        proxyConfig: {
-            imposterPort: '8088',
-            imposterProtocol: 'https',
-            imposterName: 'Linode-API',
-            proxyHost: 'https://api.linode.com/v4',
-            mutualAuth: true,
-        }
-    },
-
-    testUser: '', // SET IN THE BEFORE HOOK PRIOR TO EACH TEST
-    //
-    // =====
-    // Hooks
-    // =====
-    // WebdriverIO provides several hooks you can use to interfere with the test process in order to enhance
-    // it and to build services around it. You can either apply a single function or an array of
-    // methods to it. If one of them returns with a promise, WebdriverIO will wait until that promise got
-    // resolved to continue.
     /**
      * Gets executed once before all workers get launched.
      * @param {Object} config wdio configuration object
      * @param {Array.<Object>} capabilities list of capabilities details
      */
-    onPrepare: function (config, capabilities, user) {
-        // Generate our temporary test credentials file
+    onPrepare: function (config, capabilities) {
         generateCreds('./e2e/creds.js', config, parallelRunners);
     },
     /**
@@ -237,38 +122,18 @@ exports.config = {
      * @param {Array.<String>} specs List of spec file paths that are to be run
      */
     before: function (capabilities, specs) {
-        // Load up our custom commands
         require('@babel/register');
-
         browserCommands();
 
-        // Timecount needed to generate unqiue timestamp values for mocks
-        global.timeCount = 0;
-
-        if (argv.record) {
-            browser.loadProxyImposter(browser.options.mountebankConfig.proxyConfig);
+        if (browser.options.requestedCapabilities.jsonwpCaps.browserName.includes('chrome')) {
+            browser.setTimeouts('page load', process.env.DOCKER ? 30000 : 20000);
         }
 
-        if (argv.replay) {
-            const file = specs[0].replace('.js', '-stub.json');
-            const imposter = JSON.parse(readFileSync(file));
-            browser.loadImposter(imposter);
-        }
-
-
-        if (browser.options.desiredCapabilities.browserName.includes('chrome')) {
-            browser.timeouts('page load', process.env.DOCKER ? 30000 : 20000);
-        }
-
-        if (browser.options.desiredCapabilities.browserName.includes('edge')) {
+        if (browser.options.requestedCapabilities.jsonwpCaps.browserName.includes('edge')) {
             browser.windowHandleMaximize();
         }
 
-        /* Get test credentials from temporary creds file
-           Set "inUse:true" for account under test
-        */
         const testCreds = checkoutCreds('./e2e/creds.js', specs[0]);
-
         login(testCreds.username, testCreds.password, './e2e/creds.js');
     },
     /**
@@ -283,11 +148,8 @@ exports.config = {
      * Hook that gets executed before the suite starts
      * @param {Object} suite suite details
      */
-    /*beforeSuite: function (suite) {
-        // Click beta notice button
-        browser.waitForVisible('[data-qa-dialog-content] button');
-        browser.click('[data-qa-dialog-content] button');
-    },*/
+    // beforeSuite: function (suite) {
+    // },
     /**
      * Function to be executed before a test (in Mocha/Jasmine) or a step (in Cucumber) starts.
      * @param {Object} test test details
@@ -301,17 +163,20 @@ exports.config = {
     // beforeHook: function () {
     // },
     /**
-     * Hook that gets executed _after_ a hook within the suite ends (e.g. runs after calling
+     * Hook that gets executed _after_ a hook within the suite starts (e.g. runs after calling
      * afterEach in Mocha)
      */
     // afterHook: function () {
     // },
     /**
-     * Function to be executed after a test (in Mocha/Jasmine) or a step (in Cucumber) ends.
+     * Function to be executed after a test (in Mocha/Jasmine) or a step (in Cucumber) starts.
      * @param {Object} test test details
      */
-    // afterTest: function (test) {
-    // },
+    afterTest: function (test) {
+        if (test.error !== undefined) {
+            browser.takeScreenshot();
+        }
+    },
     /**
      * Hook that gets executed after the suite has ended
      * @param {Object} suite suite details
@@ -336,17 +201,6 @@ exports.config = {
      * @param {Array.<String>} specs List of spec file paths that ran
      */
     after: function (result, capabilities, specs) {
-        if (argv.record) {
-            const recordingFile = specs[0].replace('.js', '-stub.json');
-            browser.getImposters(true, recordingFile);
-            browser.deleteImposters();
-        }
-
-        if (argv.replay) {
-            browser.deleteImposters();
-        }
-
-        // Set "inUse:false" on the account under test in the credentials file
         checkInCreds('./e2e/creds.js', specs[0]);
     },
     /**
@@ -355,22 +209,18 @@ exports.config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {Array.<String>} specs List of spec file paths that ran
      */
-    // afterSession: function (config, capabilities, specs) {
-    // },
+    //afterSession: function (config, capabilities, specs) {
+    //},
     /**
      * Gets executed after all workers got shut down and the process is about to exit.
      * @param {Object} exitCode 0 - success, 1 - fail
      * @param {Object} config wdio configuration object
      * @param {Array.<Object>} capabilities list of capabilities details
+     * @param {<Object>} results object containing test results
      */
-    onComplete: function(exitCode, config, capabilities) {
-        // Run delete all, on every test account
-
-        /* We wait an arbitrary amount of time here for linodes to be removed
-           Otherwise, attempting to remove attached volumes will fail
-        */
-        return resetAccounts(JSON.parse(readFileSync('./e2e/creds.js')), './e2e/creds.js')
-            .then(res => resolve(res))
-            .catch(error => console.error('Error:', error));
-    } 
+    /*onComplete: function(exitCode, config, capabilities, results) {
+        JSON.parse(readFileSync('./e2e/creds.js')).forEach((cred) => {
+            deleteAllData(cred.token,cred.username);
+        });
+    } */
 }

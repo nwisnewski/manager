@@ -22,9 +22,9 @@ class LinodeDetail extends Page {
     get editLabel() { return $(this.breadcrumbEditableText.selector); }
 
     changeName(name) {
-        this.linodeLabel.waitForVisible();
-        this.editLabel.moveToObject();
-        this.breadcrumbEditButton.waitForVisible(constants.wait.normal);
+        this.linodeLabel.waitForDisplayed();
+        this.editLabel.moveTo();
+        this.breadcrumbEditButton.waitForDisplayed(constants.wait.normal);
         this.breadcrumbEditButton.click();
         this.breadcrumbEditableText.$('input').setValue(name);
         this.breadcrumbSaveEdit.click();
@@ -37,32 +37,32 @@ class LinodeDetail extends Page {
         const currentPowerState = this.powerControl.getAttribute('data-qa-power-control');
 
         browser.jsClick('[data-qa-power-control]');
-        browser.click(`[data-qa-set-power="${powerState}"]`);
+        $(`[data-qa-set-power="${powerState}"]`).click();
 
         if (powerState.includes('powerOff')) {
-            this.dialogTitle.waitForVisible(constants.wait.normal);
-            browser.click('[data-qa-confirm-cancel]');
+            this.dialogTitle.waitForDisplayed(constants.wait.normal);
+            $('[data-qa-confirm-cancel]').click();
             browser.waitUntil(function() {
-                return browser.isVisible('[data-qa-power-control="offline"]');
+                return $('[data-qa-power-control="offline"]').isDisplayed();
             }, constants.wait.minute * 3);
             return;
         }
     }
 
     landingElemsDisplay() {
-        this.summaryTab.waitForVisible();
+        this.summaryTab.waitForDisplayed();
 
-        expect(this.title.isVisible()).toBe(true);
-        expect(this.volumesTab.isVisible()).toBe(true);
-        expect(this.networkingTab.isVisible()).toBe(true);
-        expect(this.resizeTab.isVisible()).toBe(true);
-        expect(this.rescueTab.isVisible()).toBe(true);
-        expect(this.rebuildTab.isVisible()).toBe(true);
-        expect(this.backupTab.isVisible()).toBe(true);
-        expect(this.settingsTab.isVisible()).toBe(true);
-        expect(this.launchConsole.isVisible()).toBe(true);
-        expect(this.powerControl.isVisible()).toBe(true);
-        expect(this.linodeLabel.isVisible()).toBe(true);
+        expect(this.title.isDisplayed()).toBe(true);
+        expect(this.volumesTab.isDisplayed()).toBe(true);
+        expect(this.networkingTab.isDisplayed()).toBe(true);
+        expect(this.resizeTab.isDisplayed()).toBe(true);
+        expect(this.rescueTab.isDisplayed()).toBe(true);
+        expect(this.rebuildTab.isDisplayed()).toBe(true);
+        expect(this.backupTab.isDisplayed()).toBe(true);
+        expect(this.settingsTab.isDisplayed()).toBe(true);
+        expect(this.launchConsole.isDisplayed()).toBe(true);
+        expect(this.powerControl.isDisplayed()).toBe(true);
+        expect(this.linodeLabel.isDisplayed()).toBe(true);
 
         return this;
     }

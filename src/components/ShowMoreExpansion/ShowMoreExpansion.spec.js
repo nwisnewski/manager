@@ -13,25 +13,25 @@ describe('Show More Expansion Suite', () => {
     });
 
     it('should display show more expansion', () => {
-        browser.waitForVisible(showMoreExpanded);
+        $(showMoreExpanded).waitForDisplayed();
 
         const showMoreExpandedElem = $(showMoreExpanded);
 
         expect(showMoreExpandedElem.getText()).toMatch(/([A-z])/ig);
-        expect(showMoreExpandedElem.isVisible()).toBe(true);
+        expect(showMoreExpandedElem.isDisplayed()).toBe(true);
     });
 
     it('should expand on click', () => {
-        const collapsedState = browser.getAttribute(showMoreExpanded, 'data-qa-show-more-expanded').includes('false');
-        const ariaCollapsed = browser.getAttribute(showMoreExpanded, 'aria-expanded').includes('false');
-        
+        const collapsedState = $(showMoreExpanded).getAttribute('data-qa-show-more-expanded').includes('false');
+        const ariaCollapsed = $(showMoreExpanded).getAttribute('aria-expanded').includes('false');
+
         expect(collapsedState).toBe(true);
         expect(ariaCollapsed).toBe(true);
 
-        browser.click(showMoreToggle);
-        
-        const afterClickState = browser.getAttribute(showMoreExpanded, 'data-qa-show-more-expanded').includes('true');
-        const ariaAfterClick = browser.getAttribute(showMoreExpanded, 'aria-expanded').includes('true');
+        $(showMoreToggle).click();
+
+        const afterClickState = $(showMoreExpanded).getAttribute('data-qa-show-more-expanded').includes('true');
+        const ariaAfterClick = $(showMoreExpanded).getAttribute('aria-expanded').includes('true');
 
         expect(afterClickState).toBe(true);
         expect(ariaAfterClick).toBe(true);
@@ -44,10 +44,10 @@ describe('Show More Expansion Suite', () => {
     });
 
     it('should collapse on click', () => {
-        browser.click(showMoreToggle);
+        $(showMoreToggle).click();
 
-        const afterCollapse = browser.getAttribute(showMoreExpanded, 'data-qa-show-more-expanded').includes('false');
-        const ariaAfterCollapse = browser.getAttribute(showMoreExpanded, 'aria-expanded').includes('false');
+        const afterCollapse = $(showMoreExpanded).getAttribute('data-qa-show-more-expanded').includes('false');
+        const ariaAfterCollapse = $(showMoreExpanded).getAttribute('aria-expanded').includes('false');
 
         expect(afterCollapse).toBe(true);
         expect(ariaAfterCollapse).toBe(true);

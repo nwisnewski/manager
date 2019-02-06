@@ -32,7 +32,7 @@ describe('Import Display Groups as Tags - Linodes Suite', () => {
 
     it('Import Groups as Tags CTA is displayed on Dashboard', () => {
         Dashboard.baseElemsDisplay();
-        expect(Dashboard.openImportDrawerButton.isVisible()).toBe(true);
+        expect(Dashboard.openImportDrawerButton.isDisplayed()).toBe(true);
         expect(Dashboard.importGroupsAsTagsCta.getText()).toEqual(importMessage);
     });
 
@@ -44,27 +44,27 @@ describe('Import Display Groups as Tags - Linodes Suite', () => {
             .map(group => group.getText().replace('- ',''));
         expect(groupsToImport.sort()).toEqual([linode.group,linode1.group].sort());
         ImportGroupsAsTagsDrawer.drawerClose.click();
-        Dashboard.drawerBase.waitForVisible(constants.wait.normal, true);
+        Dashboard.drawerBase.waitForDisplayed(constants.wait.normal, true);
     });
 
     it('Dismiss group CTA, verify local storage', () => {
         Dashboard.dismissGroupCTA.click();
-        Dashboard.importGroupsAsTagsCta.waitForVisible(constants.wait.normal, true);
-        expect(Dashboard.openImportDrawerButton.isVisible()).toBe(false);
+        Dashboard.importGroupsAsTagsCta.waitForDisplayed(constants.wait.normal, true);
+        expect(Dashboard.openImportDrawerButton.isDisplayed()).toBe(false);
         expect(getLocalStorageValue('importDisplayGroupsCTA')).toBe('true');
     });
 
     it('Import display groups button is displayed on Global Settings page', () => {
         browser.url(constants.routes.account.globalSettings);
         GlobalSettings.baseElementsDisplay();
-        expect(GlobalSettings.openImportDrawerButton.isVisible()).toBe(true);
+        expect(GlobalSettings.openImportDrawerButton.isDisplayed()).toBe(true);
     });
 
     it('Import display groups as tags, verify local storage', () => {
         GlobalSettings.openImportDrawerButton.click();
         ImportGroupsAsTagsDrawer.drawerDisplays();
         ImportGroupsAsTagsDrawer.submitButton.click();
-        GlobalSettings.drawerBase.waitForVisible(constants.wait.long,true);
+        GlobalSettings.drawerBase.waitForDisplayed(constants.wait.long,true);
         GlobalSettings.toastDisplays('Your display groups have been imported successfully.');
         expect(getLocalStorageValue('hasImportedGroups')).toBe('true');
     });
@@ -72,7 +72,7 @@ describe('Import Display Groups as Tags - Linodes Suite', () => {
     it('Verify groups are imported as tags', () => {
         browser.url(constants.routes.linodes);
         [linode,linode1].forEach((linode) => {
-            $(ListLinodes.getLinodeSelector(linode.linodeLabel)).waitForVisible(constants.wait.noraml);
+            $(ListLinodes.getLinodeSelector(linode.linodeLabel)).waitForDisplayed(constants.wait.noraml);
             expect(ListLinodes.getLinodeTags(linode.linodeLabel)).toEqual([linode.group.toLowerCase()]);
         });
     });

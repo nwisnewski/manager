@@ -1,6 +1,11 @@
 const { constants } = require('../../../constants');
 
-import { apiCreateLinode, apiDeleteAllLinodes, generatePassword } from '../../../utils/common';
+import {
+    apiCreateLinode,
+    apiDeleteAllLinodes,
+    generatePassword,
+    timestamp,
+} from '../../../utils/common';
 import Rebuild from '../../../pageobjects/linode-detail/linode-detail-rebuild.page';
 import ListLinodes from '../../../pageobjects/list-linodes';
 import LinodeDetail from '../../../pageobjects/linode-detail/linode-detail.page';
@@ -8,9 +13,9 @@ import LinodeDetail from '../../../pageobjects/linode-detail/linode-detail.page'
 describe('Linode Detail - Rebuild Suite', () => {
     beforeAll(() => {
         browser.url(constants.routes.linodes);
-        apiCreateLinode();
+        apiCreateLinode(`AutoLinode${timestamp()}`);
 
-        ListLinodes.linodeElem.waitForVisible();
+        ListLinodes.linodeElem.waitForDisplayed();
         ListLinodes.navigateToDetail();
 
         LinodeDetail.landingElemsDisplay();
@@ -26,13 +31,13 @@ describe('Linode Detail - Rebuild Suite', () => {
     });
 
     it('should display a help icon with tooltip on click', () => {
-        Rebuild.helpButton.moveToObject();
-        Rebuild.popoverMsg.waitForVisible(constants.wait.normal);
+        Rebuild.helpButton.moveTo();
+        Rebuild.popoverMsg.waitForDisplayed(constants.wait.normal);
     });
 
     it('should display error on create an image without selecting an image', () => {
         Rebuild.submit.click();
-        expect(Rebuild.imageError.isVisible()).toBe(true);
+        expect(Rebuild.imageError.isDisplayed()).toBe(true);
         expect(Rebuild.imageError.getText()).toBe('Image cannot be blank.');
         browser.refresh();
         Rebuild.assertElemsDisplay();
@@ -41,7 +46,7 @@ describe('Linode Detail - Rebuild Suite', () => {
     it('should display error on create image without setting a password', () => {
         const errorMsg = 'Password cannot be blank.';
         Rebuild.selectImage();
-        Rebuild.imageOption.waitForVisible(constants.wait.normal,true);
+        Rebuild.imageOption.waitForDisplayed(constants.wait.normal,true);
         Rebuild.submit.click();
         Rebuild.waitForNotice(errorMsg, constants.wait.normal);
         browser.refresh();

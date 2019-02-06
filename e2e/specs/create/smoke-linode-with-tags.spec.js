@@ -15,7 +15,7 @@ describe('Create Linode from Image - With Tags Suite', () => {
     const linodeName = `Lin-${timestamp()}`;
 
     const assertTagsDisplay = (tags) => {
-        ConfigureLinode.tag.waitForVisible(constants.wait.normal);
+        ConfigureLinode.tag.waitForDisplayed(constants.wait.normal);
 
         const displayedTags = ConfigureLinode.tags.map(t => t.getText());
 
@@ -32,8 +32,8 @@ describe('Create Linode from Image - With Tags Suite', () => {
     });
 
     it('should display the tags multi select', () => {
-        ConfigureLinode.multiSelect.waitForVisible(constants.wait.normal);
-        expect(ConfigureLinode.tagsMultiSelect.isVisible()).toBe(true);
+        ConfigureLinode.multiSelect.waitForDisplayed(constants.wait.normal);
+        expect(ConfigureLinode.tagsMultiSelect.isDisplayed()).toBe(true);
         // Make this assertion generic, in case the copy changes
         expect(ConfigureLinode.tagsMultiSelect.getText()).toContain('tag');
     });
@@ -52,8 +52,8 @@ describe('Create Linode from Image - With Tags Suite', () => {
 
         ConfigureLinode.selectOptions[0].click();
 
-        ConfigureLinode.selectOption.waitForVisible(constants.wait.normal, true);
-        ConfigureLinode.multiOption.waitForVisible(constants.wait.normal);
+        ConfigureLinode.selectOption.waitForDisplayed(constants.wait.normal, true);
+        ConfigureLinode.multiOption.waitForDisplayed(constants.wait.normal);
 
         const selectedTags = $$(ConfigureLinode.multiOption.selector).map( tag => tag.getText());
 
@@ -74,7 +74,8 @@ describe('Create Linode from Image - With Tags Suite', () => {
 
         it('should display the linode with tags on list view', () => {
             ListLinodes.listToggle.click();
-            ListLinodes.rebootButton.waitForVisible(constants.wait.normal, true);
+            ListLinodes.rebootButton.waitForDisplayed(constants.wait.normal, true);
+            ListLinodes.hoverLinodeTags(linodeName);
             assertTagsDisplay(addedTags);
         });
     });

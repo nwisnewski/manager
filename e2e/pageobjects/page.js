@@ -62,12 +62,12 @@ export default class Page {
     get upArrowKey() { return '\ue013'; }
 
     logout() {
-        this.userMenu.waitForVisible(constants.wait.normal);
+        this.userMenu.waitForDisplayed(constants.wait.normal);
         this.userMenu.click();
-        this.logoutButton.waitForVisible(constants.wait.normal);
+        this.logoutButton.waitForDisplayed(constants.wait.normal);
         this.logoutButton.click();
-        this.logoutButton.waitForVisible(constants.wait.normal, true);
-        this.globalCreate.waitForVisible(constants.wait.normal, true);
+        this.logoutButton.waitForDisplayed(constants.wait.normal, true);
+        this.globalCreate.waitForDisplayed(constants.wait.normal, true);
 
         browser.waitUntil(function() {
             return browser.getUrl().includes('/login');
@@ -76,21 +76,21 @@ export default class Page {
 
     chooseSelectOption(selectElement, selectOption) {
         selectElement.click();
-        browser.waitForVisible('[data-value]');
+        $('[data-value]').waitForDisplayed();
 
         if (Number.isInteger(selectOption)) {
             const optionElement = $$('[data-value]')[selectOption];
             optionElement.click();
-            optionElement.waitForVisible(constants.wait.normal, true);
+            optionElement.waitForDisplayed(constants.wait.normal, true);
             return;
         }
 
         $(`[data-value="${selectOption}"]`).click();
-        browser.waitForVisible(`[data-value="${selectOption}"]`, constants.wait.normal, true);
+        $(`[data-value="${selectOption}"]`).waitForDisplayed(constants.wait.normal, true);
     }
 
     expandPanel(title) {
-        $(`[data-qa-panel-summary="${title}"]`).waitForVisible(constants.wait.normal);
+        $(`[data-qa-panel-summary="${title}"]`).waitForDisplayed(constants.wait.normal);
         $(`[data-qa-panel-summary="${title}"]`).click();
 
         browser.waitUntil(function() {
@@ -113,11 +113,11 @@ export default class Page {
     }
 
     selectGlobalCreateItem(menuItem) {
-        this.globalCreate.waitForVisible(constants.wait.normal);
+        this.globalCreate.waitForDisplayed(constants.wait.normal);
         browser.tryClick(this.globalCreate.selector);
-        browser.waitForVisible('[data-qa-add-new-menu]', constants.wait.normal);
-        browser.click(`[data-qa-add-new-menu="${menuItem}"]`);
-        browser.waitForVisible('[data-qa-add-new-menu]', constants.wait.normal, true);
+        $('[data-qa-add-new-menu]').waitForDisplayed(constants.wait.normal);
+        $(`[data-qa-add-new-menu="${menuItem}"]`).click();
+        $('[data-qa-add-new-menu]').waitForDisplayed(constants.wait.normal, true);
     }
 
     waitForNotice(noticeMsg, timeout=10000, opposite=false) {
@@ -142,22 +142,22 @@ export default class Page {
     }
 
     toastDisplays(expectedMessage, timeout=constants.wait.normal, wait=true) {
-        this.toast.waitForVisible(timeout);
+        this.toast.waitForDisplayed(timeout);
         let toastMessage;
         if(wait){
             browser.waitUntil(() => {
                 toastMessage = $$(this.toast.selector).find(toast => toast.getText() === expectedMessage);
                 return toastMessage;
             },timeout);
-            toastMessage.waitForVisible(timeout, true);
+            toastMessage.waitForDisplayed(timeout, true);
         }else{
-            this.toast.waitForVisible(timeout, true);
+            this.toast.waitForDisplayed(timeout, true);
         }
 
     }
 
     openActionMenu(actionMenuRow) {
-        actionMenuRow.$(this.actionMenu.selector).waitForVisible(constants.wait.normal);
+        actionMenuRow.$(this.actionMenu.selector).waitForDisplayed(constants.wait.normal);
         try {
           actionMenuRow.$(this.actionMenu.selector).click();
           browser.waitUntil(() => {
@@ -181,32 +181,32 @@ export default class Page {
     selectActionMenuItemV2(tableCellSelector, item, index=0){
       const actionMenu = $$(`${tableCellSelector} ${this.actionMenu.selector}`)[index];
       actionMenu.click();
-      browser.waitForVisible(this.actionMenuItem.selector, constants.wait.normal);
       const trimActionMenu = this.actionMenuItem.selector.replace(']', '');
+      $(`${trimActionMenu}="${item}"]`).waitForDisplayed(constants.wait.normal);
       browser.jsClick(`${trimActionMenu}="${item}"]`);
     }
 
     actionMenuOptionExists(actionMenuRow,options) {
         this.openActionMenu(actionMenuRow);
         options.forEach((option) => {
-            expect($(`[data-qa-action-menu-item="${option}"]`).isVisible()).toBe(true)
+            expect($(`[data-qa-action-menu-item="${option}"]`).isDisplayed()).toBe(true)
         });
     }
 
     closeDrawer() {
         this.drawerClose.click();
-        this.drawerTitle.waitForVisible(constants.wait.normal, true);
+        this.drawerTitle.waitForDisplayed(constants.wait.normal, true);
     }
 
     changeTab(tab) {
         const tabElementSelector = `[data-qa-tab="${tab}"]`;
-        $(tabElementSelector).waitForVisible(constants.wait.normal);
+        $(tabElementSelector).waitForDisplayed(constants.wait.normal);
         browser.jsClick(tabElementSelector);
         browser.waitUntil(function() {
-            return browser
-                .getAttribute(`[data-qa-tab="${tab}"]`, 'aria-selected').includes('true');
+            return $(`[data-qa-tab="${tab}"]`)
+                .getAttribute('aria-selected').includes('true');
         }, constants.wait.normal, 'Failed to change tab');
-        browser.waitForVisible('[data-qa-circle-progress]', constants.wait.normal, true);
+        $('[data-qa-circle-progress]').waitForDisplayed(constants.wait.normal, true);
         return this;
     }
 
@@ -216,15 +216,15 @@ export default class Page {
         matchingTags.forEach(t => {
             const tagName = t.getText();
             t.$(this.deleteTag.selector).click();
-            browser.waitForVisible(`[data-qa-tag="${tagName}"]`, constants.wait.normal, true);
+            $(`[data-qa-tag="${tagName}"]`).waitForDisplayed(constants.wait.normal, true);
         });
     }
 
     addTagToTagInput(tagName){
         this.tagsMultiSelect.$('..').$('input').setValue(tagName);
-        this.selectOptions[0].waitForVisible(constants.wait.normal);
+        this.selectOptions[0].waitForDisplayed(constants.wait.normal);
         this.selectOptions[0].click();
-        this.multiOption.waitForVisible(constants.wait.normal);
+        this.multiOption.waitForDisplayed(constants.wait.normal);
         expect(this.multiOption.getText()).toBe(tagName);
     }
 
@@ -232,7 +232,7 @@ export default class Page {
         const expectedCount = this.tags.length + 1
         this.addTag.click();
         const createTagSelect = $$('[data-qa-enhanced-select]')[1].$('..').$('input');
-        createTagSelect.waitForVisible(constants.wait.normal);
+        createTagSelect.waitForDisplayed(constants.wait.normal);
         createTagSelect.setValue(tagName);
         createTagSelect.addValue(this.enterKey);
         browser.waitUntil(() => {

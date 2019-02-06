@@ -12,17 +12,17 @@ class EnableAllBackupsDrawer extends Page {
     get countLinodesToBackup() { return $('[data-qa-backup-count]'); }
 
     enableAllBackupsDrawerDisplays(notAutoBackupEnabled) {
-        this.drawerBase.waitForVisible(constants.wait.normal);
-        this.countLinodesToBackup.waitForVisible(constants.wait.normal);
+        this.drawerBase.waitForDisplayed(constants.wait.normal);
+        this.countLinodesToBackup.waitForDisplayed(constants.wait.normal);
         browser.waitUntil(() => {
             return this.linodesTable.length > 0;
         },constants.wait.normal);
         if(notAutoBackupEnabled) {
-            this.toggleOption.waitForVisible(constants.wait.normal);
-            this.backupPricingPage.waitForVisible(constants.wait.normal);
+            this.toggleOption.waitForDisplayed(constants.wait.normal);
+            this.backupPricingPage.waitForDisplayed(constants.wait.normal);
         }
-        this.submitButton.waitForVisible(constants.wait.normal);
-        this.cancelButton.waitForVisible(constants.wait.normal);
+        this.submitButton.waitForDisplayed(constants.wait.normal);
+        this.cancelButton.waitForDisplayed(constants.wait.normal);
     }
 }
 

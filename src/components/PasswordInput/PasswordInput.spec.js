@@ -9,10 +9,10 @@ describe('Password Input Suite', () => {
     const passwordInput = '[data-qa-hide] input';
 
     function hideShow(show) {
-        browser.click('[data-qa-hide] svg');
-        const hidden = browser.getAttribute('[data-qa-hide]', 'data-qa-hide');
-        const type = browser.getAttribute(passwordInput, 'type');
-        
+        $('[data-qa-hide] svg').click();
+        const hidden = $('[data-qa-hide]').getAttribute('data-qa-hide');
+        const type = $(passwordInput).getAttribute('type');
+
         if (show) {
             expect(hidden).toBe('false');
             expect(type).toBe('text');
@@ -27,7 +27,7 @@ describe('Password Input Suite', () => {
     });
 
     it('should display password input with strength indicator', () => {
-        browser.waitForVisible(passwordInput);
+        $(passwordInput).waitForDisplayed();
 
         const input = $(passwordInput);
 
@@ -37,8 +37,8 @@ describe('Password Input Suite', () => {
     it('should update the strength when complexity of password increases', () => {
         const testPasswords = ['weak', 'stronger1233', 'Stronger123#!'];
         testPasswords.forEach((pass, index) => {
-            browser.setValue(passwordInput, pass);
-            const strengthDisplays = $(strengthIndicator).isVisible();
+            $(passwordInput).setValue(pass);
+            const strengthDisplays = $(strengthIndicator).isDisplayed();
             const strength = $(strengthIndicator).getAttribute('data-qa-strength');
 
             expect(strengthDisplays).toBe(true);

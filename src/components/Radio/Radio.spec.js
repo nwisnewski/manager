@@ -13,10 +13,10 @@ describe('Radio Suite', () => {
     });
 
     it('should display radio buttons', () => {
-        browser.waitForVisible(radio);
+        $(radio).waitForDisplayed();
         radios = $$(radio);
 
-        radios.forEach(r => expect(r.isVisible()).toBe(true));
+        radios.forEach(r => expect(r.isDisplayed()).toBe(true));
     });
 
     it('should check enabled buttons on click', () => {

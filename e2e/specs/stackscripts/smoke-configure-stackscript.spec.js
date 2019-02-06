@@ -33,7 +33,7 @@ describe('StackScript - Create Suite', () => {
 
     it('should fail to create the stackscript', () => {
         ConfigureStackScripts.saveButton.click();
-        ConfigureStackScripts.script.$('p').waitForText(constants.wait.normal);
+        ConfigureStackScripts.script.$('p').waitForDisplayed(constants.wait.normal);
     });
 
     it('should clear the config fields on cancel', () => {

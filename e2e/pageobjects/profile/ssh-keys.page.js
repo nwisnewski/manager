@@ -23,44 +23,44 @@ export class SshKeys extends Page {
     get placeholderMsg() { return $('[data-qa-placeholder-msg]'); }
 
     baseElemsDisplay() {
-        this.addKeyButton.waitForVisible(constants.wait.normal);
-        this.labelColumn.waitForVisible(constants.wait.normal);
+        this.addKeyButton.waitForDisplayed(constants.wait.normal);
+        this.labelColumn.waitForDisplayed(constants.wait.normal);
 
-        expect(this.keyColumn.isVisible()).toBe(true);
-        expect(this.createdColumn.isVisible()).toBe(true);
+        expect(this.keyColumn.isDisplayed()).toBe(true);
+        expect(this.createdColumn.isDisplayed()).toBe(true);
     }
 
 
     addKey(label, publicKey) {
         this.addKeyButton.click();
-        this.drawerTitle.waitForVisible(constants.wait.normal);
-        this.drawerKeyLabel.waitForVisible(constants.wait.normal);
-        expect(this.drawerPublicKey.isVisible()).toBe(true);
-        expect(this.addKeyButton.isVisible()).toBe(true);
-        expect(this.cancelButton.isVisible()).toBe(true);
+        this.drawerTitle.waitForDisplayed(constants.wait.normal);
+        this.drawerKeyLabel.waitForDisplayed(constants.wait.normal);
+        expect(this.drawerPublicKey.isDisplayed()).toBe(true);
+        expect(this.addKeyButton.isDisplayed()).toBe(true);
+        expect(this.cancelButton.isDisplayed()).toBe(true);
 
         this.drawerKeyLabel.setValue(label);
         this.drawerPublicKey.setValue(publicKey);
         this.submitKeyButton.click();
 
-        $(`[data-qa-content-row="${label}"]`).waitForVisible(constants.wait.normal);
+        $(`[data-qa-content-row="${label}"]`).waitForDisplayed(constants.wait.normal);
     }
 
     removeKey(label) {
-        browser.waitForVisible(`[data-qa-content-row="${label}"]`, constants.wait.normal);
+        $(`[data-qa-content-row="${label}"]`).waitForDisplayed(constants.wait.normal);
         const keyToRemove = $(`[data-qa-content-row="${label}"]`);
         this.selectActionMenuItem(keyToRemove, 'Delete');
 
-        this.dialogTitle.waitForVisible(constants.wait.normal);
+        this.dialogTitle.waitForDisplayed(constants.wait.normal);
 
-        expect(this.dialogConfirmDelete.isVisible()).toBe(true);
-        expect(this.dialogConfirmCancel.isVisible()).toBe(true);
+        expect(this.dialogConfirmDelete.isDisplayed()).toBe(true);
+        expect(this.dialogConfirmCancel.isDisplayed()).toBe(true);
         expect(this.dialogTitle.getText()).toBe('Delete SSH Key');
 
         this.dialogConfirmDelete.click();
         this.dialogTitle.waitForExist(constants.wait.normal, true);
 
-        $(`[data-qa-content-row="${label}"]`).waitForVisible(constants.wait.long, true);
+        $(`[data-qa-content-row="${label}"]`).waitForDisplayed(constants.wait.long, true);
     }
 }
 

@@ -27,23 +27,23 @@ class ListDomains extends Page {
     baseElemsDisplay(placeholder) {
         if (placeholder) {
             const placeholderTitle = 'Add a Domain';
-            this.placeholderText.waitForVisible(constants.wait.normal);
+            this.placeholderText.waitForDisplayed(constants.wait.normal);
 
             expect(this.placeholderText.getText()).toBe(placeholderTitle);
             expect(this.createButton.getText()).toBe(placeholderTitle);
             return this;
         }
 
-        this.createIconLink.waitForVisible();
-        expect(this.domainElem.isVisible()).toBe(true);
-        expect(this.domainNameHeader.isVisible()).toBe(true);
+        this.createIconLink.waitForDisplayed();
+        expect(this.domainElem.isDisplayed()).toBe(true);
+        expect(this.domainNameHeader.isDisplayed()).toBe(true);
         expect(this.domainNameHeader.getText()).toBe('Domain');
-        expect(this.domainTypeHeader.isVisible()).toBe(true);
+        expect(this.domainTypeHeader.isDisplayed()).toBe(true);
         expect(this.domainTypeHeader.getText()).toBe('Type');
         expect(this.domains.length).toBeGreaterThan(0);
-        expect(this.domains[0].$(this.label.selector).isVisible()).toBe(true);
-        expect(this.domains[0].$(this.type.selector).isVisible()).toBe(true);
-        expect(this.domains[0].$(this.actionMenu.selector).isVisible()).toBe(true);
+        expect(this.domains[0].$(this.label.selector).isDisplayed()).toBe(true);
+        expect(this.domains[0].$(this.type.selector).isDisplayed()).toBe(true);
+        expect(this.domains[0].$(this.actionMenu.selector).isDisplayed()).toBe(true);
         return this;
     }
 
@@ -53,13 +53,13 @@ class ListDomains extends Page {
         const cancelMsg = 'Cancel';
 
         expect(this.drawerTitle.getText()).toBe(createDrawerTitle)
-        expect(this.createSoaEmail.isVisible()).toBe(true);
+        expect(this.createSoaEmail.isDisplayed()).toBe(true);
         expect(this.createSoaEmail.$('label').getText()).toBe('SOA Email Address');
         expect(this.createDomainName.$('label').getText()).toBe('Domain');
-        expect(this.createDomainName.isVisible()).toBe(true);
-        expect(this.submit.isVisible()).toBe(true);
+        expect(this.createDomainName.isDisplayed()).toBe(true);
+        expect(this.submit.isDisplayed()).toBe(true);
         expect(this.submit.getText()).toBe(submitMsg);
-        expect(this.cancel.isVisible()).toBe(true);
+        expect(this.cancel.isDisplayed()).toBe(true);
         expect(this.cancel.getText()).toBe(cancelMsg);
     }
 
@@ -72,7 +72,7 @@ class ListDomains extends Page {
             this.createIconLink.click();
         }
 
-        this.drawerTitle.waitForVisible(constants.wait.normal);
+        this.drawerTitle.waitForDisplayed(constants.wait.normal);
         this.createDrawerElemsDisplay();
         this.createDomainName.$('input').setValue(name);
         this.createSoaEmail.$('input').setValue(email);
@@ -80,15 +80,15 @@ class ListDomains extends Page {
             this.addTagToTagInput(tag);
         }
         this.submit.click();
-        this.domainDrawer.waitForVisible(constants.wait.normal, true);
-        browser.waitForVisible(this.breadcrumbStaticText.selector, constants.wait.normal);
+        this.domainDrawer.waitForDisplayed(constants.wait.normal, true);
+        this.breadcrumbStaticText.waitForDisplayed(constants.wait.normal);
 
         browser.waitUntil(function() {
             return browser.getUrl().includes('/records');
         }, constants.wait.normal);
 
         // if (placeholder) {
-        //     this.domainElem.waitForVisible(constants.wait.normal);
+        //     this.domainElem.waitForDisplayed(constants.wait.normal);
         // } else {
         //     browser.waitUntil(function() {
         //         return $$('[data-qa-domain-cell]').length > existingDomainsCount;
@@ -101,14 +101,14 @@ class ListDomains extends Page {
         browser.waitUntil(function() {
             return browser.getUrl().includes('/records');
         }, constants.wait.normal);
-        browser.waitForVisible(this.breadcrumbStaticText.selector);
+        this.breadcrumbStaticText.waitForDisplayed();
     }
 
     cloneDrawerElemsDisplay() {
-        this.drawerTitle.waitForVisible();
-        this.drawerClose.waitForVisible();
+        this.drawerTitle.waitForDisplayed();
+        this.drawerClose.waitForDisplayed();
         expect(this.drawerTitle.getText()).toBe('Add a new Domain');
-        expect(this.cloneDomainName.isVisible()).toBe(true);
+        expect(this.cloneDomainName.isDisplayed()).toBe(true);
     }
 
     clone(newDomainName) {
@@ -117,7 +117,7 @@ class ListDomains extends Page {
         browser.trySetValue(`${this.cloneDomainName.selector} input`, newDomainName);
         this.submit.click();
 
-        browser.waitForVisible(this.breadcrumbStaticText.selector, constants.wait.normal);
+        this.breadcrumbStaticText.waitForDisplayed(constants.wait.normal);
 
         browser.url(constants.routes.domains)
 
@@ -130,14 +130,14 @@ class ListDomains extends Page {
     }
 
     remove(domain, domainName) {
-        this.dialogTitle.waitForVisible();
+        this.dialogTitle.waitForDisplayed();
         expect(this.dialogTitle.getText()).toBe(`Remove ${domainName}`);
-        expect(this.submit.isVisible()).toBe(true);
-        expect(this.cancel.isVisible()).toBe(true);
+        expect(this.submit.isDisplayed()).toBe(true);
+        expect(this.cancel.isDisplayed()).toBe(true);
 
         this.submit.click();
-        this.dialogTitle.waitForVisible(constants.wait.normal, true);
-        domain.waitForVisible(constants.wait.normal, true);
+        this.dialogTitle.waitForDisplayed(constants.wait.normal, true);
+        domain.waitForDisplayed(constants.wait.normal, true);
     }
 
     domainRow(domain){
@@ -146,7 +146,7 @@ class ListDomains extends Page {
     }
 
     getDomainTags(domain){
-        this.domainRow(domain).waitForVisible(constants.wait.normal);
+        this.domainRow(domain).waitForDisplayed(constants.wait.normal);
         return this.domainRow(domain).$$(this.tag.selector)
             .map(tag => tag.getText());
     }

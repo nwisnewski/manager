@@ -31,7 +31,7 @@ describe('Domain Tag Management Suite', () => {
     }
 
     const checkSortOrder = () => {
-      const order = ListDomains.sortTableByHeader('Domains');
+      const order = ListDomains.sortTableByHeader('Domain');
       groupsAsTags.forEach((tag) => {
           const expectedDomainsInGroup = domainsInGroup(tag);
           const expectedOrder = order === 'asc' ? expectedDomainsInGroup.sort() : expectedDomainsInGroup.sort().reverse();
@@ -60,7 +60,7 @@ describe('Domain Tag Management Suite', () => {
                 .map(group => group.getText().replace('- ',''));
             expect(groupsToImport.sort()).toEqual(groupsAsTags.sort());
             ImportGroupsAsTagsDrawer.submitButton.click();
-            Dashboard.drawerBase.waitForVisible(constants.wait.minute,true);
+            Dashboard.drawerBase.waitForDisplayed(constants.wait.minute,true);
             Dashboard.toastDisplays('Your display groups have been imported successfully.');
         });
 
@@ -80,7 +80,7 @@ describe('Domain Tag Management Suite', () => {
     describe('Group Domains by Tag', () => {
 
         it('Group Domain by Tag', () => {
-            expect(ListDomains.groupByTagsToggle.isVisible()).toBe(true);
+            expect(ListDomains.groupByTagsToggle.isDisplayed()).toBe(true);
             ListDomains.groupByTags(true);
         });
 

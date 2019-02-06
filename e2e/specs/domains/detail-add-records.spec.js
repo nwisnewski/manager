@@ -44,8 +44,8 @@ describe('Domains - Detail - Add Records Suite', () => {
 
     beforeAll(() => {
         browser.url(constants.routes.domains);
-        ListDomains.globalCreate.waitForVisible();
-        ListDomains.progressBar.waitForVisible(constants.wait.normal, true);
+        ListDomains.globalCreate.waitForDisplayed();
+        ListDomains.progressBar.waitForDisplayed(constants.wait.normal, true);
         ListDomains.baseElemsDisplay(true);
         ListDomains.create(domainName,domainEmail,true, domainTags[0]);
         DomainDetail.domainDetailDisplays(domainName);
@@ -80,9 +80,9 @@ describe('Domains - Detail - Add Records Suite', () => {
             const refresh = DomainDetail.selectDropdownOption('Refresh Rate');
             const retry = DomainDetail.selectDropdownOption('Retry Rate');
             DomainDetail.expireRateSelect.click();
-            DomainDetail.exireRateOptions[0].waitForVisible(constants.wait.normal);
+            DomainDetail.exireRateOptions[0].waitForDisplayed(constants.wait.normal);
             DomainDetail.exireRateOptions[0].click();
-            DomainDetail.exireRateOptions[0].waitForVisible(constants.wait.normal, true);
+            DomainDetail.exireRateOptions[0].waitForDisplayed(constants.wait.normal, true);
             browser.pause(500);
             const expire = DomainDetail.expireRateSelect.getText();
             DomainDetail.saveRecord();
@@ -133,7 +133,7 @@ describe('Domains - Detail - Add Records Suite', () => {
     describe('MX Record Update', () => {
 
         it('MX Records are empty by default', () => {
-            expect($(DomainDetail.rowSelector('MX Record')).isVisible()).toBe(false)
+            expect($(DomainDetail.rowSelector('MX Record')).isDisplayed()).toBe(false)
         });
 
         it('A MX Record can be added to a domain', () => {
@@ -174,8 +174,8 @@ describe('Domains - Detail - Add Records Suite', () => {
     describe('A/AAAA Record Update', () => {
 
         it('A/AAAA Records are empty by default', () => {
-            browser.scroll(0,500);
-            expect($(DomainDetail.rowSelector('A/AAAA Record')).isVisible()).toBe(false)
+            DomainDetail.addRecordButtonElementByLabel('A/AAAA Record').scrollIntoView();
+            expect($(DomainDetail.rowSelector('A/AAAA Record')).isDisplayed()).toBe(false)
         });
 
         it('An A/AAAA Record can be added to a domain', () => {
@@ -210,7 +210,7 @@ describe('Domains - Detail - Add Records Suite', () => {
     describe('CNAME Record Update', () => {
 
         it('CNAME  Records are empty by default', () => {
-            expect($(DomainDetail.rowSelector('CNAME  Record')).isVisible()).toBe(false)
+            expect($(DomainDetail.rowSelector('CNAME  Record')).isDisplayed()).toBe(false)
         });
 
         it('A CNAME Record can be added to a domain', () => {
@@ -245,7 +245,7 @@ describe('Domains - Detail - Add Records Suite', () => {
     describe('TXT Record Update', () => {
 
         it('TXT Records are empty by default', () => {
-            expect($(DomainDetail.rowSelector('TXT Record')).isVisible()).toBe(false)
+            expect($(DomainDetail.rowSelector('TXT Record')).isDisplayed()).toBe(false)
         });
 
         it('A TXT Record can be added to a domain', () => {
@@ -280,7 +280,7 @@ describe('Domains - Detail - Add Records Suite', () => {
     describe('SRV Record Update', () => {
 
         it('SRV Records are empty by default', () => {
-            expect($(DomainDetail.rowSelector('SRV Record')).isVisible()).toBe(false)
+            expect($(DomainDetail.rowSelector('SRV Record')).isDisplayed()).toBe(false)
         });
 
         it('A SRV Record can be added to a domain', () => {
@@ -340,7 +340,7 @@ describe('Domains - Detail - Add Records Suite', () => {
     describe('CAA Record Update', () => {
 
         it('CAA Records are empty by default', () => {
-            expect($(DomainDetail.rowSelector('CAA Record')).isVisible()).toBe(false)
+            expect($(DomainDetail.rowSelector('CAA Record')).isDisplayed()).toBe(false)
         });
 
         it('A CAA Record can be added to a domain', () => {
@@ -380,7 +380,7 @@ describe('Domains - Detail - Add Records Suite', () => {
     });
 
     it('Breadcrumb link navigates back to domain landing page', () => {
-        browser.scroll(0,-500);
+        DomainDetail.breadCrumbLinkText.scrollIntoView();
         DomainDetail.breadCrumbLinkText.click();
         ListDomains.baseElemsDisplay(false);
         expect(ListDomains.label.getText()).toContain(domainName);

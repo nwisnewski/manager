@@ -62,7 +62,7 @@ describe('Group Linodes by Tags - Suite', () => {
     });
 
     it('Group by tag toggle is present and off by default', () => {
-        expect(ListLinodes.groupByTagsToggle.isVisible()).toBe(true);
+        expect(ListLinodes.groupByTagsToggle.isDisplayed()).toBe(true);
         expect(ListLinodes.tagHeaders.length).toBe(0);
     });
 
@@ -81,7 +81,7 @@ describe('Group Linodes by Tags - Suite', () => {
         });
 
         it('Linodes are sortable within tag groups', () => {
-            expect(ListLinodes.sortLinodesByLabel.isVisible()).toBe(true);
+            expect(ListLinodes.sortLinodesByLabel.isDisplayed()).toBe(true);
             [1,2].forEach((iterator) => {
                 ListLinodes.sortLinodesByLabel.$('svg').click();
                 browser.pause(500);

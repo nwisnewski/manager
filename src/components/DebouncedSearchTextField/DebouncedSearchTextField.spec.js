@@ -21,7 +21,7 @@ describe('Debounced Search Suite', () => {
             const placeholderMsg = 'Search for something (i.e "er")'
             enhancedSelect = $(`[data-qa-enhanced-select='${placeholderMsg}']`);
 
-            expect(enhancedSelect.isVisible()).toBe(true);
+            expect(enhancedSelect.isDisplayed()).toBe(true);
             expect(enhancedSelect.getText()).toContain(placeholderMsg)
         });
 
@@ -35,15 +35,13 @@ describe('Debounced Search Suite', () => {
             const badQuery = 'akjsdhfklj';
 
             enhancedSelect.$('..').$('input').setValue(badQuery);
-            browser.waitForVisible('[data-qa-no-options]', constants.wait.normal);
+            $('[data-qa-no-options]').waitForDisplayed(constants.wait.normal);
         });
 
         it('should display options on a valid search query', () => {
             // Add the value twice to fix test flakiness when running the entire functional test suite
-            const enhancedSelectInput = enhancedSelect.$('..').$('input').selector;
-            browser.trySetValue(enhancedSelectInput, validQuery);
-
-            browser.waitForVisible(optionSelector, constants.wait.normal);
+            enhancedSelect.$('..').$('input').setValue(validQuery);
+            $(optionSelector).waitForDisplayed(constants.wait.normal);
 
             selectOptions = $$(optionSelector);
             expect(selectOptions.length).toBe(1);
@@ -52,7 +50,7 @@ describe('Debounced Search Suite', () => {
         it('should update the selected option text on select', () => {
             selectOptions[0].click();
 
-            browser.waitForVisible(selectOptions[0].selector, constants.wait.normal, true);
+            selectOptions[0].waitForDisplayed(constants.wait.normal, true);
             selectedOptionMsg = $(currentResultSelector);
             expect(selectedOptionMsg.getText()).toBe('You selected: keyboards');
         });
@@ -91,7 +89,7 @@ describe('Debounced Search Suite', () => {
         it('should display unfiltered list of options', () => {
             displayedListItems = $$(listItemSelector);
             displayedListItems.forEach(i => {
-                expect(i.isVisible()).toBe(true);
+                expect(i.isDisplayed()).toBe(true);
                 expect(i.getText()).toMatch(/\w/ig);
                 initialOptions.push(i.getText());
             });
@@ -102,7 +100,7 @@ describe('Debounced Search Suite', () => {
 
             searchTextfield.setValue(badQuery);
 
-            displayedListItems.forEach(i => i.waitForVisible(constants.wait.normal, true));
+            displayedListItems.forEach(i => i.waitForDisplayed(constants.wait.normal, true));
         });
 
         it('should display a single option on query of a single matching list item', () => {

@@ -24,7 +24,7 @@ describe('Enhanced Select Suite', () => {
         it('should display options on click', () => {
             const basicSelectInputs = basicSelects.map((s) => s.$("div"));
             basicSelectInputs[0].click();
-            browser.waitForVisible('[data-qa-option]', constants.wait.normal);
+            $('[data-qa-option]').waitForDisplayed(constants.wait.normal);
 
             options = $$('[data-qa-option]');
             expect(options.length).toBe(5);
@@ -34,8 +34,8 @@ describe('Enhanced Select Suite', () => {
             const optionValue = options[0].getText();
 
             options[0].click();
-            options[0].waitForVisible(constants.wait.normal, true);
-            browser.waitForVisible(`[data-qa-enhanced-select="${optionValue}"]`, constants.wait.normal);
+            options[0].waitForDisplayed(constants.wait.normal, true);
+            $(`[data-qa-enhanced-select="${optionValue}"]`).waitForDisplayed(constants.wait.normal);
         });
     });
 
@@ -46,7 +46,7 @@ describe('Enhanced Select Suite', () => {
             const error = basicSelectWithError.$$('p').filter(p => p.getText().includes(errorMsg));
 
             expect(error.length).toBe(1);
-            expect(error[0].isVisible()).toBe(true);
+            expect(error[0].isDisplayed()).toBe(true);
         });
     });
 
@@ -68,12 +68,12 @@ describe('Enhanced Select Suite', () => {
         it('should add a chip to the select on selection of an option', () => {
             selectedOption = options[0].getText();
             options[0].click();
-            browser.waitForVisible(`[data-qa-multi-option="${selectedOption}"]`, constants.wait.normal);
+            $(`[data-qa-multi-option="${selectedOption}"]`).waitForDisplayed(constants.wait.normal);
         });
 
         it('should remove the chip from the select options', () => {
-            browser.click('[data-qa-multi-option]');
-            browser.waitForVisible('[data-qa-option]', constants.wait.normal);
+            $('[data-qa-multi-option]').click();
+            $('[data-qa-option]').waitForDisplayed(constants.wait.normal);
             const remainingOptions = $$('[data-qa-option]').map(opt => opt.getText());
 
             expect(remainingOptions.length).toBe(4);
@@ -82,7 +82,7 @@ describe('Enhanced Select Suite', () => {
 
         it('should remove the chip on click of the remove icon', () => {
             $(`[data-qa-multi-option="${selectedOption}"]`).$('..').$('svg').click();
-            browser.waitForVisible(`[data-qa-multi-option="${selectedOption}"]`, constants.wait.true, true);
+            $(`[data-qa-multi-option="${selectedOption}"]`).waitForDisplayed(constants.wait.true, true);
         });
     });
 
@@ -91,13 +91,13 @@ describe('Enhanced Select Suite', () => {
 
         beforeAll(() => {
             // Close any potentially open select menus
-            browser.click('body');
+            $('body').click();
         });
 
         it('should display the creatable select with placeholder text', () => {
             creatableSelect = $('[data-qa-multi-select="Choose some timezones"]');
 
-            expect(creatableSelect.isVisible()).toBe(true);
+            expect(creatableSelect.isDisplayed()).toBe(true);
             expect(creatableSelect.getText()).toBe('Choose some timezones');
         });
 
@@ -105,28 +105,28 @@ describe('Enhanced Select Suite', () => {
             newOption = 'foo';
             creatableSelect.$('..').$('input').setValue(newOption);
 
-            expect($(`[data-qa-option="${newOption}"]`).isVisible()).toBe(true);
+            expect($(`[data-qa-option="${newOption}"]`).isDisplayed()).toBe(true);
             expect($(`[data-qa-option="${newOption}"]`).getText()).toBe(`Create "${newOption}"`);
         });
 
         it('should add a created option to the select', () => {
             $(`[data-qa-option="${newOption}"]`).click();
-            browser.waitForVisible(`[data-qa-multi-option=${newOption}]`, constants.wait.normal);
+            $(`[data-qa-multi-option=${newOption}]`).waitForDisplayed(constants.wait.normal);
         });
 
         it('should select an already defined list option', () => {
-            browser.click(`[data-qa-multi-option="${newOption}"]`);
+            $(`[data-qa-multi-option="${newOption}"]`).click();
 
             const optionToSelect = $$('[data-qa-option]');
             const optionName = optionToSelect[0].getText();
             optionToSelect[0].click();
 
-            browser.waitForVisible(`[data-qa-multi-option="${optionName}"]`, constants.wait.normal);
+            $(`[data-qa-multi-option="${optionName}"]`).waitForDisplayed(constants.wait.normal);
         });
 
         it('should remove the created option on click of remove icon', () => {
             $(`[data-qa-multi-option="${newOption}"]`).$('..').$('svg').click();
-            browser.waitForVisible(`[data-qa-multi-option="${newOption}"]`, constants.wait.normal, true);
+            $(`[data-qa-multi-option="${newOption}"]`).waitForDisplayed(constants.wait.normal,true);
         });
     });
 });

@@ -1,7 +1,13 @@
 const moment = require('moment');
+const https = require('https');
+const axios = require('axios');
 const { existsSync, statSync, writeFileSync, readFileSync } = require('fs');
 const { constants } = require('../constants');
-const { deleteAll } = require('../setup/setup');
+const {
+    getAPiData,
+    deleteApiData,
+    getMyStackScripts,
+} = require('../setup/setup');
 
 /*
 * Get localStorage after landing on homepage
@@ -42,44 +48,49 @@ exports.readToken = (username) => {
 * @returns {null} returns nothing
 */
 exports.login = (username, password, credFilePath) => {
-    let loginButton,letsGoButton;
+    let letsGoButton;
 
     browser.url(constants.routes.linodes);
     try {
-        browser.waitForVisible('#username', constants.wait.long);
+        $('#username').waitForDisplayed(constants.wait.long, false, 'Username field did not display');
     } catch (err) {
-        console.log(browser.getSource());
+        console.log(browser.getPageSource());
 
     }
-
-    browser.waitForVisible('#password', constants.wait.long);
+    browser.jsClick('#username');
     browser.trySetValue('#username', username);
+    browser.jsClick('#password');
     browser.trySetValue('#password', password);
-    loginButton = browser.getUrl().includes('dev') ? '.btn#submit' : '.btn-primary';
+    $('.btn#submit').click();
+
     letsGoButton = browser.getUrl().includes('dev') ? '.btn#submit' : '[data-qa-welcome-button]';
-    browser.click(loginButton);
+
 
     try {
         browser.waitUntil(function() {
-            return browser.isExisting('[data-qa-add-new-menu-button]') || browser.getUrl().includes('oauth/authorize');
+            return $('[data-qa-add-new-menu-button]').isExisting() || browser.getUrl().includes('oauth/authorize');
         }, constants.wait.normal);
     } catch (err) {
         console.log('failed to login!');
-        if (browser.getText('.alert').includes('This field is required.')) {
-            browser.trySetValue('#password', password);
-            browser.click(loginButton);
+        console.log(browser.getPageSource());
+        browser.debug();
+        if ($('.alert').getText().includes('This field is required.')) {
+            $('#password').setValue(password);
+            $(loginButton).click();
         }
     }
 
-    if(browser.isExisting('.Modal') && browser.getUrl().includes('login')){
-        browser.click('.btn.btn-primary');
+    if(process.env.REACT_APP_APP_ROOT.includes('local')){
+        if($$('.oauthauthorize-page').length > 0 && browser.getUrl().includes('login')){
+          $('.form-actions>.btn').click();
+        }
     }
 
-    browser.waitForVisible('[data-qa-add-new-menu-button]', constants.wait.long);
+    $('[data-qa-add-new-menu-button]').waitForDisplayed(constants.wait.long, false, 'Create Button did not display');
 
-    if (browser.waitForVisible('[role="dialog"]')) {
-        browser.click(letsGoButton);
-        browser.waitForVisible('[role="dialog"]', constants.wait.long, true)
+    if ($('[role="dialog"]').isExisting()) {
+        $(letsGoButton).click();
+        $('[role="dialog"]').waitForDisplayed(constants.wait.long, true, 'Did not dismiss welcome modal')
     }
 
     if (credFilePath) {
@@ -133,47 +144,3 @@ exports.generateCreds = (credFilePath, config, userCount) => {
 
     writeFileSync(credFilePath, JSON.stringify(credCollection));
 }
-
-exports.cleanupAccounts = (credFilePath) => {
-    const credCollection = JSON.parse(readFileSync(credFilePath));
-    credCollection.forEach(cred => {
-        return deleteAll(cred.token).then(() => {});
-    });
-}
-
-/*
-* Navigate to a null route on the manager,
-* Add the token properties to local storage
-* Navigate back to the homepage to be logged in
-* @returns {Null} returns nothing
-*/
-// exports.loadToken = () => {
-//     const tokenPath = '../../localStorage.json';
-//     try {
-//         const localStorageObj = require(tokenPath);
-//         const keys = Object.keys(localStorageObj);
-
-//         const storageObj = keys.map(key => {
-//             return { [key]: localStorageObj[key] }
-//         });
-
-//         browser.url('/null');
-//         browser.waitForText('#root > span:nth-child(1)');
-//         browser.waitUntil(function() {
-//             browser.execute(function(storageObj) {
-//                 storageObj.forEach(item => {
-//                     localStorage.setItem(Object.keys(item)[0], Object.values(item)[0]);
-//                 });
-//             }, storageObj);
-//             browser.url('/null');
-//             return browser.execute(function(storageObj) {
-//                 return localStorage.getItem('authentication/oauth-token').includes(storageObj['authentication/oauth-token']) === true;
-//             }, storageObj);
-//         }, 10000);
-//         browser.url(constants.routes.dashboard);
-//         browser.waitForVisible('[data-qa-beta-notice]');
-//         browser.click('[data-qa-beta-notice] button');
-//     } catch (err) {
-//         console.log(`${err} \n ensure that your local manager environment is running!`);
-//     }
-// }

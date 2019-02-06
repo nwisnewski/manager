@@ -12,24 +12,24 @@ class StackScriptDetail extends Page {
     get stackScript() { return $$('[data-qa-script]'); }
 
     stackScriptDetailPageDisplays() {
-        this.breadcrumbBackLink.waitForVisible(constants.wait.normal);
-        this.breadcrumbStaticText.waitForVisible(constants.wait.normal);
-        this.deployStackScriptButton.waitForVisible(constants.wait.normal);
+        this.breadcrumbBackLink.waitForDisplayed(constants.wait.normal);
+        this.breadcrumbStaticText.waitForDisplayed(constants.wait.normal);
+        this.deployStackScriptButton.waitForDisplayed(constants.wait.normal);
         this.stackScriptDetailDisplays();
     }
 
     stackScriptDetailDrawerDisplays() {
-        this.drawerBase.waitForVisible(constants.wait.normal);
-        this.drawerTitle.waitForVisible(constants.wait.normal);
+        this.drawerBase.waitForDisplayed(constants.wait.normal);
+        this.drawerTitle.waitForDisplayed(constants.wait.normal);
         this.stackScriptDetailDisplays();
     }
 
     stackScriptDetailDisplays(){
-        this.stackScriptTitleElement.waitForVisible(constants.wait.normal);
-        this.stackScriptAuthorElement.waitForVisible(constants.wait.normal);
-        this.stackScriptDeployments.waitForVisible(constants.wait.normal);
-        this.compatibleDistrobutions.waitForVisible(constants.wait.normal);
-        this.stackScriptCode.waitForVisible(constants.wait.normal);
+        this.stackScriptTitleElement.waitForDisplayed(constants.wait.normal);
+        this.stackScriptAuthorElement.waitForDisplayed(constants.wait.normal);
+        this.stackScriptDeployments.waitForDisplayed(constants.wait.normal);
+        this.compatibleDistrobutions.waitForDisplayed(constants.wait.normal);
+        this.stackScriptCode.waitForDisplayed(constants.wait.normal);
     }
 
     stackScriptTitle(stackScriptTitle){
@@ -43,7 +43,7 @@ class StackScriptDetail extends Page {
     }
 
     getStackScriptCompatibleDisrobutions(){
-        this.compatibleDistrobutions.waitForVisible(constants.wait.normal);
+        this.compatibleDistrobutions.waitForDisplayed(constants.wait.normal);
         const distroListText = this.compatibleDistrobutions.getText();
         const cleanText = distroListText.replace('Compatible with: ','');
         return cleanText.split(',').map(distro=> distro.trim());

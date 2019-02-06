@@ -23,17 +23,17 @@ describe('Account - User Detail - Username Suite', () => {
         });
 
         it('should clear username changes on cancel', () => {
-            const originalUsername = browser.getText(`${UserDetail.usernameField.selector} input`);
-            browser.setValue(`${UserDetail.usernameField.selector} input`, `someTest${new Date().getTime()}`);
+            const originalUsername = $(`${UserDetail.usernameField.selector} input`).getText();
+            $(`${UserDetail.usernameField.selector} input`).setValue(`someTest${new Date().getTime()}`);
             UserDetail.cancelButton.click();
-            const updatedUsername = browser.getText(`${UserDetail.usernameField.selector} input`);
+            const updatedUsername = $(`${UserDetail.usernameField.selector} input`).getText();
 
             expect(updatedUsername).toBe(originalUsername);
         });
 
         it('should fail to update username on empty string', () => {
             UserDetail.updateUsername(' ');
-            UserDetail.usernameWarning.waitForVisible(constants.wait.normal);
+            UserDetail.usernameWarning.waitForDisplayed(constants.wait.normal);
             expect(UserDetail.usernameWarning.getText()).toContain('Username must be between');
             UserDetail.cancelButton.click();
         });
@@ -41,14 +41,14 @@ describe('Account - User Detail - Username Suite', () => {
         it('should fail validation on bad username value', () => {
             const badUsername = '$%#5364é-';
             UserDetail.updateUsername(badUsername);
-            UserDetail.usernameWarning.waitForVisible(constants.wait.normal);
+            UserDetail.usernameWarning.waitForDisplayed(constants.wait.normal);
             expect(UserDetail.usernameWarning.getText()).toContain('Username must only use ASCII characters');
             UserDetail.cancelButton.click();
         });
 
         it('should fail to update when submitting an existing username', () => {
             UserDetail.updateUsername(browser.options.testUser);
-            UserDetail.usernameWarning.waitForVisible(constants.wait.normal);
+            UserDetail.usernameWarning.waitForDisplayed(constants.wait.normal);
             expect(UserDetail.usernameWarning.getText()).toContain('Username taken');
             UserDetail.cancelButton.click();
 
@@ -64,9 +64,9 @@ describe('Account - User Detail - Username Suite', () => {
     describe('User Detail - Remove User Suite', () => {
        it('should display the remove dialog', () => {
             UserDetail.deleteButton.click();
-            UserDetail.dialogTitle.waitForVisible(constants.wait.normal);
-            UserDetail.dialogConfirmDelete.waitForVisible(constants.wait.normal);
-            UserDetail.dialogConfirmCancel.waitForVisible(constants.wait.normal);
+            UserDetail.dialogTitle.waitForDisplayed(constants.wait.normal);
+            UserDetail.dialogConfirmDelete.waitForDisplayed(constants.wait.normal);
+            UserDetail.dialogConfirmCancel.waitForDisplayed(constants.wait.normal);
         });
 
         it('should dismiss the dialog on cancel', () => {
@@ -76,7 +76,7 @@ describe('Account - User Detail - Username Suite', () => {
 
         it('should remove the user', () => {
             UserDetail.deleteButton.click();
-            UserDetail.dialogTitle.waitForText(constants.wait.normal);
+            UserDetail.dialogTitle.waitForDisplayed(constants.wait.normal);
             UserDetail.dialogTitle.$('..').$(UserDetail.dialogConfirmDelete.selector).click();
             browser.waitUntil(() => {
                 return !browser.getUrl().includes(userConfig.username);

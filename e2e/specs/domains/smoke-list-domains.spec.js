@@ -9,8 +9,8 @@ describe('Domains - List Suite', () => {
 
     beforeAll(() => {
         browser.url(constants.routes.domains);
-        ListDomains.globalCreate.waitForVisible(constants.wait.normal);
-        ListDomains.progressBar.waitForVisible(constants.wait.normal, true);
+        ListDomains.globalCreate.waitForDisplayed(constants.wait.normal);
+        ListDomains.progressBar.waitForDisplayed(constants.wait.normal, true);
     });
 
     it('should display domains base elements', () => {
@@ -27,18 +27,18 @@ describe('Domains - List Suite', () => {
             ListDomains.baseElemsDisplay();
             ListDomains.create(initialDomain,'foo@bar.com');
         } catch (err) {
-            ListDomains.createDomainName.$('p').waitForVisible(constants.wait.normal);
+            ListDomains.createDomainName.$('p').waitForDisplayed(constants.wait.normal);
             ListDomains.cancel.click();
-            ListDomains.drawerTitle.waitForVisible(constants.wait.normal, true);
+            ListDomains.drawerTitle.waitForDisplayed(constants.wait.normal, true);
         }
     });
 
     it('should display action menu options', () => {
         browser.url(constants.routes.domains);
-        ListDomains.domainElem.waitForVisible(constants.wait.normal);
+        ListDomains.domainElem.waitForDisplayed(constants.wait.normal);
         domainId = ListDomains.domains[0].getAttribute('data-qa-domain-cell');
         domainElement = `[data-qa-domain-cell="${domainId}"]`;
-        
+
         browser.jsClick(`${domainElement} [data-qa-action-menu]`);
 
         const expectedMenuItems = [
@@ -49,12 +49,12 @@ describe('Domains - List Suite', () => {
             'Zone File',
         ];
 
-        ListDomains.actionMenuItem.waitForVisible(constants.wait.normal);
+        ListDomains.actionMenuItem.waitForDisplayed(constants.wait.normal);
         const actionMenuItems = $$(ListDomains.actionMenuItem.selector);
         actionMenuItems.forEach(i => expect(expectedMenuItems).toContain(i.getText()));
 
-        browser.click('body');
-        ListDomains.actionMenuItem.waitForVisible(constants.wait.short, true);
+        $('body').click();
+        ListDomains.actionMenuItem.waitForDisplayed(constants.wait.short, true);
     });
 
     it('should display clone domain drawer', () => {
@@ -67,24 +67,24 @@ describe('Domains - List Suite', () => {
     it('should fail to clone with the same domain name', () => {
         ListDomains.selectActionMenuItem($(domainElement), 'Clone');
         ListDomains.cloneDrawerElemsDisplay();
-        
+
         browser.trySetValue(`${ListDomains.cloneDomainName.selector} input`, initialDomain);
-        
+
         ListDomains.submit.click();
-        ListDomains.cloneDomainName.$('p').waitForVisible(constants.wait.normal);
+        ListDomains.cloneDomainName.$('p').waitForDisplayed(constants.wait.normal);
         ListDomains.closeDrawer();
     });
 
     it('should clone domain', () => {
         browser.url(constants.routes.domains);
-        browser.waitForVisible('[data-qa-action-menu]');
+        $('[data-qa-action-menu]').waitForDisplayed();
         ListDomains.selectActionMenuItem($(domainElement), 'Clone');
         ListDomains.clone(cloneDomain);
     });
 
     it('should remove domain', () => {
         browser.url(constants.routes.domains);
-        browser.waitForVisible('[data-qa-action-menu]');
+        $('[data-qa-action-menu]').waitForDisplayed();
         ListDomains.selectActionMenuItem($(domainElement), 'Remove');
         ListDomains.remove($(domainElement), initialDomain);
     });

@@ -12,12 +12,12 @@ describe('Linear Progress Bar Suite', () => {
     });
 
     it('should display indefinite linear bar on the page', () => {
-        browser.waitForVisible(linearProgress);
+        $(linearProgress).waitForDisplayed();
 
         const progressBar = $(linearProgress);
         const role = progressBar.getAttribute('role');
 
-        expect(progressBar.isVisible()).toBe(true);
+        expect(progressBar.isDisplayed()).toBe(true);
         expect(role).toBe('progressbar');
     });
 });

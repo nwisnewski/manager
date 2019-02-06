@@ -3,7 +3,8 @@ import NodeBalancers from '../../pageobjects/nodebalancers.page';
 import NodeBalancerConfigurations from '../../pageobjects/nodebalancer-detail/configurations.page';
 import {
     createNodeBalancer,
-    removeNodeBalancers,
+    apiDeleteAllNodeBalancers,
+    apiDeleteAllLinodes,
 } from '../../utils/common';
 
 describe('NodeBalancer - Configurations Suite', () => {
@@ -11,16 +12,17 @@ describe('NodeBalancer - Configurations Suite', () => {
         nodeIp;
 
     afterAll(() => {
-        removeNodeBalancers();
+        apiDeleteAllNodeBalancers();
+        apiDeleteAllLinodes();
     });
 
     it('should configure the nodebalancer', () => {
         createNodeBalancer();
         NodeBalancers.changeTab('Configurations');
-        browser.waitForVisible('[data-qa-panel]', constants.wait.normal);
-        
+        $('[data-qa-panel]').waitForDisplayed(constants.wait.normal);
+
         const configPanel = NodeBalancerConfigurations.panels[0];
-        
+
         NodeBalancerConfigurations.expandConfiguration(configPanel);
     });
 
@@ -35,8 +37,8 @@ describe('NodeBalancer - Configurations Suite', () => {
 
     it('should display certificate and private key fields on set protocol to https', () => {
         NodeBalancers.selectMenuOption(NodeBalancers.protocolSelect, 'https');
-        NodeBalancers.certTextField.waitForVisible();
-        NodeBalancers.privateKeyTextField.waitForVisible();
+        NodeBalancers.certTextField.waitForDisplayed();
+        NodeBalancers.privateKeyTextField.waitForDisplayed();
     });
 
     it('should display error on save configuration without a cert and private key', () => {
@@ -47,8 +49,8 @@ describe('NodeBalancer - Configurations Suite', () => {
 
         // Revert choice to HTTP
         NodeBalancers.selectMenuOption(NodeBalancers.protocolSelect, 'http');
-        NodeBalancers.certTextField.waitForVisible(constants.wait.short, true);
-        NodeBalancers.privateKeyTextField.waitForVisible(constants.wait.short, true);
+        NodeBalancers.certTextField.waitForDisplayed(constants.wait.short, true);
+        NodeBalancers.privateKeyTextField.waitForDisplayed(constants.wait.short, true);
     });
 
     it('should display attached node', () => {

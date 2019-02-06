@@ -13,19 +13,19 @@ describe('Tags Suite', () => {
     it('should display tag in each story', () => {
         executeInAllStories(component, childStories, () => {
             const tagElem = $(tag);
-            expect(tagElem.isVisible()).toBe(true);
+            expect(tagElem.isDisplayed()).toBe(true);
         });
     });
 
     describe('Editable Tag Suite', () => {
         beforeAll(() => {
            navigateToStory(component, childStories[3]);
-           browser.waitForVisible(tag);
+           $(tag).waitForDisplayed();
         });
 
         it('should display a delete icon child element', () => {
             const svgIcon = $(`${tag} svg`);
-            expect(svgIcon.isVisible()).toBe(true);
+            expect(svgIcon.isDisplayed()).toBe(true);
         });
     });
 });

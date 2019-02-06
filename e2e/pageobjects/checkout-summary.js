@@ -9,7 +9,7 @@ class CheckoutSummary extends Page {
     get deploy() { return $('[data-qa-deploy-linode]'); }
 
     subheaderDisplays(title) {
-        return browser.isVisible(`[data-qa-subheading="${title}"]`);
+        return $(`[data-qa-subheading="${title}"]`).isDisplayed();
     }
 }
 export default new CheckoutSummary();

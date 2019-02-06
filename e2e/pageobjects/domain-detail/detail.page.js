@@ -47,95 +47,95 @@ class DomainDetail extends Page {
         this.selectElelementByLabel(dropdown).click();
         browser.pause(1000);
         $$(options)[0].click();
-        $(options).waitForVisible(constants.wait.normal,true);
+        $(options).waitForDisplayed(constants.wait.normal,true);
         return this.selectElelementByLabel(dropdown).getText();
     }
 
     domainDetailDisplays(domainName) {
-        this.domainTitle.waitForVisible(constants.wait.normal);
+        this.domainTitle.waitForDisplayed(constants.wait.normal);
         this.domainRecords.forEach((record) => {
-            this.recordHeaderElementByLabel(record).waitForVisible(constants.wait.normal);
+            this.recordHeaderElementByLabel(record).waitForDisplayed(constants.wait.normal);
         });
         this.domainRecords.forEach((record) => {
-            this.addRecordButtonElementByLabel(record).waitForVisible(constants.wait.normal);
+            this.addRecordButtonElementByLabel(record).waitForDisplayed(constants.wait.normal);
         });
         expect(this.domainTitle.getText()).toEqual(domainName);
     }
 
     editSoaRecordDrawerDisplays(){
-        this.drawerBase.waitForVisible(constants.wait.normal);
+        this.drawerBase.waitForDisplayed(constants.wait.normal);
         ['Domain', 'SOA Email'].forEach((label) => {
-            this.inputElementByLabel(label).waitForVisible(constants.wait.normal);
+            this.inputElementByLabel(label).waitForDisplayed(constants.wait.normal);
         });
         ['Default TTL', 'Refresh Rate', 'Retry Rate'].forEach((label) => {
-            this.selectElelementByLabel(label).waitForVisible(constants.wait.normal);
+            this.selectElelementByLabel(label).waitForDisplayed(constants.wait.normal);
         });
-        this.expireRateSelect.waitForVisible(constants.wait.normal);
+        this.expireRateSelect.waitForDisplayed(constants.wait.normal);
         expect(this.drawerTitle.getText()).toEqual('Edit SOA Record');
     }
 
     nsRecordDrawerDisplays(){
-        this.drawerBase.waitForVisible(constants.wait.normal);
+        this.drawerBase.waitForDisplayed(constants.wait.normal);
         ['Name Server', 'Subdomain'].forEach((label) => {
-            this.inputElementByLabel(label).waitForVisible(constants.wait.normal);
+            this.inputElementByLabel(label).waitForDisplayed(constants.wait.normal);
         });
-        this.selectElelementByLabel('TTL').waitForVisible(constants.wait.normal);
+        this.selectElelementByLabel('TTL').waitForDisplayed(constants.wait.normal);
         expect(this.drawerTitle.getText()).toContain('NS Record');
     }
 
     mxRecordDrawerDisplays(){
-        this.drawerBase.waitForVisible(constants.wait.normal);
+        this.drawerBase.waitForDisplayed(constants.wait.normal);
         ['Mail Server', 'Preference', 'Subdomain'].forEach((label) => {
-            this.inputElementByLabel(label).waitForVisible(constants.wait.normal);
+            this.inputElementByLabel(label).waitForDisplayed(constants.wait.normal);
         });
-        this.selectElelementByLabel('TTL').waitForVisible(constants.wait.normal);
+        this.selectElelementByLabel('TTL').waitForDisplayed(constants.wait.normal);
         expect(this.drawerTitle.getText()).toContain('MX Record');
     }
 
     aaaaRecordDrawerDisplays(){
-        this.drawerBase.waitForVisible(constants.wait.normal);
+        this.drawerBase.waitForDisplayed(constants.wait.normal);
         ['Hostname', 'IP Address'].forEach((label) => {
-            this.inputElementByLabel(label).waitForVisible(constants.wait.normal);
+            this.inputElementByLabel(label).waitForDisplayed(constants.wait.normal);
         });
-        this.selectElelementByLabel('TTL').waitForVisible(constants.wait.normal);
+        this.selectElelementByLabel('TTL').waitForDisplayed(constants.wait.normal);
         expect(this.drawerTitle.getText()).toContain('AAAA Record');
     }
 
     cNameRecordDrawerDisplays(){
-        this.drawerBase.waitForVisible(constants.wait.normal);
+        this.drawerBase.waitForDisplayed(constants.wait.normal);
         ['Hostname', 'Alias to'].forEach((label) => {
-            this.inputElementByLabel(label).waitForVisible(constants.wait.normal);
+            this.inputElementByLabel(label).waitForDisplayed(constants.wait.normal);
         });
-        this.selectElelementByLabel('TTL').waitForVisible(constants.wait.normal);
+        this.selectElelementByLabel('TTL').waitForDisplayed(constants.wait.normal);
         expect(this.drawerTitle.getText()).toContain('CNAME Record');
     }
 
     txtRecordDrawerDisplays(){
-        this.drawerBase.waitForVisible(constants.wait.normal);
+        this.drawerBase.waitForDisplayed(constants.wait.normal);
         ['Hostname', 'Value'].forEach((label) => {
-            this.inputElementByLabel(label).waitForVisible(constants.wait.normal);
+            this.inputElementByLabel(label).waitForDisplayed(constants.wait.normal);
         });
-        this.selectElelementByLabel('TTL').waitForVisible(constants.wait.normal);
+        this.selectElelementByLabel('TTL').waitForDisplayed(constants.wait.normal);
         expect(this.drawerTitle.getText()).toContain('TXT Record');
     }
 
     srvRecordDrawerDisplays(){
-        this.drawerBase.waitForVisible(constants.wait.normal);
+        this.drawerBase.waitForDisplayed(constants.wait.normal);
         ['Service', 'Priority', 'Weight', 'Port'].forEach((label) => {
-            this.inputElementByLabel(label).waitForVisible(constants.wait.normal);
+            this.inputElementByLabel(label).waitForDisplayed(constants.wait.normal);
         });
-        this.selectElelementByLabel('TTL').waitForVisible(constants.wait.normal);
-        this.protocolSelect.waitForVisible(constants.wait.normal);
+        this.selectElelementByLabel('TTL').waitForDisplayed(constants.wait.normal);
+        this.protocolSelect.waitForDisplayed(constants.wait.normal);
         expect(this.drawerTitle.getText()).toContain('SRV Record');
     }
 
     caaRecordDrawerDisplays(){
-        this.drawerBase.waitForVisible(constants.wait.normal);
+        this.drawerBase.waitForDisplayed(constants.wait.normal);
         ['Name', 'Value'].forEach((label) => {
-            this.inputElementByLabel(label).waitForVisible(constants.wait.normal);
+            this.inputElementByLabel(label).waitForDisplayed(constants.wait.normal);
         });
-        this.selectElelementByLabel('TTL').waitForVisible(constants.wait.normal);
-        this.caaTagSelect.waitForVisible(constants.wait.normal);
+        this.selectElelementByLabel('TTL').waitForDisplayed(constants.wait.normal);
+        this.caaTagSelect.waitForDisplayed(constants.wait.normal);
         expect(this.drawerTitle.getText()).toContain('CAA Record');
     }
 
@@ -191,7 +191,7 @@ class DomainDetail extends Page {
         this.protocolSelect.click();
         browser.pause(1000);
         this.protocolOptions.find( option => option.getText() === protocol).click();
-        this.protocolOptions[0].waitForVisible(constants.wait.normal, true);
+        this.protocolOptions[0].waitForDisplayed(constants.wait.normal, true);
         this.inputElementByLabel('Priority').setValue(priority);
         this.inputElementByLabel('Weight').setValue(weight);
         this.inputElementByLabel('Port').setValue(port);
@@ -208,7 +208,7 @@ class DomainDetail extends Page {
         this.caaTagSelect.click();
         browser.pause(1000);
         this.caaTagOptions.find( option => option.getText() === tag).click();
-        this.caaTagOptions[0].waitForVisible(constants.wait.normal, true);
+        this.caaTagOptions[0].waitForDisplayed(constants.wait.normal, true);
         const ttl = this.selectDropdownOption('TTL');
         this.saveRecord();
         return ttl;
@@ -216,19 +216,19 @@ class DomainDetail extends Page {
 
     saveRecord(){
         this.confirmButton.click();
-        this.drawerBase.waitForVisible(constants.wait.normal, true);
+        this.drawerBase.waitForDisplayed(constants.wait.normal, true);
         browser.pause(1000);
     }
 
     confirmDelete(){
-        this.dialogContent.waitForVisible(constants.wait.normal);
+        this.dialogContent.waitForDisplayed(constants.wait.normal);
         this.dialogContent.$('..').$$('button').find(button => button.getText() === 'Delete').click();
     }
 
     deleteRecord(recordType) {
         this.selectActionMenuItemV2(this.rowSelector(recordType),'Delete');
         this.confirmDelete();
-        $(this.rowSelector(recordType)).waitForVisible(constants.wait.normal, true);
+        $(this.rowSelector(recordType)).waitForDisplayed(constants.wait.normal, true);
     }
 }
 

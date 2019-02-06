@@ -42,11 +42,11 @@ export class ListLinodes extends Page {
     linodesDisplay() {
         try {
             browser.waitUntil(function() {
-                return browser.waitForVisible('[data-qa-linode]') && $$('[data-qa-linode]').length > 0;
+                return $('[data-qa-linode]').waitForDisplayed() && $$('[data-qa-linode]').length > 0;
             }, constants.wait.normal);
             return true;
         } catch (err) {
-            if ($(this.placeholderText).isVisible()) {
+            if ($(this.placeholderText).isDisplayed()) {
                 return false;
             }
             throw new Error(err);
@@ -55,6 +55,10 @@ export class ListLinodes extends Page {
 
     getLinodeSelector(linode){
         return `[data-qa-linode="${linode}"]`;
+    }
+
+    hoverLinodeTags(linode){
+        $(`${this.getLinodeSelector(linode)}>td:nth-child(2)`).moveToObject();
     }
 
     getLinodeTags(linode){
@@ -70,36 +74,36 @@ export class ListLinodes extends Page {
 
     navigateToDetail(linode) {
        const linodeLink = linode ? $$(`${this.getLinodeSelector(linode)} a>div`)[0] : this.linode[0].$$('a>div')[0];
-       linodeLink.waitForVisible(constants.wait.normal);
+       linodeLink.waitForDisplayed(constants.wait.normal);
        linodeLink.click();
     }
 
     gridElemsDisplay() {
         const header = this.subheader;
         this.linode.forEach(l => {
-            expect(l.isVisible()).toBe(true);
-            expect(l.$(this.linodeLabel.selector).isVisible()).toBe(true);
-            expect(l.$(this.hardwareSummary.selector).isVisible()).toBe(true);
-            expect(l.$(this.region.selector).isVisible()).toBe(true);
-            expect(l.$(this.image.selector).isVisible()).toBe(true);
-            expect(l.$(this.ip.selector).isVisible()).toBe(true);
-            expect(l.$(this.rebootButton.selector).isVisible()).toBe(true);
-            expect(l.$(this.linodeActionMenu.selector).isVisible()).toBe(true);
-            expect(l.$(this.image.selector).isVisible()).toBe(true);
-            expect(l.$(this.rebootButton.selector).isVisible()).toBe(true);
-            expect(l.$(this.linodeActionMenu.selector).isVisible()).toBe(true);
+            expect(l.isDisplayed()).toBe(true);
+            expect(l.$(this.linodeLabel.selector).isDisplayed()).toBe(true);
+            expect(l.$(this.hardwareSummary.selector).isDisplayed()).toBe(true);
+            expect(l.$(this.region.selector).isDisplayed()).toBe(true);
+            expect(l.$(this.image.selector).isDisplayed()).toBe(true);
+            expect(l.$(this.ip.selector).isDisplayed()).toBe(true);
+            expect(l.$(this.rebootButton.selector).isDisplayed()).toBe(true);
+            expect(l.$(this.linodeActionMenu.selector).isDisplayed()).toBe(true);
+            expect(l.$(this.image.selector).isDisplayed()).toBe(true);
+            expect(l.$(this.rebootButton.selector).isDisplayed()).toBe(true);
+            expect(l.$(this.linodeActionMenu.selector).isDisplayed()).toBe(true);
         });
 
-        expect(header.isVisible()).toBe(true);
+        expect(header.isDisplayed()).toBe(true);
         expect(header.getText()).not.toBe(null);
     }
 
     listElemsDisplay() {
-        const linodeDisplays = this.linode.map(l => l.isVisible());
-        const labelDisplays = this.linode.map(l => l.$(this.linodeLabel.selector).isVisible());
-        const ipDisplays = this.linode.map(l => l.$(this.ip.selector).isVisible());
-        const regionDisplays = this.linode.map(l => l.$(this.region.selector).isVisible());
-        const actionMenu =  this.linode.map(l => l.$(this.linodeActionMenu.selector).isVisible());
+        const linodeDisplays = this.linode.map(l => l.isDisplayed());
+        const labelDisplays = this.linode.map(l => l.$(this.linodeLabel.selector).isDisplayed());
+        const ipDisplays = this.linode.map(l => l.$(this.ip.selector).isDisplayed());
+        const regionDisplays = this.linode.map(l => l.$(this.region.selector).isDisplayed());
+        const actionMenu =  this.linode.map(l => l.$(this.linodeActionMenu.selector).isDisplayed());
 
         linodeDisplays.forEach(l => expect(l).toBe(true));
         labelDisplays.forEach(l => expect(l).toBe(true));
@@ -118,15 +122,15 @@ export class ListLinodes extends Page {
         if (activeView === 'list') {
             // Select from action menu
             linode.$(this.linodeActionMenu.selector).click();
-            browser.click('[data-qa-action-menu-item="Reboot"]');
+            $('[data-qa-action-menu-item="Reboot"]').click();
             this.acceptDialog('Confirm Reboot');
-            browser.waitForVisible('[data-qa-loading]');
+            $('[data-qa-loading]').waitForDisplayed();
         }
 
         if (activeView === 'grid') {
             linode.$(this.rebootButton).click();
             this.acceptDialog('Confirm Reboot');
-            browser.waitForVisible('[data-qa-circular-progress]');
+            $('[data-qa-circular-progress]').waitForDisplayed();
         }
 
         browser.waitUntil(function() {
@@ -143,7 +147,7 @@ export class ListLinodes extends Page {
         this.acceptDialog('Powering Off');
 
         browser.waitUntil(function() {
-            return browser.isVisible(`${this.getLinodeSelector(linode)} [data-qa-status="offline"]`);
+            return $(`${this.getLinodeSelector(linode)} [data-qa-status="offline"]`).isDisplayed();
         }, constants.wait.minute * 3, 'Failed to power down linode');
     }
 
@@ -151,7 +155,7 @@ export class ListLinodes extends Page {
         this.selectActionMenuItem(linode, 'Power On');
 
         browser.waitUntil(function() {
-            return browser.isVisible('[data-qa-status="running"]');
+            return $('[data-qa-status="running"]').isDisplayed();
         }, constants.wait.minute * 2);
     }
 
@@ -162,19 +166,19 @@ export class ListLinodes extends Page {
     }
 
     switchView(view) {
-        browser.click(`[data-qa-view="${view}"]`);
+        $(`[data-qa-view="${view}"]`).click();
         browser.waitUntil(function() {
-            return browser.isVisible(`[data-qa-active-view="${view}"]`);
+            return $(`[data-qa-active-view="${view}"]`).isDisplayed();
         }, constants.wait.short);
     }
 
     acceptDialog(dialogTitle) {
-        this.confirmDialogTitle.waitForVisible();
-        this.confirmDialogCancel.waitForVisible();
-        this.confirmDialogSubmit.waitForVisible();
+        this.confirmDialogTitle.waitForDisplayed();
+        this.confirmDialogCancel.waitForDisplayed();
+        this.confirmDialogSubmit.waitForDisplayed();
         expect(this.confirmDialogTitle.getText()).toBe(dialogTitle);
         this.confirmDialogSubmit.click();
-        this.confirmDialogTitle.waitForVisible(constants.wait.normal, true);
+        this.confirmDialogTitle.waitForDisplayed(constants.wait.normal, true);
     }
 }
 export default new ListLinodes();

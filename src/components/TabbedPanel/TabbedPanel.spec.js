@@ -16,10 +16,10 @@ describe('Tabbed Panel Suite', () => {
     });
 
     it('should display tabbed panel', () => {
-      browser.waitForVisible(tabbedPanel);
+      $(tabbedPanel).waitForDisplayed();
 
       const tabbedPanelElem = $(tabbedPanel);
-      expect(tabbedPanelElem.isVisible()).toBe(true);
+      expect(tabbedPanelElem.isDisplayed()).toBe(true);
     });
 
     it('should display tabs as buttons', () => {
@@ -30,13 +30,13 @@ describe('Tabbed Panel Suite', () => {
 
     it('should display panel heading', () => {
         const panelHeader = $(header);
-        expect(panelHeader.isVisible()).toBe(true);
+        expect(panelHeader.isDisplayed()).toBe(true);
         expect(panelHeader.getText()).toMatch(/([A-Z])/ig);
     });
 
     it('should display panel copy', () => {
         const panelCopy = $(copy);
-        expect(panelCopy.isVisible()).toBe(true);
+        expect(panelCopy.isDisplayed()).toBe(true);
         expect(panelCopy.getText()).toMatch(/([A-z])/ig);
     });
 
@@ -45,8 +45,10 @@ describe('Tabbed Panel Suite', () => {
         let text;
         tabs.forEach(t => {
             t.click();
-            browser.waitForText(tabBody);
-            const tabText = browser.getText(tabBody);
+            browser.waitUntil(() => {
+                return $(tabBody).getText();
+            });
+            const tabText = $(tabBody).getText();
             expect(tabText).not.toBe(text);
             text = tabText;
         });
@@ -56,7 +58,7 @@ describe('Tabbed Panel Suite', () => {
         const tabs = $$(tab);
         tabs.forEach(t => {
             t.click();
-            const buttonColor = t.getCssProperty('color');
+            const buttonColor = t.getCSSProperty('color');
             const selected = t.getAttribute('aria-selected').includes('true');
 
             expect(selected).toBe(true);

@@ -206,4 +206,3 @@ exports.resetAccounts = (credsArray, credsPath) => {
       });
   });
 }
-

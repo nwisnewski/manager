@@ -22,51 +22,51 @@ class ConfigureStackScript extends Page {
     save() {
         this.saveButton.click();
         ListStackScripts.baseElementsDisplay();
-        browser.waitForVisible('[data-qa-notice]', constants.wait.normal);
-        ListStackScripts.stackScriptRow.waitForVisible(constants.wait.normal);
+        $('[data-qa-notice]').waitForDisplayed(constants.wait.normal);
+        ListStackScripts.stackScriptRow.waitForDisplayed(constants.wait.normal);
     }
 
     cancel() {
         this.cancelButton.click();
-        this.dialogTitle.waitForText(constants.wait.normal);
-        this.dialogContent.waitForText(constants.wait.normal);
-        this.dialogConfirm.waitForVisible(constants.wait.normal);
-        this.dialogCancel.waitForVisible(constants.wait.normal);
+        this.dialogTitle.waitForDisplayed(constants.wait.normal);
+        this.dialogContent.waitForDisplayed(constants.wait.normal);
+        this.dialogConfirm.waitForDisplayed(constants.wait.normal);
+        this.dialogCancel.waitForDisplayed(constants.wait.normal);
         this.dialogConfirm.click();
-        this.dialogTitle.waitForVisible(constants.wait.normal, true);
+        this.dialogTitle.waitForDisplayed(constants.wait.normal, true);
     }
 
     baseElementsDisplay() {
-        this.createHeader.waitForVisible(constants.wait.normal);
-        expect(this.description.isVisible()).toBe(true);
-        expect(this.targetImagesSelect.isVisible()).toBe(true);
+        this.createHeader.waitForDisplayed(constants.wait.normal);
+        expect(this.description.isDisplayed()).toBe(true);
+        expect(this.targetImagesSelect.isDisplayed()).toBe(true);
 
         expect(this.labelHelp.getTagName()).toBe('button');
         expect(this.descriptionHelp.getTagName()).toBe('button');
         expect(this.targetImagesHelp.getTagName()).toBe('button');
 
-        expect(this.script.isVisible()).toBe(true);
-        expect(this.revisionNote.isVisible()).toBe(true);
-        expect(this.saveButton.isVisible()).toBe(true);
-        expect(this.cancelButton.isVisible()).toBe(true);
+        expect(this.script.isDisplayed()).toBe(true);
+        expect(this.revisionNote.isDisplayed()).toBe(true);
+        expect(this.saveButton.isDisplayed()).toBe(true);
+        expect(this.cancelButton.isDisplayed()).toBe(true);
     }
 
 
     editElementsDisplay() {
-        this.editHeader.waitForVisible(constants.wait.normal);
+        this.editHeader.waitForDisplayed(constants.wait.normal);
 
-        expect(this.description.isVisible()).toBe(true);
-        expect(this.targetImagesSelect.isVisible()).toBe(true);
-        this.imageTags.forEach(tag => expect(tag.isVisible()).toBe(true));
+        expect(this.description.isDisplayed()).toBe(true);
+        expect(this.targetImagesSelect.isDisplayed()).toBe(true);
+        this.imageTags.forEach(tag => expect(tag.isDisplayed()).toBe(true));
 
         expect(this.labelHelp.getTagName()).toBe('button');
         expect(this.descriptionHelp.getTagName()).toBe('button');
         expect(this.targetImagesHelp.getTagName()).toBe('button');
 
-        expect(this.script.isVisible()).toBe(true);
-        expect(this.revisionNote.isVisible()).toBe(true);
-        expect(this.saveButton.isVisible()).toBe(true);
-        expect(this.cancelButton.isVisible()).toBe(true);
+        expect(this.script.isDisplayed()).toBe(true);
+        expect(this.revisionNote.isDisplayed()).toBe(true);
+        expect(this.saveButton.isDisplayed()).toBe(true);
+        expect(this.cancelButton.isDisplayed()).toBe(true);
     }
 
     configure(config) {
@@ -82,20 +82,20 @@ class ConfigureStackScript extends Page {
                 const imageName = imageElement.getAttribute('data-value');
 
                 browser.jsClick(`[data-value="linode/${i}"]`);
-                browser.waitForVisible(`[data-value="linode/${imageName}"]`, constants.wait.normal, true);
+                $(`[data-value="linode/${imageName}"]`).waitForDisplayed(constants.wait.normal, true);
             });
         } else {
             const imageElement = $$('[data-value]')[1];
             const imageName = imageElement.getAttribute('data-value');
             imageElement.click();
-            browser.waitForVisible(`[data-value="${imageName}"]`, constants.wait.normal, true);
+            $(`[data-value="${imageName}"]`).waitForDisplayed(constants.wait.normal, true);
         }
 
         // Click outside the select
-        browser.click('body');
+        $('body').click();
 
-        this.targetImagesSelect.waitForVisible(constants.wait.normal);
-        browser.waitForVisible('#menu-image', constants.wait.normal, true);
+        this.targetImagesSelect.waitForDisplayed(constants.wait.normal);
+        $('#menu-image').waitForDisplayed(constants.wait.normal, true);
 
         this.script.$('textarea').click();
         this.script.$('textarea').setValue(config.script);
@@ -112,8 +112,8 @@ class ConfigureStackScript extends Page {
         expect(myStackscript.length).toBe(1);
         expect(myStackscript[0].$(ListStackScripts.stackScriptTitle.selector).getText()).toContain(config.description);
         expect(myStackscript[0].$(ListStackScripts.stackScriptDeploys.selector).getText()).toBe('0');
-        expect(myStackscript[0].$(ListStackScripts.stackScriptRevision.selector).isVisible()).toBe(true);
-        expect(myStackscript[0].$(ListStackScripts.stackScriptActionMenu.selector).isVisible()).toBe(true);
+        expect(myStackscript[0].$(ListStackScripts.stackScriptRevision.selector).isDisplayed()).toBe(true);
+        expect(myStackscript[0].$(ListStackScripts.stackScriptActionMenu.selector).isDisplayed()).toBe(true);
         ListStackScripts.waitForNotice(`${config.label} successfully ${update ? 'updated' : 'created'}`);
     }
 
@@ -122,7 +122,7 @@ class ConfigureStackScript extends Page {
             .filter(i => i.getText().includes(imageName))
             .forEach(i => {
                 i.$('svg').click();
-                i.waitForVisible(constants.wait.normal, true);
+                i.waitForDisplayed(constants.wait.normal, true);
             });
 
     }

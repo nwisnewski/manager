@@ -2,7 +2,8 @@ const { constants } = require('../../../constants');
 
 import {
     apiCreateLinode,
-    apiDeleteAllLinodes
+    apiDeleteAllLinodes,
+    timestamp,
 } from '../../../utils/common';
 import Networking from '../../../pageobjects/linode-detail/linode-detail-networking.page';
 import ListLinodes from '../../../pageobjects/list-linodes';
@@ -11,7 +12,7 @@ import LinodeDetail from '../../../pageobjects/linode-detail/linode-detail.page'
 describe('Linode Detail - Networking Suite', () => {
     beforeAll(() => {
         browser.url(constants.routes.linodes);
-        apiCreateLinode();
+        apiCreateLinode(`AutoLinode${timestamp()}`);
 
         ListLinodes.linodesDisplay();
         ListLinodes.navigateToDetail();
@@ -36,14 +37,14 @@ describe('Linode Detail - Networking Suite', () => {
         it('should display error msg on click allocate', () => {
             const noticeMsg = 'Additional IPv4 addresses require technical justification. Please open a Support Ticket describing your requirement';
             Networking.allocate.click();
-            Networking.notice.waitForVisible(constants.wait.normal);
+            Networking.notice.waitForDisplayed(constants.wait.normal);
 
             Networking.waitForNotice(noticeMsg, constants.wait.normal);
         });
 
         it('should dismiss drawer on close', () => {
             Networking.cancel.click();
-            Networking.drawerTitle.waitForVisible(constants.wait.normal, true);
+            Networking.drawerTitle.waitForDisplayed(constants.wait.normal, true);
         });
 
         it('should display ipv6 drawer', () => {
@@ -57,7 +58,7 @@ describe('Linode Detail - Networking Suite', () => {
 
         afterAll(() => {
             Networking.cancel.click();
-            Networking.drawerTitle.waitForVisible(constants.wait.normal, true);
+            Networking.drawerTitle.waitForDisplayed(constants.wait.normal, true);
         });
     });
 
@@ -97,7 +98,7 @@ describe('Linode Detail - Networking Suite', () => {
 
         afterEach(() => {
             Networking.cancel.click();
-            Networking.drawerTitle.waitForVisible(constants.wait.normal, true);
+            Networking.drawerTitle.waitForDisplayed(constants.wait.normal, true);
         });
     });
 
@@ -122,13 +123,13 @@ describe('Linode Detail - Networking Suite', () => {
         it('should error on an invalid domain entry', () => {
             Networking.domainName.$('input').setValue('b');
             Networking.submit.click();
-            $(`${Networking.domainName.selector} p`).waitForVisible(constants.wait.normal);
+            $(`${Networking.domainName.selector} p`).waitForDisplayed(constants.wait.normal);
         });
 
         it('should reset rdns on empty entry', () => {
             Networking.domainName.$('input').setValue([' ','\uE003']);
             Networking.submit.click();
-            Networking.drawerTitle.waitForVisible(constants.wait.normal, true);
+            Networking.drawerTitle.waitForDisplayed(constants.wait.normal, true);
         });
 
         it('should display edit rdns ipv6 drawer', () => {

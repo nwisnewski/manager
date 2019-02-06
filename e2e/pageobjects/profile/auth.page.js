@@ -17,9 +17,9 @@ export class Auth extends Page {
     get qrCode() { return $('[data-qa-qr-code]'); }
 
     baseElemsDisplay() {
-        this.passwordHeader.waitForVisible(constants.wait.normal);
-        expect(this.toggleTfa.isVisible()).toBe(true);
-        expect(this.tfaDescription.isVisible()).toBe(true);
+        this.passwordHeader.waitForDisplayed(constants.wait.normal);
+        expect(this.toggleTfa.isDisplayed()).toBe(true);
+        expect(this.tfaDescription.isDisplayed()).toBe(true);
         expect(this.tfaDescription.getText()).toMatch(/\w/ig);
     }
 
@@ -36,10 +36,10 @@ export class Auth extends Page {
         const disableMsg = 'Two-factor authentication has been disabled.';
 
         this.toggleTfa.click();
-        this.dialogTitle.waitForVisible(constants.wait.normal);
+        this.dialogTitle.waitForDisplayed(constants.wait.normal);
         expect(this.dialogContent.getText()).toContain('disable two-factor');
-        expect(this.cancelToken.isVisible()).toBe(true);
-        expect(this.confirmToken.isVisible()).toBe(true);
+        expect(this.cancelToken.isDisplayed()).toBe(true);
+        expect(this.confirmToken.isDisplayed()).toBe(true);
 
         this.confirmToken.click();
         this.waitForNotice(disableMsg, constants.wait.normal);

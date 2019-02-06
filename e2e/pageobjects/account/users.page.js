@@ -29,27 +29,33 @@ class Users extends Page {
 
 
     baseElementsDisplay() {
-        this.usersHeader.waitForVisible(constants.wait.normal);
+        this.usersHeader.waitForDisplayed(constants.wait.normal);
         expect(this.usersHeader.getText()).toBe('Users');
-        expect(this.usernameColumn.isVisible()).toBe(true);
-        expect(this.emailColumn.isVisible()).toBe(true);
-        expect(this.restrictionColumn.isVisible()).toBe(true);
+        expect(this.usernameColumn.isDisplayed()).toBe(true);
+        expect(this.emailColumn.isDisplayed()).toBe(true);
+        expect(this.restrictionColumn.isDisplayed()).toBe(true);
 
-        expect(this.addUserButton.isVisible()).toBe(true);
+        expect(this.addUserButton.isDisplayed()).toBe(true);
     }
 
     add(userConfig) {
-        this.addUserButton.waitForVisible(constants.wait.normal);
+        this.addUserButton.waitForDisplayed(constants.wait.normal);
         this.addUserButton.click();
-        this.drawerTitle.waitForText(constants.wait.normal);
-        this.notice.waitForVisible(constants.wait.normal);
+        this.drawerTitle.waitForDisplayed(constants.wait.normal);
+        this.notice.waitForDisplayed(constants.wait.normal);
 
         this.createDrawerEmail.setValue(userConfig.email);
         this.createDrawerUsername.setValue(userConfig.username);
 
         if (userConfig.restricted) {
             this.createDrawerRestricted.click();
-            browser.waitForExist(`${this.createDrawerRestricted.selector} input:checked`, constants.wait.normal);
+            const selector = this.toggleOption.selector;
+            const attribute = selector.substring(1,(selector.length-1));
+            console.log(attribute);
+            browser.waitUntil(() => {
+                console.log(this.createDrawerRestricted.getAttribute(attribute));
+                return this.createDrawerRestricted.getAttribute(attribute) === 'false'
+            })
         }
 
         this.createDrawerSubmit.click();
@@ -58,22 +64,22 @@ class Users extends Page {
         // this.waitForNotice(`User ${userConfig.username} created successfully`);
 
         if (!userConfig.hasOwnProperty('restricted')) {
-            browser.waitForVisible('[data-qa-user-row]', constants.wait.normal);
+            $('[data-qa-user-row]').waitForDisplayed(constants.wait.normal);
 
             browser.waitUntil(function() {
                 return $$('[data-qa-user-row]')
                     .filter(u => u.$('[data-qa-username]').getText() === userConfig.username).length > 0;
             }, constants.wait.normal, 'User failed to display in table');
         } else {
-            this.userDetailHeader.waitForVisible(constants.wait.normal);
+            this.userDetailHeader.waitForDisplayed(constants.wait.normal);
         }
     }
 
     delete(userConfig) {
         this.userTableActionMenu(userConfig.username,'Delete');
-        this.dialogTitle.waitForText(constants.wait.normal);
-        this.dialogConfirmDelete.waitForVisible(constants.wait.normal);
-        this.dialogConfirmCancel.waitForVisible(constants.wait.normal);
+        this.dialogTitle.waitForDisplayed(constants.wait.normal);
+        this.dialogConfirmDelete.waitForDisplayed(constants.wait.normal);
+        this.dialogConfirmCancel.waitForDisplayed(constants.wait.normal);
         this.dialogConfirmDelete.click();
 
         // Wait for only 1 user row in the table (the root user)
@@ -93,9 +99,9 @@ class Users extends Page {
 
     userTableActionMenu(username, actionMenuSelection){
         this.getTableDetails(undefined, this.userActionMenu.selector, username).click();
-        this.actionMenuItem.waitForVisible(constants.wait.normal);
+        this.actionMenuItem.waitForDisplayed(constants.wait.normal);
         const menuSelection = $(`[data-qa-action-menu-item="${actionMenuSelection}"]`);
-        menuSelection.waitForVisible(constants.wait.normal);
+        menuSelection.waitForDisplayed(constants.wait.normal);
         menuSelection.click();
     }
 

@@ -31,11 +31,11 @@ describe('Create, Edit, Resize, Attach, Detach, Clone, Delete - Volume Suite', (
 
     const getLinodeOptions = () => {
         VolumeDetail.selectLinodeOrVolume.click();
-        VolumeDetail.selectOption.waitForVisible(constants.wait.normal);
+        VolumeDetail.selectOption.waitForDisplayed(constants.wait.normal);
         const linodes = VolumeDetail.selectOptions.map(option => option.getText());
         const justLinodes = linodes.filter(options => options != 'Select a Linode');
         $('body').click();
-        VolumeDetail.selectOption.waitForVisible(constants.wait.normal, true);
+        VolumeDetail.selectOption.waitForDisplayed(constants.wait.normal, true);
         return justLinodes;
     }
 
@@ -55,7 +55,7 @@ describe('Create, Edit, Resize, Attach, Detach, Clone, Delete - Volume Suite', (
 
     it('should display create volumes option in global create menu', () => {
         ListLinodes.globalCreate.click();
-        ListLinodes.addVolumeMenu.waitForVisible(constants.wait.normal);
+        ListLinodes.addVolumeMenu.waitForDisplayed(constants.wait.normal);
     });
 
     it('should display global volume create drawer', () => {
@@ -92,21 +92,21 @@ describe('Create, Edit, Resize, Attach, Detach, Clone, Delete - Volume Suite', (
     });
 
     it('should display a tag input/select field for tagging new volume', () => {
-        expect(VolumeDetail.tagsMultiSelect.isVisible()).toBe(true);
+        expect(VolumeDetail.tagsMultiSelect.isDisplayed()).toBe(true);
         VolumeDetail.closeVolumeDrawer();
     });
 
 
     it('should display form error on create without a label', () => {
         VolumeDetail.createVolume(testVolume, 'header');
-        expect(VolumeDetail.label.$('p').isVisible()).toBe(true);
+        expect(VolumeDetail.label.$('p').isDisplayed()).toBe(true);
         VolumeDetail.closeVolumeDrawer();
     });
 
     it('should display a error notice on create without region', () => {
         testVolume['label'] = `ASD${new Date().getTime()}`;
         VolumeDetail.createVolume(testVolume, 'header');
-        expect(VolumeDetail.region.$('..').$('..').$('p').isVisible()).toBe(true);
+        expect(VolumeDetail.region.$('..').$('..').$('p').isDisplayed()).toBe(true);
         VolumeDetail.closeVolumeDrawer();
     });
 
@@ -139,11 +139,11 @@ describe('Create, Edit, Resize, Attach, Detach, Clone, Delete - Volume Suite', (
 
     it('expected action menu options are displayed for a detached volume', () => {
         const volumeActionMenu = `${VolumeDetail.volumeCellElem.selector} ${VolumeDetail.actionMenu.selector}`;
-        $(volumeActionMenu).waitForVisible(constants.wait.true);
+        $(volumeActionMenu).waitForDisplayed(constants.wait.true);
         $(volumeActionMenu).click();
         VolumeDetail.assertActionMenuItems(false);
         $('body').click();
-        VolumeDetail.actionMenuItem.waitForVisible(constants.wait.normal,true);
+        VolumeDetail.actionMenuItem.waitForDisplayed(constants.wait.normal,true);
     });
 
     it('can edit volume, update label and add tag', () => {
@@ -180,11 +180,11 @@ describe('Create, Edit, Resize, Attach, Detach, Clone, Delete - Volume Suite', (
 
     it('can detach an attached volume', () => {
         const volumeActionMenu = `${VolumeDetail.volumeCellElem.selector} ${VolumeDetail.actionMenu.selector}`;
-        $(volumeActionMenu).waitForVisible(constants.wait.true);
+        $(volumeActionMenu).waitForDisplayed(constants.wait.true);
         $(volumeActionMenu).click();
         VolumeDetail.assertActionMenuItems(true);
         $('body').click();
-        VolumeDetail.actionMenuItem.waitForVisible(constants.wait.normal,true);
+        VolumeDetail.actionMenuItem.waitForDisplayed(constants.wait.normal,true);
         browser.pause(750);
         VolumeDetail.selectActionMenuItemV2(VolumeDetail.volumeCellElem.selector, 'Detach');
         VolumeDetail.confirmDetachORDelete();
@@ -208,5 +208,5 @@ describe('Create, Edit, Resize, Attach, Detach, Clone, Delete - Volume Suite', (
         browser.waitUntil(() => {
             return VolumeDetail.volumeCell.length === 1;
         }, constants.wait.minute);
-    });
+    }); 
 });

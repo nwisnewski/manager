@@ -2,16 +2,16 @@ import NodeBalancerDetail from '../../pageobjects/nodebalancer-detail/details.pa
 import NodeBalancerSettings from '../../pageobjects/nodebalancer-detail/settings.page';
 import {
     createNodeBalancer,
-    removeNodeBalancers,
+    apiDeleteAllNodeBalancers,
 } from '../../utils/common';
 
-describe('NodeBalancer - Settings Suite', () => { 
+describe('NodeBalancer - Settings Suite', () => {
     beforeAll(() => {
         createNodeBalancer();
     });
 
     afterAll(() => {
-        removeNodeBalancers();
+        apiDeleteAllNodeBalancers();
     });
 
     it('should display base elements', () => {

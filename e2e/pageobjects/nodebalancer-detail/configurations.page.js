@@ -17,7 +17,7 @@ class NodeBalancerConfigurations extends Page {
 
     expandConfiguration(configPanel) {
         configPanel.click();
-        this.portConfigHeader.waitForText();
+        this.portConfigHeader.waitForDisplayed();
     }
 }
 

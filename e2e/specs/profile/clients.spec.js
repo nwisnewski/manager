@@ -29,13 +29,13 @@ describe('Profile - OAuth Clients Suite', () => {
 
     describe('OAuth Clients - Create Client Suite', () => {
         it('should display create drawer', () => {
-            profile.oauthCreate.waitForVisible(constants.wait.normal);
+            profile.oauthCreate.waitForDisplayed(constants.wait.normal);
             profile.create('oauth');
         });
 
         it('should close create drawer on cancel', () => {
             createDrawer.cancel.click();
-            browser.waitForVisible('[data-qa-drawer-title]', constants.wait.normal, true);
+            $('[data-qa-drawer-title]').waitForDisplayed(constants.wait.normal, true);
         });
 
         it('should display dialog with secret on submit', () => {
@@ -46,14 +46,14 @@ describe('Profile - OAuth Clients Suite', () => {
             createDrawer.public.click();
 
             createDrawer.submit.click();
-            browser.waitForVisible(dialogTitle);
+            $(dialogTitle).waitForDisplayed();
             profile.waitForNotice(/\w\d/);
 
             const secret = $(dialogContent).$('[data-qa-notice]').getText();
             expect(secret).not.toBe(null);
 
-            browser.click(dialogClose);
-            browser.waitForVisible(dialogTitle, constants.wait.normal, true);
+            $(dialogClose).click();
+            $(dialogTitle).waitForDisplayed(constants.wait.normal, true);
         });
 
         it('should display new client in table', () => {
@@ -65,7 +65,7 @@ describe('Profile - OAuth Clients Suite', () => {
             expect(newClientAccess.getText()).toBe(client.access);
             expect(newClientId.getText()).not.toBe(null);
             expect(newClientCallback.getText()).toBe(client.callback);
-            expect(newClient.isVisible()).toBe(true);
+            expect(newClient.isDisplayed()).toBe(true);
         });
     });
 
@@ -76,10 +76,10 @@ describe('Profile - OAuth Clients Suite', () => {
     describe('OAuth Clients - Edit', () => {
         it('should display the edit drawer', () => {
             profile.selectActionMenu(client.label, "Edit");
-            createDrawer.label.waitForVisible();
+            createDrawer.label.waitForDisplayed();
 
-            expect(createDrawer.label.isVisible()).toBe(true);
-            expect(createDrawer.callbackUrl.isVisible()).toBe(true);
+            expect(createDrawer.label.isDisplayed()).toBe(true);
+            expect(createDrawer.callbackUrl.isDisplayed()).toBe(true);
         });
 
         it('should display public checkbox as disabled', () => {
@@ -91,7 +91,7 @@ describe('Profile - OAuth Clients Suite', () => {
             browser.trySetValue(createDrawer.callbackUrl.selector, editedClient.callback);
             createDrawer.submit.click();
 
-            browser.waitForVisible(editedRow, constants.wait.normal);
+            $(editedRow).waitForDisplayed(constants.wait.normal);
             const displayedLabel = $(editedRow).$(profile.oauthLabel.selector).getText();
             const displayedAccess = $(editedRow).$(profile.oauthAccess.selector).getText();
             const displayedCallback = $(editedRow).$(profile.oauthCallback.selector).getText();
@@ -104,9 +104,9 @@ describe('Profile - OAuth Clients Suite', () => {
 
     describe('Oauth Clients - Reset Secret', () => {
         it('should display reset in action panel', () => {
-            browser.click(`${editedRow} [data-qa-action-menu]`);
+            $(`${editedRow} [data-qa-action-menu]`).click();
 
-            browser.waitForVisible('[data-qa-action-menu-item]', constants.wait.normal);
+            $('[data-qa-action-menu-item]').waitForDisplayed(constants.wait.normal);
 
             const actionMenuItems = $$('[data-qa-action-menu-item]')
                 .map(item => item.getAttribute('data-qa-action-menu-item'));
@@ -116,10 +116,10 @@ describe('Profile - OAuth Clients Suite', () => {
 
         it('should display the reset dialog', () => {
             browser.refresh();
-            browser.waitForVisible(editedRow);
+            $(editedRow).waitForDisplayed();
 
             profile.selectActionMenu(editedClient.label, 'Reset Secret');
-            browser.waitForVisible(dialogTitle);
+            $(dialogTitle).waitForDisplayed();
 
             const title = $(dialogTitle).getText();
             const msg = $(dialogContent).getText();
@@ -128,13 +128,13 @@ describe('Profile - OAuth Clients Suite', () => {
         });
 
         it('should close on cancel', () => {
-            browser.click(dialogCancel);
-            browser.waitForVisible(dialogTitle, constants.wait.normal, true);
+            $(dialogCancel).click();
+            $(dialogTitle).waitForDisplayed(constants.wait.normal, true);
         });
 
         it('should display new secret on reset', () => {
             profile.selectActionMenu(editedClient.label, 'Reset Secret');
-            browser.waitForVisible(dialogTitle, constants.wait.normal);
+            $(dialogTitle).waitForDisplayed(constants.wait.normal, true);
             $(dialogConfirm).click();
 
             profile.waitForNotice(/\w\d/, constants.wait.normal);
@@ -149,28 +149,28 @@ describe('Profile - OAuth Clients Suite', () => {
 
         beforeAll(() => {
             browser.refresh()
-            profile.oauthLabel.waitForVisible(constants.wait.normal);
+            profile.oauthLabel.waitForDisplayed(constants.wait.normal);
         });
 
         it('should display delete dialog', () => {
             profile.selectActionMenu(editedClient.label, "Delete");
-            browser.waitForVisible(dialogTitle);
-            
+            $(dialogTitle).waitForDisplayed();
+
             const deleteMsg = 'Are you sure you want to permanently delete this app?';
             const dialogMsg = $(dialogContent).getText();
             deleteButton = $(dialogConfirm);
             cancelButton = $(dialogCancel);
-            
+
             expect(dialogMsg).toContain(deleteMsg);
-            expect(deleteButton.isVisible()).toBe(true);
-            expect(cancelButton.isVisible()).toBe(true);
+            expect(deleteButton.isDisplayed()).toBe(true);
+            expect(cancelButton.isDisplayed()).toBe(true);
         });
 
         it('should not delete client on cancel', () => {
             cancelButton.click();
-            browser.waitForVisible(dialogTitle, constants.wait.normal, true);
+            $(dialogTitle).waitForDisplayed(constants.wait.normal, true);
 
-            expect($(editedRow).isVisible()).toBe(true);
+            expect($(editedRow).isDisplayed()).toBe(true);
         });
 
         it('should delete client on confirm delete', () => {

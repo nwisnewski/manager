@@ -1,12 +1,16 @@
 const { constants } = require('../../constants');
 
-import { apiCreateLinode, apiDeleteAllLinodes } from '../../utils/common';
+import {
+    apiCreateLinode,
+    apiDeleteAllLinodes,
+    timestamp,
+} from '../../utils/common';
 import ConfigureLinode from '../../pageobjects/configure-linode';
 import Create from '../../pageobjects/create';
 
 describe('Create Linode - Clone from Existing Suite', () => {
     beforeAll(() => {
-        apiCreateLinode(undefined,undefined,undefined,'g6-standard-1');
+        apiCreateLinode(`AutoLinode${timestamp()}`,undefined,undefined,'g6-standard-1');
         ConfigureLinode.selectGlobalCreateItem('Linode');
     });
 
@@ -39,8 +43,8 @@ describe('Create Linode - Clone from Existing Suite', () => {
 
         try {
             $$('[data-qa-tp="Linode Plan"] [data-qa-selection-card]')[0].click();
-            browser.waitForVisible('[role="tooltip"]');
-            const toolTipMsg = browser.getText('[role="tooltip"]');
+            $('[role="tooltip"]').waitForDisplayed();
+            const toolTipMsg = $('[role="tooltip"]').getText();
             expect(toolTipMsg).toBe('This plan is too small for the selected image.');
         } catch (err) {
             if (!err.message.includes('Failed to select plan')) throw err;

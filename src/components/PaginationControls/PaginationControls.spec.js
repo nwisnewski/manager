@@ -18,8 +18,8 @@
 //             const nextPageElem = $(next);
 //             const availablePages = $$('[data-qa-page-to]');
 
-//             expect(prevPageElem.isVisible()).toBe(true);
-//             expect(nextPageElem.isVisible()).toBe(true);
+//             expect(prevPageElem.isDisplayed()).toBe(true);
+//             expect(nextPageElem.isDisplayed()).toBe(true);
 //             expect(availablePages.length).toBeGreaterThan(1);
 //         });
 //     });

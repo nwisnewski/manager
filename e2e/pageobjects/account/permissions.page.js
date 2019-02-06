@@ -38,40 +38,40 @@ class Permissions extends Page {
     get specificGrant() { return $('[data-qa-specific-grant]'); }
     get specifcGrants() { return $$('[data-qa-specific-grant]'); }
 
-    get saveButton() { return $(this.submitButton.selector); } 
+    get saveButton() { return $(this.submitButton.selector); }
     get unrestrictedMsg() { return $('[data-qa-unrestricted-msg'); }
 
     baseElementsDisplay(restricted) {
-        this.restrictAccess.waitForVisible(constants.wait.normal);
+        this.restrictAccess.waitForDisplayed(constants.wait.normal);
         if (restricted) {
-            expect(this.globalPermissionsHeader.isVisible()).toBe(true);
-            expect(this.billingAccessHeader.isVisible()).toBe(true);
-            expect(this.specificPermissionsHeader.isVisible()).toBe(true);
+            expect(this.globalPermissionsHeader.isDisplayed()).toBe(true);
+            expect(this.billingAccessHeader.isDisplayed()).toBe(true);
+            expect(this.specificPermissionsHeader.isDisplayed()).toBe(true);
             expect(this.globalPermissions.length).toBeGreaterThan(1);
-            expect(this.billingPermissionNone.isVisible()).toBe(true);
-            expect(this.billingPermissionRead.isVisible()).toBe(true);
-            expect(this.billingPermissionWrite.isVisible()).toBe(true);
-            expect(this.restrictAccess.isVisible()).toBe(true);
+            expect(this.billingPermissionNone.isDisplayed()).toBe(true);
+            expect(this.billingPermissionRead.isDisplayed()).toBe(true);
+            expect(this.billingPermissionWrite.isDisplayed()).toBe(true);
+            expect(this.restrictAccess.isDisplayed()).toBe(true);
             expect($$(this.submitButton.selector).length).toBe(2);
             expect($$(this.cancelButton.selector).length).toBe(2);
             expect(this.restrictAccess.getAttribute('data-qa-restrict-access')).toBe('true');
         } else {
-            expect(this.unrestrictedMsg.isVisible()).toBe(true);
+            expect(this.unrestrictedMsg.isDisplayed()).toBe(true);
             expect(this.restrictAccess.getAttribute('data-qa-restrict-access')).toBe('false');
         }
     }
 
     toggleGlobalPermission(permissionId, permission) {
-        browser.waitForVisible(`[data-qa-global-permission="${permissionId}"]`, constants.wait.normal);
+        $(`[data-qa-global-permission="${permissionId}"]`).waitForDisplayed(constants.wait.normal);
         if (permission === 'allow') {
             $(`[data-qa-global-permission="${permissionId}"]`).click();
-            browser.waitForExist(`[data-qa-global-permission="${permissionId}"] input:checked`, constants.wait.normal);
+            $(`[data-qa-global-permission="${permissionId}"] input:checked`).waitForExist(constants.wait.normal);
         }
 
         if (permission === 'restrict') {
-            if (browser.isExisting(`[data-qa-global-permission="${permissionId}"] input:checked`)) {
+            if ($(`[data-qa-global-permission="${permissionId}"] input:checked`).isExisting()) {
                 $(`[data-qa-global-permission="${permissionId}"]`).click();
-                browser.waitForExist(`[data-qa-global-permission="${permissionId}"] input:checked`, constants.wait.normal, true);
+                $(`[data-qa-global-permission="${permissionId}"] input:checked`).waitForExist(constants.wait.normal, true);
             }
         }
         this.globalSection.$(this.saveButton.selector).click();
