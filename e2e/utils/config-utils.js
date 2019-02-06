@@ -48,7 +48,7 @@ exports.readToken = (username) => {
 * @returns {null} returns nothing
 */
 exports.login = (username, password, credFilePath) => {
-    let loginButton,letsGoButton;
+    let letsGoButton;
 
     browser.url(constants.routes.linodes);
     try {
@@ -58,9 +58,15 @@ exports.login = (username, password, credFilePath) => {
 
     }
 
-    $('#password').waitForDisplayed(constants.wait.long, false, 'Username field did not display');
-    $('#username').setValue(username);
-    $('#password').setValue(password);
+    const creds = [{selector: '#username', value: username}, {selector: '#password', value: password}];
+
+    creds.forEach( cred => {
+        browser.execute((elementId, value) => {
+            document.getElementById(elementId).setAttribute('value', value);
+        }, cred.selector, cred.value);
+    });
+
+    $('#password').addValue('\uE007');
     $('.btn#submit').click();
 
     letsGoButton = browser.getUrl().includes('dev') ? '.btn#submit' : '[data-qa-welcome-button]';
@@ -78,8 +84,10 @@ exports.login = (username, password, credFilePath) => {
         }
     }
 
-    if($('.oauthauthorize-page').isExisting() && browser.getUrl().includes('login')){
-        $('.form-actions>.btn').click();
+    if(process.env.REACT_APP_APP_ROOT.includes('local')){
+        if($$('.oauthauthorize-page').length > 0 && browser.getUrl().includes('login')){
+          $('.form-actions>.btn').click();
+        }
     }
 
     $('[data-qa-add-new-menu-button]').waitForDisplayed(constants.wait.long, false, 'Create Button did not display');

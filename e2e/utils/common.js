@@ -196,6 +196,8 @@ export const createVolumes = (volumeObjArray) => {
     volumeObjArray.forEach((volumeObj) => {
         $(`[data-qa-volume-cell-label="${volumeObj.label}"]`).waitForDisplayed(constants.wait.long);
     });
+    $('[data-qa-toast]').waitForVisible(constants.wait.minute);
+    $('[data-qa-toast]').waitForVisible(constants.wait.long, true);
     return volumes;
 }
 
