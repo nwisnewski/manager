@@ -53,12 +53,12 @@ describe('Header - Search Suite', () => {
         SearchBar.assertSuggestions();
     });
 
-    xit('should select result on arrow down', () => {
+    /*xit('should select result on arrow down', () => {
         if (!browser.options.desiredCapabilities.browserName.includes('chrome')) {
             pending();
         }
         SearchBar.selectByKeyDown();
-    });
+    });*/
 
     it('should navigate to search results on enter', () => {
         if (!browser.options.desiredCapabilities.browserName.includes('chrome')) {

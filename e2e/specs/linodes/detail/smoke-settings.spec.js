@@ -119,9 +119,10 @@ describe('Linode Detail - Settings Suite', () =>{
             browser.pause(1000);
         });
 
-        xit('should add a configuration', () => {
+      /* xit('should add a configuration', () => {
 
         });
+        */
 
         it('should remove a configuration', () => {
             const configs = Settings.getConfigLabels();

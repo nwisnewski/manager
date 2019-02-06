@@ -8,10 +8,6 @@ describe('Billing - View & Update Contact Info Suite', () => {
         browser.url(constants.routes.account.billing);
     });
 
-    it('should display contact summary elements', () => {
-        Billing.contactSummaryDisplay();
-    });
-
     it('should display update contact info fields', () => {
         Billing.expandUpdateContact();
     });
@@ -24,7 +20,6 @@ describe('Billing - View & Update Contact Info Suite', () => {
         Billing.updateButton.click();
 
         Billing.waitForNotice(successMsg, constants.wait.normal);
-        expect(Billing.currentName.getText()).toContain(newName);
     });
 
     it('should revert new lastname', () => {
@@ -35,15 +30,10 @@ describe('Billing - View & Update Contact Info Suite', () => {
         Billing.resetButton.click();
 
         expect(Billing.updateLastName.$('input').getValue()).toBe(originalLastName);
-        expect(Billing.currentName.getText()).toContain(originalLastName);
     });
 
     it('should display recent invoices', () => {
         Billing.expandInvoices();
         Billing.invoicesDisplay();
-    });
-
-    xit('should update contact country', () => {
-        // UPDATE WHEN COUNTRY SELECT IS UPDATED TO USE REACT-SELECT    
     });
 });

@@ -46,6 +46,8 @@ describe('Account - Restricted User Suite', () => {
         Users.viewProfile(userConfig.username);
 
         Users.userDetailHeader.waitForDisplayed(constants.wait.normal);
+        browser.debug();
+        Users.userProfileTab.click();
         expect(Users.userProfileTab.getAttribute('aria-selected')).toBe('true');
 
         // Navigate back to users listing

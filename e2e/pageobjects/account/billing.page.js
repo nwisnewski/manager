@@ -7,7 +7,6 @@ class Billing extends Page {
     // Current contact info
     get contactSummary() { return $('[data-qa-contact-summary]'); }
     get currentCompany() { return $('[data-qa-contact-summary] [data-qa-company]'); }
-    get currentName() { return $('[data-qa-contact-summary] [data-qa-contact-name]'); }
     get currentAddress() { return $('[data-qa-contact-summary] [data-qa-contact-address]'); }
     get currentEmail() { return $('[data-qa-contact-summary] [data-qa-contact-email]'); }
     get currentPhone() { return $('[data-qa-contact-summary] [data-qa-contact-phone]'); }
@@ -41,7 +40,6 @@ class Billing extends Page {
     contactSummaryDisplay() {
         this.contactSummary.waitForDisplayed(constants.wait.normal);
         this.currentCompany.waitForDisplayed(constants.wait.normal);
-        this.currentName.waitForDisplayed(constants.wait.normal);
         this.currentAddress.waitForDisplayed(constants.wait.normal);
         expect(this.currentAddress.getText()).not.toBe(null);
         this.currentEmail.waitForDisplayed(constants.wait.normal);
@@ -49,7 +47,6 @@ class Billing extends Page {
         this.currentPhone.waitForDisplayed(constants.wait.normal);
         this.currentCreditCard.waitForDisplayed(constants.wait.normal);
         this.currentExpDate.waitForDisplayed(constants.wait.normal);
-        expect(this.currentName.getText()).not.toBe(null);
         expect(this.currentExpDate.getText()).not.toBe(null);
         expect(this.currentCompany.getText()).not.toBe(null);
         expect(this.currentCreditCard.getText()).not.toBe(null);

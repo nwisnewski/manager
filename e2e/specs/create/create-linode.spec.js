@@ -17,7 +17,7 @@ describe('Create - Menu Suite', () => {
         Create.selectionCards.forEach(card => expect(card.isDisplayed()).toBe(true));
     });
 
-    xit('TODO - should display create volume in header and link to create volume page', () => {
+  /*  xit('TODO - should display create volume in header and link to create volume page', () => {
         Create.menuButton.click();
         expect(Create.volumeMenuItem.isDisplayed()).toBe(true);
 
@@ -29,5 +29,5 @@ describe('Create - Menu Suite', () => {
         expect(Create.nodeBalancerMenuItem.isDisplayed()).toBe(true);
 
         Create.nodebalancer();
-    });
+    }); */
 });

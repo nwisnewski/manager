@@ -31,9 +31,9 @@ describe('View - Personal Access Tokens', () => {
             expect(tokenCreateDrawer.title.getText()).toBe('Add Personal Access Token');
          });
 
-        xit('M3-348 - should fail to create without updating permissions', () => {
+        /*xit('M3-348 - should fail to create without updating permissions', () => {
             tokenCreateDrawer.submit.click();
-        });
+        });*/
 
         it('should set basic scopes', () => {
             tokenCreateDrawer.setPermission(tokenCreateDrawer.account, tokenCreateDrawer.readPermission);

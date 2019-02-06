@@ -23,7 +23,7 @@ describe('Account - Restricted User - Permissions Suite', () => {
     });
 
     afterAll(() => {
-        //apiDeleteAllLinodes();
+        apiDeleteAllLinodes();
     });
 
     it('should display permissions page', () => {

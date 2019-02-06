@@ -32,10 +32,13 @@ const deleteAllData = (token,user) => {
             if(data.length > 0){
                 data.forEach((entityInstance) => {
                     const deleteId = entityEndpoint.includes('users') ? entityInstance.username : entityInstance.id;
-                    axiosInstance.delete(`${entityEndpoint}/${deleteId}`).then(res => console.log(res));
+                    if( deleteId !== user){
+                        axiosInstance.delete(`${entityEndpoint}/${deleteId}`).catch(e => console.log(e));
+                    }
                 });
             }
-        });
+        })
+        .catch(e => console.log(e));
     });
 
     const stackScriptEndPoint = '/linode/stackscripts';
@@ -46,12 +49,14 @@ const deleteAllData = (token,user) => {
         'User-Agent': 'WebdriverIO',
       }
     }).then((response) => {
+        console.log(response.data.data);
         if(response.data.data.length > 0){
             response.data.data.forEach((myStackScript) => {
-                axiosInstance.delete(`${stackScriptEndPoint}/${myStackScript.id}`).then(res => console.log(res));
+                axiosInstance.delete(`${stackScriptEndPoint}/${myStackScript.id}`).catch(e => console.log(e));
             })
         }
-    });
+    })
+    .catch(e => console.log(e));
 }
 
 JSON.parse(readFileSync('./e2e/creds.js')).forEach(cred => {

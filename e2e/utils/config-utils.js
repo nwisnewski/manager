@@ -86,6 +86,7 @@ exports.login = (username, password, credFilePath) => {
         }
     }
 
+    browser.pause(2000);
     $('[data-qa-add-new-menu-button]').waitForDisplayed(constants.wait.long, false, 'Create Button did not display');
 
     if ($('[role="dialog"]').isExisting()) {

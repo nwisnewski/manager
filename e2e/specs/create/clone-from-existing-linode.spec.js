@@ -28,13 +28,13 @@ describe('Create Linode - Clone from Existing Suite', () => {
         ConfigureLinode.cloneSelectSource();
     });
 
-    xit('should expand with clone to new linode elements', () => {
+  /*  xit('should expand with clone to new linode elements', () => {
         ConfigureLinode.cloneSelectTarget();
     });
 
     xit('should disable all region options except the source linode region', () => {
 
-    });
+    }); */
 
     it('should fail to clone to a smaller linode plan', () => {
         const noticeMsg = 'A plan selection is required when cloning to a new Linode';

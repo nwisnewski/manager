@@ -52,7 +52,7 @@ describe('Create - Volume Suite', () => {
         VolumeDetail.volumeCellElem.waitForDisplayed(constants.wait.normal);
     });
 
-    xit('should detach from linode', () => {
+  /*  xit('should detach from linode', () => {
         const volumeElement = $(`[data-qa-volume-cell="${volumeId}"]`);
         VolumeDetail.detachVolume(volumeElement);
         Volumes.detachConfirm(volumeId, linodeLabel);
@@ -60,5 +60,5 @@ describe('Create - Volume Suite', () => {
 
     xit('should remove the volume', () => {
         VolumeDetail.removeAllVolumes();
-    });
+    }); */
 });

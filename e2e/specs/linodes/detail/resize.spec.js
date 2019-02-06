@@ -45,7 +45,7 @@ describe('Linode Detail - Resize Suite', () => {
         Resize.toastDisplays(toastMsg);
     });
 
-    xit('M3-474 - should take the linode offline for resizing', () => {
+  /*  xit('M3-474 - should take the linode offline for resizing', () => {
 
-    });
+  }); */
 });

@@ -1,4 +1,4 @@
-const { constants } = require('../../constants');
+/*const { constants } = require('../../constants');
 import { switchTab } from '../../utils/common';
 import SupportLanding from '../../pageobjects/support/landing.page.js';
 import SupportSearchLanding from '../../pageobjects/support/search-landing.page.js';
@@ -109,3 +109,4 @@ xdescribe('Support Search - Suite', () => {
 
     });
 });
+*/
