@@ -58,15 +58,8 @@ exports.login = (username, password, credFilePath) => {
 
     }
 
-    const creds = [{selector: '#username', value: username}, {selector: '#password', value: password}];
-
-    creds.forEach( cred => {
-        browser.execute((elementId, value) => {
-            document.getElementById(elementId).setAttribute('value', value);
-        }, cred.selector, cred.value);
-    });
-
-    $('#password').addValue('\uE007');
+    browser.trySetValue('#username', username);
+    browser.trySetValue('#password', password);
     $('.btn#submit').click();
 
     letsGoButton = browser.getUrl().includes('dev') ? '.btn#submit' : '[data-qa-welcome-button]';
@@ -78,6 +71,7 @@ exports.login = (username, password, credFilePath) => {
         }, constants.wait.normal);
     } catch (err) {
         console.log('failed to login!');
+        console.log(browser.getPageSource());
         if ($('.alert').getText().includes('This field is required.')) {
             $('#password').setValue(password);
             $(loginButton).click();
