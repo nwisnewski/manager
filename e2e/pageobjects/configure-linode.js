@@ -97,7 +97,7 @@ class ConfigureLinode extends Page {
         expect(this.selectRegionHeader.isDisplayed()).toBe(true);
 
         expect(this.planHeader.isDisplayed()).toBe(true);
-        expect(this.planTabs.length).toBe(3);
+        expect(this.planTabs.length).toBe(4);
         expect(this.plans.length).toBeGreaterThan(0);
 
         expect(this.label.isDisplayed()).toBe(true);

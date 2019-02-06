@@ -120,13 +120,7 @@ class ListDomains extends Page {
         this.breadcrumbStaticText.waitForDisplayed(constants.wait.normal);
 
         browser.url(constants.routes.domains)
-
-        browser.waitUntil(function() {
-            const domains = $$('[data-qa-domain-cell] [data-qa-domain-label]');
-            const domainLabels = domains.map(d => d.getText());
-
-            return domainLabels.includes(newDomainName);
-        }, constants.wait.normal, 'Failed to clone domain');
+        this.domainRow(newDomainName).waitForDisplayed(constants.wait.normal);
     }
 
     remove(domain, domainName) {

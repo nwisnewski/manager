@@ -20,12 +20,7 @@ describe('Create - Volume Suite', () => {
 
     afterAll(() => {
         apiDeleteAllLinodes();
-        try {
-            // attempt to remove all volumes, in case the ui failed
-            apiDeleteAllVolumes();
-        } catch (err) {
-            // do nothing
-        }
+        apiDeleteAllVolumes();
     });
 
     it('should setup the screnario', () => {

@@ -1,4 +1,5 @@
 const { constants } = require('../../constants');
+const { apiDeleteAllDomains } = require('../../utils/common');
 
 import ListDomains from '../../pageobjects/list-domains.page';
 
@@ -90,11 +91,6 @@ describe('Domains - List Suite', () => {
     });
 
     afterAll(() => {
-        ListDomains.domains
-            .forEach(d => {
-                ListDomains.drawerTitle.waitForExist(constants.wait.short, true);
-                ListDomains.selectActionMenuItem(d, 'Remove');
-                ListDomains.remove(d, d.$(ListDomains.label.selector).getText());
-            });
+        apiDeleteAllDomains();
     });
 });

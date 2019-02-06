@@ -154,7 +154,7 @@ export class VolumeDetail extends Page {
 
         $('[data-qa-volume-label] input').waitForDisplayed(constants.wait.normal);
         $('[data-qa-volume-label] input').setValue(volume.label);
-        $('[data-qa-size] input').trySetValue(volume.size);
+        browser.trySetValue('[data-qa-size] input', volume.size);
 
         if (volume.hasOwnProperty('region')) {
             this.selectRegion(volume.region);
