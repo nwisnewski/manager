@@ -57,8 +57,9 @@ exports.login = (username, password, credFilePath) => {
         console.log(browser.getPageSource());
 
     }
-
+    browser.jsClick('#username');
     browser.trySetValue('#username', username);
+    browser.jsClick('#password');
     browser.trySetValue('#password', password);
     $('.btn#submit').click();
 
@@ -72,6 +73,7 @@ exports.login = (username, password, credFilePath) => {
     } catch (err) {
         console.log('failed to login!');
         console.log(browser.getPageSource());
+        browser.debug();
         if ($('.alert').getText().includes('This field is required.')) {
             $('#password').setValue(password);
             $(loginButton).click();

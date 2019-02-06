@@ -136,7 +136,8 @@
     "mb": "npx mb",
     "release": "./scripts/release_changelog.sh",
     "e2e:html-report": "npx allure generate e2e/html-results -o e2e/html-report --clean && npx allure open ",
-    "e2e:wait-for-manger-local": "./scripts/wait-for-it.sh manager-local:3000 -t 500 -s"
+    "e2e:wait-for-manger-local": "./scripts/wait-for-it.sh manager-local:3000 -t 500 -s",
+    "e2e:ci": "npx wdio ./e2e/config/wdio.conf.js --log && node e2e/utils/cleanup-account-data.js"
   },
   "husky": {
     "hooks": {

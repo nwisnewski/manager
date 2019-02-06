@@ -218,9 +218,9 @@ exports.config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {<Object>} results object containing test results
      */
-    onComplete: function(exitCode, config, capabilities, results) {
+    /*onComplete: function(exitCode, config, capabilities, results) {
         JSON.parse(readFileSync('./e2e/creds.js')).forEach((cred) => {
             deleteAllData(cred.token,cred.username);
         });
-    }
+    } */
 }
