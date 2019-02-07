@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const { readFileSync, unlinkSync } = require('fs');
+const { execSync } = require('child_process');
 const { argv } = require('yargs');
 const {
     login,
@@ -41,7 +42,7 @@ const specsToRun = () => {
 const specs = specsToRun();
 
 const selectedReporters = argv.log ? ['spec', ['junit', { outputDir: './e2e/test-results',}],
-    ['allure', {outputDir: './e2e/html-results', disableWebdriverStepsReporting: false, disableWebdriverScreenshotsReporting: false,}]] : ['dot'];
+    ['allure', {outputDir: './e2e/html-results', disableWebdriverStepsReporting: true, disableWebdriverScreenshotsReporting: false,}]] : ['dot'];
 
 const getRunnerCount = () => {
     const userCount = keysIn(process.env).filter(users => users.includes('MANAGER_USER')).length;
@@ -218,9 +219,12 @@ exports.config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {<Object>} results object containing test results
      */
-    /*onComplete: function(exitCode, config, capabilities, results) {
-        JSON.parse(readFileSync('./e2e/creds.js')).forEach((cred) => {
-            deleteAllData(cred.token,cred.username);
+    onComplete: function(exitCode, config, capabilities, results) {
+        execSync('node e2e/utils/cleanup-account-data.js', (error, stdout, stderr) => {            
+            if (error !== null) {
+              console.log('stderr: ' + stderr);
+              console.log('exec error: ' + error);
+            }
         });
-    } */
+    }
 }

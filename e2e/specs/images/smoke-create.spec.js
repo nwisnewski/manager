@@ -19,7 +19,7 @@ describe('Images - Create Suite', () => {
 
     afterAll(() => {
         apiDeleteAllLinodes();
-        apiDeletePrivateImages(readToken(browser.options.testUser));
+        apiDeletePrivateImages();
     });
 
     it('should display create image drawer', () => {

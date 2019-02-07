@@ -138,10 +138,10 @@ export const apiDeleteAllNodeBalancers = () => {
     deleteAll('/nodebalancers');
 }
 
-export const apiDeletePrivateImages = token => {
-    getPrivateImages(token).then((privateImages) => {
-        privateImages.data.forEach(i => removeImage(token, i.id));
-    });
+export const apiDeletePrivateImages = () => {
+    const token = readToken(browser.options.testUser);
+    const privateImages = getPrivateImages(token);
+    privateImages.data.forEach(i => removeImage(token, i.id));
 }
 
 export const apiRemoveSshKeys = () => {
