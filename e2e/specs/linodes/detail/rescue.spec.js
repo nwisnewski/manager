@@ -10,6 +10,7 @@ import {
     apiCreateLinode,
     apiDeleteAllLinodes,
     apiDeleteAllVolumes,
+    createVolumes,
 } from '../../../utils/common';
 
 
@@ -60,41 +61,21 @@ describe('Rescue Linode Suite', () => {
         } while (!checkIfToastIsPresent('Linode rescue started.') && checkIfToastIsPresent('Linode busy.') && i < 10);
     }
 
-  /*  beforeAll(() => {
-        const token = readToken(browser.options.testUser);
-        apiCreateLinode(linodeLabel).then((linode) => {
-            generateVolumeArray(linode.id).forEach((volume) => {
-                browser.createVolume(token,volume.label,volume.region,volume.size,volume.tags,volume.linode_id);
-            });
-        });
-        browser.url(constants.routes.volumes);
+    beforeAll(() => {
+        const linode = apiCreateLinode(linodeLabel);
+        createVolumes(generateVolumeArray(linode.id), true);
+        browser.url(`${constants.routes.linodes}/${linode.id}`);
+        LinodeDetail.launchConsole.waitForDisplayed(constants.wait.normal);
+        LinodeDetail.changeTab('Rescue');
         browser.pause(500);
-        volumeLabels.forEach((volume) => {
-            VolumeDetail.waitForVolumeExists(volume);
-        });
-    });*/
+     });
+
 
     afterAll(() => {
         apiDeleteAllVolumes();
     });
 
     it('Rescue Linode Tab displays', () => {
-        const token = readToken(browser.options.testUser);
-        apiCreateLinode(linodeLabel).then((linode) => {
-            generateVolumeArray(linode.id).forEach((volume) => {
-                browser.createVolume(token,volume.label,volume.region,volume.size,volume.tags,volume.linode_id);
-            });
-        });
-        browser.url(constants.routes.volumes);
-        browser.pause(500);
-        volumeLabels.forEach((volume) => {
-            VolumeDetail.waitForVolumeExists(volume);
-        });
-        let trimSelector = VolumeDetail.volumeAttachment.selector.replace(']','');
-        const linodeAttachedToCell = `${trimSelector}="${linodeLabel}"]`;
-        $$(linodeAttachedToCell)[0].waitForDisplayed(constants.wait.normal);
-        $$(`${linodeAttachedToCell} a`)[0].click();
-        LinodeDetail.launchConsole.waitForDisplayed(constants.wait.normal);
         LinodeDetail.changeTab('Rescue');
         browser.pause(500);
         Rescue.rescueDetailDisplays();
@@ -118,12 +99,6 @@ describe('Rescue Linode Suite', () => {
             browser.pause(500);
             Resize.landingElemsDisplay();
             Resize.planCards.find(plan => plan.$(`[${cardHeader}]`).getAttribute(cardHeader) === 'Linode 4GB').click();
-            try {
-                Resize.toast.waitForDisplayed(constants.wait.normal);
-                Resize.toast.waitForDisplayed(constants.wait.long,true);
-            } catch(e) {
-
-            }
             Resize.submit.click();
             Resize.toastDisplays('Linode resize started.');
             Resize.linearProgress.waitForDisplayed(constants.wait.normal);

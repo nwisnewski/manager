@@ -79,15 +79,13 @@ class Settings extends Page {
         this.createFromImage.click();
         const imagePassword = $(`${this.drawerBase.selector} ${this.password.selector}`);
         imagePassword.waitForDisplayed(constants.wait.normal);
-        const imageSelect = $('[data-qa-enhanced-select="Select an Image"] input');
+        const imageSelect = $('[data-qa-enhanced-select="Select an Image"] p');
         imageSelect.waitForDisplayed(constants.wait.normal);
         this.diskLabelInput.setValue(diskLabel);
         imageSelect.click();
         const displayImage = getDistrobutionLabel([imageId])[0];
-        imageSelect.setValue(displayImage);
-        const imageSelection = `[data-qa-option="linode/${imageId}"]`;
-        $(imageSelection).waitForDisplayed(constants.wait.normal);
-        $(imageSelection).click();
+        browser.pause(1000);
+        browser.jsClick(imageSelection);
         $(imageSelection).waitForDisplayed(constants.wait.normal,true);
         imagePassword.setValue(generatePassword());
         this.diskSizeInput.$('input').setValue(diskSize);

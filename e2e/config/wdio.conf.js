@@ -12,8 +12,6 @@ const {
     deleteAllData,
 } = require('../utils/config-utils');
 
-const { resetAccounts } = require('../setup/cleanup');
-
 const { browserCommands } = require('./custom-commands');
 const { browserConf } = require('./browser-config');
 const { constants } = require('../constants');
@@ -220,7 +218,7 @@ exports.config = {
      * @param {<Object>} results object containing test results
      */
     onComplete: function(exitCode, config, capabilities, results) {
-        execSync('node e2e/utils/cleanup-account-data.js', (error, stdout, stderr) => {            
+        execSync('node e2e/utils/cleanup-account-data.js', (error, stdout, stderr) => {
             if (error !== null) {
               console.log('stderr: ' + stderr);
               console.log('exec error: ' + error);

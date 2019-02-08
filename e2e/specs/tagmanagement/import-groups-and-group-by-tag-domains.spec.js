@@ -102,6 +102,7 @@ describe('Domain Tag Management Suite', () => {
         it('Domains can be ungrouped by tags', () => {
             ListDomains.groupByTags(false);
             expect(ListDomains.tagHeaders.length).toBe(0);
+            expect(false).toBe(true);
         });
     });
 

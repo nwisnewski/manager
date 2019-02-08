@@ -93,6 +93,7 @@ e2e/drivers
 storybook-test-results/*.xml
 .tmp*.status
 e2e/creds.js
+allure-report
 
 # storybook static files
 .out

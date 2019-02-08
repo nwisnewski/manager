@@ -181,13 +181,13 @@ export const checkEnvironment = () => {
     }
 }
 
-export const createVolumes = (volumeObjArray) => {
+export const createVolumes = (volumeObjArray,waitForToast) => {
     let volumes = [];
     const token = readToken(browser.options.testUser);
 
     volumeObjArray.forEach((volumeObj) => {
         const volume = createVolume(token,volumeObj.label,volumeObj.region,volumeObj.size,volumeObj.tags,volumeObj.linode_id);
-        volume.push(volume);
+        volumes.push(volume);
     });
 
     browser.url(constants.routes.volumes);
@@ -196,8 +196,12 @@ export const createVolumes = (volumeObjArray) => {
     volumeObjArray.forEach((volumeObj) => {
         $(`[data-qa-volume-cell-label="${volumeObj.label}"]`).waitForDisplayed(constants.wait.long);
     });
-    $('[data-qa-toast]').waitForVisible(constants.wait.minute);
-    $('[data-qa-toast]').waitForVisible(constants.wait.long, true);
+
+    if(waitForToast){
+        $('[data-qa-toast]').waitForDisplayed(constants.wait.minute);
+        $('[data-qa-toast]').waitForDisplayed(constants.wait.long, true);
+    }
+
     return volumes;
 }
 
@@ -227,7 +231,7 @@ export const getDistrobutionLabel = (distrobutionTags) => {
 }
 
 export const getLocalStorageValue = (key) => {
-    return browser.getLocalStorageItem(key).value;
+    return browser.getLocalStorageItem(key);
 }
 
 export const apiCreateDomains = (domainObjArray) => {

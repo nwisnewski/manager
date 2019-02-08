@@ -40,7 +40,7 @@ describe('StackScript - detail page and drawer suite', () => {
       expect(StackScriptDetail.stackScriptDeployments.getText()).toContain(deployments);
       const displayedDistrobutionLabels = StackScriptDetail.getStackScriptCompatibleDisrobutions();
       const token = readToken(browser.options.testUser);
-      const selectedDistrobutionLabels = getDistrobutionLabel(disrobutions);
+      const selectedDistrobutionLabels = getDistrobutionLabel(distrobutions);
       selectedDistrobutionLabels.forEach((distro) => {
           expect(displayedDistrobutionLabels.includes(distro)).toBe(true);
       });

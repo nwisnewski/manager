@@ -45,6 +45,6 @@ services:
     volumes:
       - ./e2e/test-results:/src/e2e/test-results
       - ./e2e/html-results:/src/e2e/html-results
-    entrypoint: ["./scripts/wait-for-it.sh", "-t", "500", "-s", "manager-local:3000", "--", "yarn", "e2e:ci"]
+    entrypoint: ["./scripts/wait-for-it.sh", "-t", "500", "-s", "manager-local:3000", "--", "yarn","e2e", "--dir", "linodes", "--log"]
     depends_on:
       - manager-local

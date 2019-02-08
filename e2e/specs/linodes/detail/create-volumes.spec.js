@@ -59,7 +59,7 @@ describe('Linode Detail - Volumes Suite', () => {
     const detachVolume = () => {
         VolumeDetail.selectActionMenuItemV2(VolumeDetail.volumeCellElem.selector, 'Detach');
         VolumeDetail.confirmDetachORDelete();
-        VolumeDetail.createButton.waitForDisplayed(constants.wait.normal);
+        VolumeDetail.createButton.waitForDisplayed(constants.wait.long);
         expect(VolumeDetail.placeholderText.getText()).toBe('Create a Volume');
     }
 
@@ -114,6 +114,7 @@ describe('Linode Detail - Volumes Suite', () => {
 
         it('should display volume price dynamically based on size', () => {
             [200, 333, 450].forEach( (price) => {
+                $(`${VolumeDetail.size.selector} input`).click();
                 $(`${VolumeDetail.size.selector} input`).setValue(price);
                 const volumePrice = price * 0.1;
                 expect(VolumeDetail.volumePrice.getText()).toEqual(`$${volumePrice.toFixed(2)}`);
